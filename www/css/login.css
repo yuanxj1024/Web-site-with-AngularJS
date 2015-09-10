@@ -1,0 +1,44 @@
+body {
+    font-size: 12px;
+}
+.page-width {
+    width: 960px;
+    margin: 0 auto;
+}
+.main {
+    display: block;
+    background-color:lightgray;
+}
+.login {
+    width: 280px;
+    float: right;
+}
+.tab-item {
+    font-size: 1.5em;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.2);
+}
+.active {
+    cursor: default;
+    background-color: rgba(255,255,255,0.6);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF)";
+}
+.form-wrapper {
+    padding-top: 15px;
+    background-color: rgba(255,255,255,0.6);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF)";
+}
+.login-btn,.login-btn:hover,.login-btn:active,.login-btn:focus {
+    background-color: #00BBEE;
+    border: solid 1px #00BBEE;
+    color: #fff;
+}
+.btn {
+    font-size: 14px;
+    width: 100px;
+}
+.captcha {
+    border-radius: 5px;
+}

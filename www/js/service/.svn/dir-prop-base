@@ -1,0 +1,19 @@
+K 18
+svn:global-ignores
+V 26
+OrderService.js.map
+*.map
+
+K 10
+svn:ignore
+V 149
+common.js.map
+StarService.js.map
+UserBill.js.map
+WechatFriends.js.map
+WechatPublic.js.map
+WeiboService.js.map
+OrderService.js.map
+SearchTypes.js.map
+
+END

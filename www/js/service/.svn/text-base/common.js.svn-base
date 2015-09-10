@@ -1,0 +1,16 @@
+/**
+ * Created by AaronYuan on 8/14/15.
+ */
+/// <reference path="../app.ts" />
+var WeMedia;
+(function (WeMedia) {
+    'use strict';
+    var Common = (function () {
+        function Common() {
+        }
+        return Common;
+    })();
+    Common.$inject = [];
+    WeMedia.ServiceModule.service('CommonService', Common);
+})(WeMedia || (WeMedia = {}));
+//# sourceMappingURL=common.js.map

@@ -1,0 +1,95 @@
+/**
+ * Created by AaronYuan on 8/7/15.
+ */
+/// <reference path="app.ts" />
+module WeMedia {
+    'use strict';
+
+    AppModule.config(function(
+        $stateProvider: ng.ui.IStateProvider,
+        $urlRouterProvider: ng.ui.IUrlRouterProvider
+    ) {
+
+        $stateProvider
+            .state('advertiser',{
+                'url': '/advertiser',
+                'abstract': true,
+                'templateUrl': './page/main.html'
+            })
+            .state('advertiser.dashboard', {
+                'url': '/dashboard',
+                'views': {
+                    'advertiser': {
+<<<<<<< .mine
+                        'templateUrl': './advertiser/page/dashboard.html'
+=======
+                        'templateUrl': './page/advertiser/dashboard.html'
+>>>>>>> .r68
+                    }
+                }
+            })
+            .state('advertiser.datalist',{
+                'url': '/datalist',
+                'params': {
+                    'mediaType': ''
+                },
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/advertiser/star.html',
+                        'controller': 'MediaDataListCtrl'
+                    }
+                }
+            })
+            .state('advertiser.precontract', {
+                'url': '/precontract',
+                'params': {
+                    'mediaType': ''
+                },
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/precontract.html'
+                    }
+                }
+            })
+            .state('advertiser.precontractList', {
+                'url': '/precontractList',
+                'params': {
+                    'mediaType': ''
+                },
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/precontract-list.html'
+                    }
+                }
+            })
+
+            //自媒体
+            .state('admedia', {
+                'url': '/advertiser',
+                'abstract': true,
+                'templateUrl': './page/main.html'
+            })
+
+            .state('admedia.dashboard', {
+                'url': '/dashboard',
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/advertiser/dashboard.html'
+                    }
+                }
+            })
+            //公用路由
+            .state('precontract', {
+                'url': '/precontract',
+                'params': {
+                    'mediaType': ''
+                },
+                'templateUrl': './page/precontract.html'
+            })
+        ;
+
+        $urlRouterProvider.otherwise('/advertiser/dashboard');
+
+    });
+}
+

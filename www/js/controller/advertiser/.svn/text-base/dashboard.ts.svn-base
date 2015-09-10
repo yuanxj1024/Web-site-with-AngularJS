@@ -1,0 +1,32 @@
+/**
+ *
+ * Created by AaronYuan on 8/14/15.
+ */
+/// <reference path="../../app.ts" />
+module WeMedia {
+    'use strict';
+
+    declare var window, ZENG;
+
+    interface IDashboardScope extends IWMBaseScope {
+        test:Function;
+    }
+
+    class Dashboard {
+        constructor(
+            public $rootScope: IWMRootScope,
+            public $scope: IDashboardScope
+        ) {
+            $scope.test = angular.bind(this,this.test);
+        }
+        test(){
+            ZENG.msgbox.show('提示信息,图标类型',1);
+        }
+
+    }
+
+    Dashboard.$inject = ['$rootScope', '$scope'];
+    ControllerModule.controller('DashboardCtrl', Dashboard);
+
+}
+

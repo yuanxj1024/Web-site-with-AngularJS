@@ -1,0 +1,46 @@
+.notify-over-layer {
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  background: #333333;
+  pointer-events: auto;
+  color: #ffffff;
+  padding: 10px;
+  font-weight: bold; }
+
+.notification-wrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: 30%;
+  z-index: 110;
+  width: 100%;
+  pointer-events: auto;
+  padding: 20px; }
+  .notification-wrap .notification {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    min-width: 75%;
+    padding: 5px;
+    margin: 0 auto;
+    border-radius: 5px; }
+  .notification-wrap .button {
+    font-size: 13px; }
+
+/*# sourceMappingURL=notification.css.map */

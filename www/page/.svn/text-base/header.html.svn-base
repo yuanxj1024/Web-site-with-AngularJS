@@ -1,0 +1,99 @@
+<div class="top-heasder-wrap center" ng-controller="HeaderCtrl">
+  <div class="container top-header" ng-class="{true:'dashboard-width'}[stateName == 'advertiser.dashboard']">
+    <div class="company-name">
+      <a href="/">
+        <img src="/img/logo.png" alt=""/>
+      </a>
+    </div>
+    <div class="h-right">
+      <span class="logout-wrap">
+        您好<span>{{userName}}</span><a href="#" ng-click="logout()">退出</a>
+      </span>
+    </div>
+  </div>
+  <div class="header-wrap">
+  <div class="container header-nav main-width" ng-class="{true:'dashboard-width'}[stateName == 'advertiser.dashboard']">
+    <div class="collapse navbar-collapse">
+      <!-- 广告主-->
+      <ul ng-if="isAdOwner" class="nav navbar-nav">
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">我的推特</a></li>
+        <!--<li ui-sref-active="active">-->
+          <!--<a ui-sref="advertiser.star" href="#" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">明星 </a>j-->
+        <!--</li>-->
+        <li ui-sref-active="active">
+          <a ui-sref="advertiser.wechat" href="#" class="dropdown-toggle"  role="button" aria-haspopup="true" aria-expanded="false">微信公众号</a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="advertiser.weibo" href="#" role="button" aria-haspopup="true" aria-expanded="false">新浪微博 </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="advertiser.friends" href="#" role="button" aria-haspopup="true" aria-expanded="false">微信朋友圈 </a>
+        </li>
+        <li>
+          <a ui-sref="advertiser.bill"  href="#" role="button" aria-haspopup="true" aria-expanded="false">账单查询 </a>
+        </li>
+        <li ui-sref-active="active">
+          <a  ui-sref="advertiser.user" href="#"  role="button" aria-haspopup="true" aria-expanded="false">用户中心</a>
+        </li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">帮助中心</a></li>
+      </ul>
+      <!-- 自媒体-->
+      <ul ng-if="!isAdOwner" class="nav navbar-nav">
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">我的推特</a></li>
+        <li ui-sref-active="active">
+          <a ui-sref="admedia.account.wechat" href="#" role="button" aria-haspopup="true" aria-expanded="false">账号管理 </a>
+        </li>
+        <li ui-sref-active="active">
+          <a href="#" role="button" aria-haspopup="true" aria-expanded="false">活动订单</a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="admedia.preorderlist" href="#" role="button" aria-haspopup="true" aria-expanded="false">预约订单</a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="admedia.bill" href="#" role="button" aria-haspopup="true" aria-expanded="false">账单查询 </a>
+        </li>
+        <li ui-sref-active="active">
+          <a ui-sref="advertiser.user" href="#"  role="button" aria-haspopup="true" aria-expanded="false">用户中心 </a>
+        </li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">帮助中心</a></li>
+      </ul>
+    </div>
+
+  </div>
+  </div>
+  <div class="sub-header-warp">
+    <div class="container sub-header">
+      <ul class="nav nav-pills ng-hide">
+        <li><a href="#">账户信息</a></li>
+        <li><a href="#">账户使用明细</a></li>
+      </ul>
+      <ul class="nav nav-pills ng-hide">
+        <li><a href="#">微信账号</a></li>
+        <li><a href="#">微信公众号</a></li>
+        <li><a href="#">新浪微博</a></li>
+      </ul>
+      <ul class="nav nav-pills ng-hide">
+        <li><a href="#">全部订单</a></li>
+        <li><a href="#">待执行订单</a></li>
+        <li><a href="#">已完成订单</a></li>
+      </ul>
+      <ul class="nav nav-pills ng-hide">
+        <li><a href="#">全部预约订单</a></li>
+        <li><a href="#">预约中的订单</a></li>
+        <li><a href="#">待执行订单</a></li>
+        <li><a href="#">执行中订单</a></li>
+        <li><a href="#">已完成订单</a></li>
+      </ul>
+      <ul class="nav nav-pills ng-hide">
+        <li><a href="#">账户信息</a></li>
+        <li><a href="#">账户使用明细</a></li>
+      </ul>
+      <ul class="nav nav-pills ng-hide">
+        <li><a href="#">用户信息</a></li>
+        <li><a href="#">修改密码</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+</div>

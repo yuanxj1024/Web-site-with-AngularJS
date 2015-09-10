@@ -1,0 +1,31 @@
+{
+  "name": "WeMedia",
+  "version": "0.0.0",
+  "authors": [
+    "Aaron-vk-Yuan <xuanyuanziruo@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-resource": "~1.4.3",
+    "angular": "~1.4.3",
+    "angular-bootstrap": "~0.13.2",
+    "angular-ui-router": "~0.2.15",
+    "jquery": "~2.1.4",
+    "angular-cookies": "~1.4.3",
+    "bootstrap": "~3.3.5",
+    "angular-datepicker": "~1.0.12",
+    "angular-ui-uploader": "~1.1.1"
+  },
+  "dependencies": {
+    "angular-animate": "~1.4.4",
+    "ng-file-upload": "~7.0.10",
+    "ng-file-upload-shim": "~7.0.10"
+  }
+}

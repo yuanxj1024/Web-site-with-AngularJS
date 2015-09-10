@@ -1,0 +1,23 @@
+/**
+ * Created by AaronYuan on 8/14/15.
+ */
+/// <reference path="../app.ts" />
+
+module WeMedia {
+    'use strict';
+
+    export interface ICommonService {
+
+    }
+
+    class Common implements ICommonService {
+        constructor () {
+
+        }
+    }
+
+    Common.$inject = [];
+    ServiceModule.service('CommonService', Common);
+}
+
+

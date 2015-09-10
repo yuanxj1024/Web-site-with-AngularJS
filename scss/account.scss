@@ -1,0 +1,58 @@
+
+.account-view-wrap {
+  border: solid 1px $main-border-color;
+  .title {
+    font-size: 20px;
+    .glyphicon {
+      margin-right: 10px;
+    }
+    .btn {
+      margin-left: 5px;
+    }
+  }
+  .account-btns {
+
+  }
+  .data-list-wrap {
+    table {
+      td,th{
+        text-align: center;
+      }
+    }
+    .media-head-img{
+      max-height: 30px;
+      max-width: 30px;
+    }
+
+  }
+
+}
+
+.form-wrap {
+  .control-label{
+    text-align: right;
+  }
+  .input-group-addon {
+    font-size: 12px;
+  }
+  .account-type-list{
+    max-height: 80px;
+    border: 1px solid $main-border-color;
+    margin: 0px;
+    border-radius: 5px;
+    font-size: 11px;
+    overflow: hidden;
+    overflow-y: auto;
+    input{
+      margin-top: 2px;
+    }
+    .col-xs-3{
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  .upload-img{
+    max-width: 100px;
+    max-height: 100px;
+  }
+}

@@ -1,0 +1,220 @@
+<div class="main-nav">
+  <div ng-include="'./page/header.html'" ></div>
+</div>
+<div ng-controller="WechatPrecontractCtrl">
+
+  <div class="sub-header-wrap">
+    <div class="container">
+      <ul class="nav nav-pills">
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechat">公众号资源</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">预约公众号资源活动</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':2})">预约活动列表</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="precontract-wrap page-minHeight ">
+    <div class="precontract-body container">
+      <div class="header">
+        <h4 class="page-title"><i class="glyphicon glyphicon-file"></i> 预约{{currentMediaName}}活动</h4>
+      </div>
+
+      <div class="create-order-step-wrap">
+        <div class="step-list center">
+          <span><i class="glyphicon">1</i>选择资源</span>
+          <span class="arrow"><i class="glyphicon glyphicon-arrow-right"></i></span>
+          <span><i class="glyphicon">2</i>填写活动内容</span>
+          <span class="arrow"><i class="glyphicon glyphicon-arrow-right"></i></span>
+          <span><i class="glyphicon">3</i>下单支付</span>
+        </div>
+      </div>
+
+      <div class="main-body marginTop">
+        <form name="wechatInputForm" class="form-horizontal" ng-submit="saveWechat(wechatInputForm.$valid)">
+          <!--<div class="form-group">-->
+          <!--<label class="col-xs-2 control-label">投放形式</label>-->
+          <!--<div class="col-xs-2">-->
+          <!--<select class="form-control">-->
+          <!--<option>硬广</option>-->
+          <!--<option>软广</option>-->
+          <!--</select>-->
+          <!--</div>-->
+          <!--<div class="col-xs-2">-->
+          <!--<select class="form-control">-->
+          <!--<option>单图文</option>-->
+          <!--<option>多图文第一条</option>-->
+          <!--<option>多图文第二条</option>-->
+          <!--<option>多图文3~N条</option>-->
+          <!--</select>-->
+          <!--</div>-->
+          <!--</div>-->
+          <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="must-star">*</span>活动名称</label>
+            <div class="col-xs-6">
+              <input type="text" minlength="1" ng-required="true" class="form-control" placeholder="" ng-model="wechatForm.Title">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="must-star">*</span>活动描述</label>
+            <div class="col-xs-6">
+              <textarea class="form-control" minlength="10" cols="30" rows="6" ng-model="wechatForm.Intro"></textarea>
+              <span class="input-tip">介绍下您本次活动的产品、品牌内容及相关链接，让名人/媒体有个大概的了解，不超过1000字。</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="must-star">*</span>开始时间</label>
+            <div class="col-xs-6 execute-time-wrap">
+              <div class="col-xs-4">
+                <div class="input-group input-append input-prepend">
+                  <input type="text" class="form-control" min-date="2015-8-11" date-time ng-model="wechatForm.StartTime" auto-close="true" required="true"  max-view="date" format="yyyy-MM-dd hh:mm" partial="true">
+                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+              </div>
+              <div class="col-xs-1 time-split">至</div>
+              <div class="col-xs-4">
+                <div class="input-group input-append input-prepend">
+                  <input type="text" class="form-control"  date-time ng-model="wechatForm.EndTime" auto-close="true" required="true" max-view="date" format="yyyy-MM-dd hh:mm" partial="true">
+                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+              </div>
+              <div class="execute-tip input-tip">请尽量预算时间长些，以免档期无法配合</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="must-star">*</span>反馈时间</label>
+            <div class="col-xs-6 execute-time-wrap">
+              <div class="col-xs-4">
+                <div class="input-group input-append input-prepend">
+                  <input type="text" class="form-control" min-date="'2015-8-11'" date-time ng-model="wechatForm.FeedbackTime" auto-close="true" required="true"  max-view="date" format="yyyy-MM-dd hh:mm" partial="true">
+                  <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+              </div>
+              <div class="input-tip " ng-class="{true:'error'}[false]" >预约结果反馈时间必须晚于当前时间24小时。</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-2 control-label"><span class="must-star">*</span>选择资源</label>
+            <div class="col-xs-6">
+              <div><a class="btn btn-sm btn-info" ng-click="openList()">添加资源</a></div>
+              <div class="selected-list">
+                <div class="item">
+                  <span>全球时尚精选</span>
+                  <span>粉丝数：234234</span>
+                  <span><span>2000</span>元</span>
+                  <span> <a href="javascript:;" class="glyphicon glyphicon-remove"></a> </span>
+                </div>
+                <!--<div class="item">-->
+                  <!--<span>全球时尚精选</span>-->
+                  <!--<span>粉丝数：234234</span>-->
+                  <!--<span><span>2000</span>元</span>-->
+                  <!--<span> <a href="javascript:;" class="glyphicon glyphicon-remove"></a> </span>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                  <!--<span>全球时尚精选</span>-->
+                  <!--<span>粉丝数：234234</span>-->
+                  <!--<span><span>2000</span>元</span>-->
+                  <!--<span> <a href="javascript:;" class="glyphicon glyphicon-remove"></a> </span>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                  <!--<span>全球时尚精选</span>-->
+                  <!--<span>粉丝数：234234</span>-->
+                  <!--<span><span>2000</span>元</span>-->
+                  <!--<span> <a href="javascript:;" class="glyphicon glyphicon-remove"></a> </span>-->
+                <!--</div>-->
+                <!--<div class="item">-->
+                  <!--<span>全球时尚精选</span>-->
+                  <!--<span>粉丝数：234234</span>-->
+                  <!--<span><span>2000</span>元</span>-->
+                  <!--<span> <a href="javascript:;" class="glyphicon glyphicon-remove"></a> </span>-->
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-xs-2 control-label">是否短信通知</label>
+            <div class="col-xs-8">
+              <label>
+                <input type="checkbox" ng-model="wechatForm.IsNotice">
+                手机短信通知
+              </label>
+              <a href="javascript:;" ng-click="openAgreement()">服务协议</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-xs-2 control-label">&nbsp;</label>
+            <div class="col-xs-8">
+              <label>
+                <input type="checkbox" checked disabled value="">
+                同意相关
+              </label>
+              <a href="javascript:;" ng-click="openAgreement()">服务协议</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-xs-2 control-label">&nbsp;</label>
+            <div class="col-xs-8">
+              <button class="btn btn-primary">确定</button>
+              <!--<input type="reset" class="btn btn-default" value="清空"/>-->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="myModalContent.html">
+    <div class="choose-resource-layer padding">
+      <h3>添加资源</h3>
+      <div class="data-list-wrap">
+        <div class="form-group form-inline">
+          <label class="control-label">名称</label>
+          <input type="text"/> <button class="btn btn-success btn-sm">搜索</button>
+        </div>
+        <div class="selected-list">
+          <div class="item" ng-repeat="item in items track by $index">
+            <span><input type="checkbox" ng-model="selectedList[item.id]" ng-click="addItem(selectedList[item.id])"/></span>
+            <span>全球时尚精选{{item.id}}</span>
+            <span>粉丝数：234234</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+          </div>
+          <div class="item">
+            <span><input type="checkbox"/> </span>
+            <span>全球时尚精选</span>
+            <span>粉丝数：234234</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+          </div>
+          <div class="item">
+            <span><input type="checkbox"/> </span>
+            <span>全球时尚精选</span>
+            <span>粉丝数：234234</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+            <span><span>2000</span>元</span>
+          </div>
+        </div>
+        <div class="selecte-tip">
+          <span>以选中<b>{{selectedTotal}}</b>项资源</span>
+        </div>
+        <div class="data-page">
+          <pagination rotate="false" max-size="10" ng-change="pageChanged()" items-per-page="15" boundary-links="true" total-items="190" ng-model="currentPageIndex" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+        </div>
+      </div>
+      <div class="footer">
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>
+  </script>
+</div>

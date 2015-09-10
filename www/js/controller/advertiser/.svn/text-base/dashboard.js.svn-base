@@ -1,0 +1,23 @@
+/**
+ *
+ * Created by AaronYuan on 8/14/15.
+ */
+/// <reference path="../../app.ts" />
+var WeMedia;
+(function (WeMedia) {
+    'use strict';
+    var Dashboard = (function () {
+        function Dashboard($rootScope, $scope) {
+            this.$rootScope = $rootScope;
+            this.$scope = $scope;
+            $scope.test = angular.bind(this, this.test);
+        }
+        Dashboard.prototype.test = function () {
+            ZENG.msgbox.show('提示信息,图标类型', 1);
+        };
+        return Dashboard;
+    })();
+    Dashboard.$inject = ['$rootScope', '$scope'];
+    WeMedia.ControllerModule.controller('DashboardCtrl', Dashboard);
+})(WeMedia || (WeMedia = {}));
+//# sourceMappingURL=dashboard.js.map

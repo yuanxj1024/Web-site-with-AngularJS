@@ -1,0 +1,22 @@
+<div class="sub-header-wrap">
+  <ul ng-if="currentMediaType == 1" class="nav nav-pills">
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.star({'mediaType':1})">明星资源</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontract({'mediaType':1})">预约明星活动</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':1})">预约活动列表</a></li>
+  </ul>
+  <ul ng-if="currentMediaType == 2" class="nav nav-pills">
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.star({'mediaType':2})">公众号资源</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontract({'mediaType':2})">预约公众号资源活动</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':2})">预约活动列表</a></li>
+  </ul>
+  <ul ng-if="currentMediaType == 3" class="nav nav-pills">
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.star({'mediaType':3})">新浪微博资源</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontract({'mediaType':3})">预约新浪微博资源活动</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':3})">预约活动列表</a></li>
+  </ul>
+  <ul ng-if="currentMediaType == 4" class="nav nav-pills">
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.star({'mediaType':4})">朋友圈资源</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontract({'mediaType':4})">朋友圈资源活动</a></li>
+    <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':4})">预约活动列表</a></li>
+  </ul>
+</div>
