@@ -294,8 +294,11 @@ module WeMedia {
             })
         ;
 
-        $urlRouterProvider.otherwise('/advertiser/dashboard');
-
+        if(window.location.href.indexOf('advertiser')>0){
+            $urlRouterProvider.otherwise('/advertiser/dashboard');
+        }else {
+            $urlRouterProvider.otherwise('/advertiser/dashboard');
+        }
     });
 }
 

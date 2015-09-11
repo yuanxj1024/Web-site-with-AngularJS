@@ -14,8 +14,11 @@ var WeMedia;
             this.$scope = $scope;
             this.CommonService = CommonService;
             this.OrderService = OrderService;
+            $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this, this.test);
             $scope.noticeList = [];
+            $scope.orderList = [];
+            this.init();
         }
         Dashboard.prototype.init = function () {
             var self = this;
@@ -37,6 +40,21 @@ var WeMedia;
         };
         Dashboard.prototype.test = function () {
             ZENG.msgbox.show('提示信息,图标类型', 1);
+        };
+        Dashboard.prototype.getStatus = function (code) {
+            switch (code * 1) {
+                default:
+                case 1:
+                    return '待审核';
+                case 2:
+                    return '审核中';
+                case 3:
+                    return '审核未通过';
+                case 4:
+                    return '取消';
+                case 9:
+                    return '审核通过';
+            }
         };
         return Dashboard;
     })();

@@ -43,7 +43,7 @@ var WeMedia;
                     Company: 'tests'
                 };
                 $cookies.put('authUser', JSON.stringify(userinfo));
-                $rootScope.isAdOwner = !false;
+                $rootScope.isAdOwner = false;
             }
             else {
                 //角色设定
@@ -51,7 +51,6 @@ var WeMedia;
             }
             $rootScope.accessToken = $cookies.get('accessToken');
             var user = AuthService.userInfo(null);
-            console.log(user);
             if (user && user.Mobile) {
                 $rootScope.user = user;
                 if (!user['UserName']) {
@@ -91,6 +90,15 @@ var WeMedia;
                 else {
                     $state.go('advertiser.dashboard');
                 }
+            };
+            $rootScope.calcDate = function (text) {
+                if (text) {
+                    var r = text.match(/\d+(?=[+])/);
+                    if (r && r[0]) {
+                        return new Date(r[0] * 1);
+                    }
+                }
+                return new Date();
             };
             //利用路由，选中顶级菜单
             $rootScope.$on('$stateChangeSuccess', function (e, state) {

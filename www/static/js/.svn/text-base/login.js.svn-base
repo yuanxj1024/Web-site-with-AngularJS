@@ -34,7 +34,11 @@ $(function () {
             result = JSON.parse(result);
           }
           if(result && result.Status> 0) {
-            window.location.href = '/home.html';
+            if($('#mediaType').val() == 1){
+              window.location.href = '/home.html#/advertiser/dashboard'
+            }else if($('#mediaType').val() == 2){
+              window.location.href = '/home.html#/admedia/dashboard'
+            }
           }else {
             errMsg = !!result? result.Message: '登陆失败，请稍后再试！';
             $('#errorTipModal').modal('show');

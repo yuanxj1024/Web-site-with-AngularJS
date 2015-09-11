@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
-V 47
-/svn/WeMedia/!svn/ver/99/FrontEnd/www/static/js
+V 48
+/svn/WeMedia/!svn/ver/209/FrontEnd/www/static/js
 END
 register.js
 K 25
@@ -12,8 +12,8 @@ END
 login.js
 K 25
 svn:wc:ra_dav:version-url
-V 56
-/svn/WeMedia/!svn/ver/99/FrontEnd/www/static/js/login.js
+V 57
+/svn/WeMedia/!svn/ver/209/FrontEnd/www/static/js/login.js
 END
 happy.js
 K 25

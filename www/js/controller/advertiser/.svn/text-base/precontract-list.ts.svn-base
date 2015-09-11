@@ -41,6 +41,8 @@ module WeMedia {
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.getStatus = angular.bind(this, this.getStatus);
 
+            $scope.currentMediaType = $stateParams.mediaType * 1;
+
             this.init();
 
             this.refresh();
@@ -74,7 +76,13 @@ module WeMedia {
 
         }
         editItem(id: number) {
-
+            console.log(id);
+            var stats = {
+                2: 'advertiser.wechatprecontract',
+                3: 'advertiser.weiboprecontract',
+                4: 'advertiser.friendsprecontract'
+            };
+            this.$state.go(stats[this.$scope.currentMediaType],{ editID: id});
         }
 
         pageChanged(index) {

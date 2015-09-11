@@ -254,7 +254,12 @@ var WeMedia;
             },
             'templateUrl': './page/precontract.html'
         });
-        $urlRouterProvider.otherwise('/advertiser/dashboard');
+        if (window.location.href.indexOf('advertiser') > 0) {
+            $urlRouterProvider.otherwise('/advertiser/dashboard');
+        }
+        else {
+            $urlRouterProvider.otherwise('/advertiser/dashboard');
+        }
     });
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=router.js.map

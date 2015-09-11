@@ -123,14 +123,10 @@ var WeMedia;
             if (state === void 0) { state = ''; }
             if (args === void 0) { args = {}; }
             var self = this;
-            console.log(this.$scope.selected);
-            state = !!state ? self.$state.current.name : state;
             args = angular.extend({}, this.createSearchArg(), args);
-            console.log('args');
-            console.log(args);
             var callbackObj = {
                 2: function () {
-                    this.WechatPublicService.list(args).then(function (result) {
+                    self.WechatPublicService.list(args).then(function (result) {
                         if (result && result.Data) {
                             self.$scope.list = result.Data || [];
                             self.$scope.totalItems = result.TotalItems || 0;
@@ -140,7 +136,7 @@ var WeMedia;
                     });
                 },
                 3: function () {
-                    this.WeiboService.list(args).then(function (result) {
+                    self.WeiboService.list(args).then(function (result) {
                         if (result && result.Data) {
                             self.$scope.list = result.Data || [];
                             self.$scope.totalItems = result.TotalItems || 0;
@@ -150,7 +146,7 @@ var WeMedia;
                     });
                 },
                 4: function () {
-                    this.WechatFriendsService.list(args).then(function (result) {
+                    self.WechatFriendsService.list(args).then(function (result) {
                         if (result && result.Data) {
                             self.$scope.list = result.Data || [];
                             self.$scope.totalItems = result.TotalItems || 0;
@@ -160,7 +156,7 @@ var WeMedia;
                     });
                 }
             };
-            callbackObj[this.$scope.currentMediaType];
+            callbackObj[this.$scope.currentMediaType]();
         };
         MediaDataList.prototype.favoriteList = function (state, args) {
             if (state === void 0) { state = ''; }

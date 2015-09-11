@@ -10,7 +10,7 @@ var WeMedia;
             this.$rootScope = $rootScope;
             this.$q = $q;
             this.$resource = $resource;
-            this.noticeResource = $resource('/API/Notice', { action: '@action' }, {
+            this.noticeResource = $resource('/API/Notice/:action', { action: '@action' }, {
                 list: {
                     method: 'GET',
                     accessToken: true,

@@ -127,7 +127,7 @@ module WeMedia {
                 this.OrderService.save(this.$scope.wechatForm).then(function(result){
                     if(result && result.Status == 1) {
                         window.navigator.notification.alert('数据保存成功!',function(){
-                            self.$state.go('');
+                            self.goList();
                         });
 
                     }else {
@@ -196,7 +196,7 @@ module WeMedia {
             modalInstance.result.then(function(items){
                 console.log(items);
                 if(items && items.length > 0){
-                    self.$scope.selectedList.push(items);
+                    self.$scope.selectedList =  self.$scope.selectedList.concat(items);
                     self.calcInfo();
                 }
             },function(){
@@ -309,7 +309,7 @@ module WeMedia {
         refresh() {
             var self = this;
             var arg = {
-                pageSize: 1,
+                pageSize: 10,
                 page: self.$scope.currentPageIndex
             };
             var callbackObj = {
@@ -353,7 +353,7 @@ module WeMedia {
                 }
             };
 
-            callbackObj[this.mediaType];
+            callbackObj[this.mediaType]();
 
         }
 

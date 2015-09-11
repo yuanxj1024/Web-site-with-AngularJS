@@ -20,6 +20,7 @@ var WeMedia;
             $scope.editItem = angular.bind(this, this.editItem);
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.getStatus = angular.bind(this, this.getStatus);
+            $scope.currentMediaType = $stateParams.mediaType * 1;
             this.init();
             this.refresh();
         }
@@ -48,6 +49,13 @@ var WeMedia;
             }, '取消预约', ['确定', '取消']);
         };
         PrecontractList.prototype.editItem = function (id) {
+            console.log(id);
+            var stats = {
+                2: 'advertiser.wechatprecontract',
+                3: 'advertiser.weiboprecontract',
+                4: 'advertiser.friendsprecontract'
+            };
+            this.$state.go(stats[this.$scope.currentMediaType], { editID: id });
         };
         PrecontractList.prototype.pageChanged = function (index) {
             this.$scope.currentPageIndex = index;

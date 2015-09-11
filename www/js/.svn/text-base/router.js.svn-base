@@ -87,7 +87,8 @@ var WeMedia;
             'url': '/wechatprecontract',
             'params': {
                 'mediaType': '2',
-                'isEdit': 0
+                'isEdit': 0,
+                'editID': 0
             },
             'views': {
                 'advertiser': {
@@ -98,7 +99,8 @@ var WeMedia;
             'url': '/weiboprecontract',
             'params': {
                 'mediaType': '3',
-                'isEdit': 0
+                'isEdit': 0,
+                'editID': 0
             },
             'views': {
                 'advertiser': {
@@ -109,7 +111,8 @@ var WeMedia;
             'url': '/friendsprecontract',
             'params': {
                 'mediaType': '4',
-                'isEdit': 0
+                'isEdit': 0,
+                'editID': 0
             },
             'views': {
                 'advertiser': {
@@ -251,7 +254,12 @@ var WeMedia;
             },
             'templateUrl': './page/precontract.html'
         });
-        $urlRouterProvider.otherwise('/advertiser/dashboard');
+        if (window.location.href.indexOf('advertiser') > 0) {
+            $urlRouterProvider.otherwise('/advertiser/dashboard');
+        }
+        else {
+            $urlRouterProvider.otherwise('/advertiser/dashboard');
+        }
     });
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=router.js.map

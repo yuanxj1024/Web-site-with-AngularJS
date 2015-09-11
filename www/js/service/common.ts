@@ -23,7 +23,7 @@ module WeMedia {
             public $resource: ng.resource.IResourceService
         ) {
 
-            this.noticeResource = $resource('/API/Notice', {action: '@action'},{
+            this.noticeResource = $resource('/API/Notice/:action', {action: '@action'},{
                 list: {
                     method: 'GET',
                     accessToken: true,

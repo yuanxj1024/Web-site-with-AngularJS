@@ -92,6 +92,30 @@ var WeMedia;
             });
             return deferred.promise;
         };
+        Order.prototype.cancel = function (id) {
+            var deferred = this.$q.defer();
+            this.orderResource.cancel({ id: id }, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Order.prototype.detail = function (id) {
+            var deferred = this.$q.defer();
+            this.orderResource.detail({ id: id }, null, function (result) {
+                if (typeof result == 'string') {
+                    result.JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
         return Order;
     })();
     Order.$inject = ['$rootScope', '$q', '$resource'];

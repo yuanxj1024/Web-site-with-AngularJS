@@ -115,6 +115,32 @@ module WeMedia {
             });
             return deferred.promise;
         }
+        cancel(id:any): ng.IPromise<any> {
+            var deferred = this.$q.defer();
+
+            this.orderResource.cancel({id: id}, null ,function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            },function(err){
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+        detail(id:number): ng.IPromise<any> {
+            var deferred = this.$q.defer();
+            this.orderResource.detail({id: id} ,null, function(result){
+                if(typeof result == 'string'){
+                    result.JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
     }
 
     Order.$inject = ['$rootScope', '$q','$resource'];
