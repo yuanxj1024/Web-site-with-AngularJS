@@ -1,0 +1,232 @@
+@import "flex";
+
+$star-page-width: 665px;
+
+.star-wrap {
+  background-color: $main-bg-color;
+  padding: 0;
+  .search-wrap {
+    width: 665px;
+    background-color: #fff;
+    padding: 16px;
+  }
+  .search-input {
+    .search-left {
+      .btn {
+        background-color: $main-there-color;
+        color: #fff;
+      }
+
+    }
+    .search-right {
+      .btn{
+        background-color: #666666;
+        color: #fff;
+        text-indent: 8px;
+        letter-spacing: 8px;
+      }
+
+    }
+
+  }
+  .search-arg-wrap {
+    .table-arg{
+      tr{
+        td {
+          &:first-child {
+            background-color: $main-bg-light-color;
+            text-align: right;
+          }
+          a{
+            padding: 3px;
+            margin-right: 8px;
+            color: $main-font-color;
+            &:hover,&:visited,&:focus {
+              text-decoration: none;
+            }
+            &.active {
+              border:solid 1px $main-there-color;
+              color: $main-there-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .data-header {
+    width: $star-page-width;
+    margin-top: 16px;
+    padding: 16px;
+    background-color: #fff;
+    .split {
+      margin:0 16px;
+    }
+    span{
+      cursor: pointer;
+    }
+    .active {
+      color: black;
+      font-weight: 800;
+    }
+  }
+
+  .data-wrap {
+    margin-top: 8px;
+    width: $star-page-width;
+    .item{
+      @include flexbox;
+      @include justify-content(space-between);
+      padding: 16px;
+      margin-bottom: 10px;
+      background-color: #fff;
+      .img{
+        @include flex(0,0,auto);
+        .user-img{
+          display: inline-block;
+          width: 50px;
+          height: 50px;
+          margin-top: 16px;
+          -o-border-radius: 50%;
+          border-radius: 50%;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+      }
+      .info-wrap {
+        @include flex(1,1,auto);
+        @include flexbox;
+        @include flex-direction(column);
+        @include justify-content(space-between);
+        margin: 0 16px;
+        .name-wrap {
+          @include flex(0,0,auto);
+          h3{
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            font-weight: 800;
+          }
+          .icon-weixin {
+            display: inline-block;
+            margin:0 5px;
+            height: 18px;
+            width: 18px;
+            background-image: url(/img/weixin.jpg);
+            background-position: center;
+            -webkit-background-size: 18px;
+            background-size: 18px;
+          }
+          .icon-qr {
+            display: inline-block;
+            position: relative;
+            margin: 0 8px;
+            .qr-layer {
+              display: none;
+              position: absolute;
+              border:solid 1px gray;
+              width: 152px;
+              height: 152px;
+              left: -70px;
+              top:25px;
+              img{
+                width: 150px;
+                height: 150px;
+              }
+              &:before {
+                content: ' ';
+                background-color: #fff;
+                display: block;
+                height: 10px;
+                width: 10px;
+                position: absolute;
+                border:solid 1px gray;
+                -o-transform: rotate(45deg);
+                transform: rotate(45deg);
+                top: -6px;
+                left: 50%;
+                margin-left: -5px;
+                border-bottom: none;
+                border-right: none;
+              }
+            }
+            &:after{
+              position: absolute;
+              content: ' ';
+              top: -10px;
+              bottom: -10px;
+              left: -10px;
+              right: -10px;
+               display: block;
+             }
+            &:hover {
+             .qr-layer{
+               display: inline-block;
+             }
+            }
+          }
+        }
+        .info{
+          @include flex(1,1,auto);
+          margin: 16px 0;
+          height: 40px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          -o-text-overflow:ellipsis;
+          width: 100%;
+          text-overflow :ellipsis
+        }
+        .follower{
+          @include flex(0,0,auto);
+          margin-bottom: 5px;
+        }
+        .price-info {
+          @include flex(0,0,auto);
+          .price-txt {
+            display: inline-block;
+            width: 265px;
+            .price {
+              color: #FD9B27;
+            }
+          }
+          .user-tag {
+            display: inline-block;
+            width: 200px;
+            height: 16px;
+            overflow: hidden;
+          }
+
+        }
+      }
+      .ctrls {
+        @include flex(0,0,auto);
+        @include flexbox;
+        @include flex-flow(column wrap);
+        @include justify-content(flex-end);
+        div{
+          @include flex(0,0,auto);
+        }
+        .btn {
+          font-size: 12px;
+          text-align: center;
+          &.order{
+            color: #FD897C;
+            border: solid 1px #FD897C;
+            background-color: #fff;
+            margin-bottom: 6px;
+          }
+          &.favorite{
+            width: 74px;
+            border: solid 1px #FD897C;
+            background-color: #FD897C;
+            color: #fff;
+          }
+        }
+
+      }
+
+    }
+
+  }
+}

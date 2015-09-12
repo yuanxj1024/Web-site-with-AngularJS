@@ -1,19 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 42
-/svn/WeMedia/!svn/ver/185/FrontEnd/www/css
-END
-login.css
-K 25
-svn:wc:ra_dav:version-url
-V 52
-/svn/WeMedia/!svn/ver/144/FrontEnd/www/css/login.css
-END
-star.css
-K 25
-svn:wc:ra_dav:version-url
-V 50
-/svn/WeMedia/!svn/ver/67/FrontEnd/www/css/star.css
+/svn/WeMedia/!svn/ver/211/FrontEnd/www/css
 END
 wemedia.css
 K 25
@@ -21,39 +9,9 @@ svn:wc:ra_dav:version-url
 V 54
 /svn/WeMedia/!svn/ver/185/FrontEnd/www/css/wemedia.css
 END
-account.css
+login-origin.css
 K 25
 svn:wc:ra_dav:version-url
-V 54
-/svn/WeMedia/!svn/ver/108/FrontEnd/www/css/account.css
-END
-user.css
-K 25
-svn:wc:ra_dav:version-url
-V 50
-/svn/WeMedia/!svn/ver/77/FrontEnd/www/css/user.css
-END
-2.css
-K 25
-svn:wc:ra_dav:version-url
-V 47
-/svn/WeMedia/!svn/ver/67/FrontEnd/www/css/2.css
-END
-precontract.css
-K 25
-svn:wc:ra_dav:version-url
-V 57
-/svn/WeMedia/!svn/ver/23/FrontEnd/www/css/precontract.css
-END
-notification.css
-K 25
-svn:wc:ra_dav:version-url
-V 58
-/svn/WeMedia/!svn/ver/83/FrontEnd/www/css/notification.css
-END
-dashboard.css
-K 25
-svn:wc:ra_dav:version-url
-V 55
-/svn/WeMedia/!svn/ver/21/FrontEnd/www/css/dashboard.css
+V 59
+/svn/WeMedia/!svn/ver/211/FrontEnd/www/css/login-origin.css
 END
