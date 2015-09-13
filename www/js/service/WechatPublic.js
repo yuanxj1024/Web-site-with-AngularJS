@@ -81,4 +81,4 @@ var WeMedia;
     WechatPublic.$inject = ['$rootScope', '$q', '$resource'];
     WeMedia.ServiceModule.service('WechatPublicService', WechatPublic);
 })(WeMedia || (WeMedia = {}));
-//# sourceMappingURL=WechatPublic.js.map
+//# sourceMappingURL=WeChatPublic.js.map

@@ -114,7 +114,9 @@ $(document).ready(function () {
             alert(errMsg);
           }
           else if (res && res.Status > 0){
-            location.href = '/';
+            $('#reg-info').hide();
+            $('#reg-success').show();
+            //location.href = '/';
           }
         },
         error: function(err) {

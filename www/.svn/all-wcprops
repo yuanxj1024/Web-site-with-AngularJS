@@ -1,37 +1,25 @@
 K 25
 svn:wc:ra_dav:version-url
 V 38
-/svn/WeMedia/!svn/ver/216/FrontEnd/www
-END
-login-origin.html
-K 25
-svn:wc:ra_dav:version-url
-V 56
-/svn/WeMedia/!svn/ver/211/FrontEnd/www/login-origin.html
+/svn/WeMedia/!svn/ver/224/FrontEnd/www
 END
 admedialogin.html
 K 25
 svn:wc:ra_dav:version-url
 V 56
-/svn/WeMedia/!svn/ver/216/FrontEnd/www/admedialogin.html
-END
-reg.html
-K 25
-svn:wc:ra_dav:version-url
-V 47
-/svn/WeMedia/!svn/ver/215/FrontEnd/www/reg.html
+/svn/WeMedia/!svn/ver/226/FrontEnd/www/admedialogin.html
 END
 advertiserlogin.html
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/WeMedia/!svn/ver/215/FrontEnd/www/advertiserlogin.html
+/svn/WeMedia/!svn/ver/226/FrontEnd/www/advertiserlogin.html
 END
 register.html
 K 25
 svn:wc:ra_dav:version-url
 V 52
-/svn/WeMedia/!svn/ver/217/FrontEnd/www/register.html
+/svn/WeMedia/!svn/ver/226/FrontEnd/www/register.html
 END
 index.html
 K 25
@@ -39,21 +27,9 @@ svn:wc:ra_dav:version-url
 V 48
 /svn/WeMedia/!svn/ver/85/FrontEnd/www/index.html
 END
-login.html
-K 25
-svn:wc:ra_dav:version-url
-V 49
-/svn/WeMedia/!svn/ver/211/FrontEnd/www/login.html
-END
 home.html
 K 25
 svn:wc:ra_dav:version-url
 V 48
 /svn/WeMedia/!svn/ver/205/FrontEnd/www/home.html
-END
-register-origin.html
-K 25
-svn:wc:ra_dav:version-url
-V 59
-/svn/WeMedia/!svn/ver/215/FrontEnd/www/register-origin.html
 END

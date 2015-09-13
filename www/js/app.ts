@@ -97,7 +97,7 @@ module WeMedia {
                     });
                 }
             } else {
-                var url = window.location.origin + '/login.html';
+                var url = window.location.origin + '/advertiserlogin.html';
                 window.navigator.notification.alert('登陆信息已经过期，请重新登陆！', function(){
                     window.location.href = url;
                 });
