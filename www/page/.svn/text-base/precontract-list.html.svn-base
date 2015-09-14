@@ -12,7 +12,7 @@
     <ul class="nav nav-pills" ng-if="currentMediaType == 2">
       <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechat">公众号资源</a></li>
       <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">预约公众号资源活动</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weichatPreList">预约活动列表</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">预约活动列表</a></li>
     </ul>
     <ul class="nav nav-pills" ng-if="currentMediaType == 3">
       <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weibo">微博资源</a></li>
@@ -45,12 +45,15 @@
         </tr>
         <tr ng-repeat="item in dataList track by $index">
           <td>{{item.Title}}</td>
-          <td>{{item.FeedbackTime}}</td>
-          <td>{{item.StartTime}}</td>
-          <td>{{item.EndTime}}</td>
-          <td>{{item.AddTime}}</td>
+          <td>{{calcDate(item.FeedbackTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+          <td>{{calcDate(item.StartTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+          <td>{{calcDate(item.EndTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+          <td>{{calcDate(item.AddTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
           <td>{{getStatus(item.State)}}</td>
-          <td><a ng-click="editItem(item.ID||12)" href="javascript:;">修改</a>&nbsp;<a ng-click="removeItem(item.ID)" href="javascript:;">删除</a></td>
+          <td>
+            <!--<a ng-click="editItem(item.ID||12)" href="javascript:;">修改</a>&nbsp;-->
+            <a ng-click="removeItem(item.ID)" href="javascript:;">删除</a>
+          </td>
         </tr>
         <tr ng-if="dataList.length <=0">
           <td colspan="8" class="no-data">暂无数据</td>

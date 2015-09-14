@@ -92,9 +92,9 @@ module WeMedia {
 
         refresh(args = {}){
             var self = this;
-            this.$scope.dataList = [1];
+            this.$scope.dataList = [];
             args = angular.extend(args, {
-                page: self.$scope.currentPageIndex,
+                pageIndex: self.$scope.currentPageIndex,
                 pageSize: self.$scope.pageSize
             });
             this.OrderService.list(args).then(function(result){

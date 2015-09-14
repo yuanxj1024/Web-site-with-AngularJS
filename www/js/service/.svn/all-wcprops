@@ -1,13 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 49
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service
-END
-StarService.ts
-K 25
-svn:wc:ra_dav:version-url
-V 63
-/svn/WeMedia/!svn/ver/87/FrontEnd/www/js/service/StarService.ts
+/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/service
 END
 SearchTypes.ts
 K 25
@@ -15,41 +9,47 @@ svn:wc:ra_dav:version-url
 V 64
 /svn/WeMedia/!svn/ver/167/FrontEnd/www/js/service/SearchTypes.ts
 END
-modal.ts
+StarService.ts
 K 25
 svn:wc:ra_dav:version-url
-V 57
-/svn/WeMedia/!svn/ver/30/FrontEnd/www/js/service/modal.ts
+V 63
+/svn/WeMedia/!svn/ver/87/FrontEnd/www/js/service/StarService.ts
 END
 OrderService.ts
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/WeMedia/!svn/ver/208/FrontEnd/www/js/service/OrderService.ts
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/OrderService.ts
+END
+modal.ts
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/service/modal.ts
 END
 modal.js.map
 K 25
 svn:wc:ra_dav:version-url
-V 61
-/svn/WeMedia/!svn/ver/30/FrontEnd/www/js/service/modal.js.map
+V 62
+/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/service/modal.js.map
 END
 WechatPublic.js
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/WechatPublic.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/WechatPublic.js
 END
 BillService.ts
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/WeMedia/!svn/ver/205/FrontEnd/www/js/service/BillService.ts
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/BillService.ts
 END
 BillService.js.map
 K 25
 svn:wc:ra_dav:version-url
 V 68
-/svn/WeMedia/!svn/ver/129/FrontEnd/www/js/service/BillService.js.map
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/BillService.js.map
 END
 UserBill.js
 K 25
@@ -61,7 +61,7 @@ Region.js
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/Region.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/Region.js
 END
 WechatPublic.ts
 K 25
@@ -69,29 +69,29 @@ svn:wc:ra_dav:version-url
 V 65
 /svn/WeMedia/!svn/ver/167/FrontEnd/www/js/service/WechatPublic.ts
 END
-WeiboService.js
-K 25
-svn:wc:ra_dav:version-url
-V 65
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/WeiboService.js
-END
 WechatFriends.js
 K 25
 svn:wc:ra_dav:version-url
 V 66
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/WechatFriends.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/WechatFriends.js
+END
+WeiboService.js
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/WeiboService.js
 END
 common.js
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/WeMedia/!svn/ver/211/FrontEnd/www/js/service/common.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/common.js
 END
 SearchTypes.js
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/SearchTypes.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/SearchTypes.js
 END
 StarService.js
 K 25
@@ -109,13 +109,13 @@ modal.js
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/modal.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/modal.js
 END
 OrderService.js
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/WeMedia/!svn/ver/221/FrontEnd/www/js/service/OrderService.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/OrderService.js
 END
 Region.ts
 K 25
@@ -145,11 +145,11 @@ common.ts
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/WeMedia/!svn/ver/209/FrontEnd/www/js/service/common.ts
+/svn/WeMedia/!svn/ver/227/FrontEnd/www/js/service/common.ts
 END
 BillService.js
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/WeMedia/!svn/ver/209/FrontEnd/www/js/service/BillService.js
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/BillService.js
 END

@@ -9,13 +9,16 @@ var WeMedia;
 (function (WeMedia) {
     'use strict';
     var Dashboard = (function () {
-        function Dashboard($rootScope, $scope, CommonService, OrderService) {
+        function Dashboard($rootScope, $scope, CommonService, OrderService, $modal, ModalService) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.CommonService = CommonService;
             this.OrderService = OrderService;
+            this.$modal = $modal;
+            this.ModalService = ModalService;
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this, this.test);
+            $scope.openNotice = angular.bind(this, this.openNotice);
             $scope.noticeList = [];
             $scope.orderList = [];
             this.init();
@@ -56,9 +59,27 @@ var WeMedia;
                     return '审核通过';
             }
         };
+        Dashboard.prototype.openNotice = function (id) {
+            var self = this;
+            self.CommonService.noticeDetail(id).then(function (result) {
+                self.$scope.modalInstance = self.$modal.open({
+                    animation: true,
+                    templateUrl: 'myModalContent.html',
+                    controller: 'ModalCtrl',
+                    size: 'sm',
+                    resolve: {
+                        item: function () {
+                            return result.Data[0];
+                        }
+                    }
+                });
+                self.ModalService.currentModal = self.$scope.modalInstance;
+            }, function (err) {
+            });
+        };
         return Dashboard;
     })();
-    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService'];
+    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService'];
     WeMedia.ControllerModule.controller('DashboardCtrl', Dashboard);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=dashboard.js.map

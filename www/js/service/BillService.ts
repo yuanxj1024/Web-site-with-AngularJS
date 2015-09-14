@@ -47,13 +47,27 @@ module WeMedia {
 
         list(args:any): ng.IPromise<any> {
             var deferred = this.$q.defer();
-
+            this.billResource.list(args,null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
             return deferred.promise;
         }
 
         info(): ng.IPromise<any> {
             var deferred = this.$q.defer();
-
+            this.billResource.info(null,null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
             return deferred.promise;
         }
 

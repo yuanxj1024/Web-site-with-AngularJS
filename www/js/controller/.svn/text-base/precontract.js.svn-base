@@ -31,7 +31,6 @@ var WeMedia;
             $scope.deleteItem = angular.bind(this, this.deleteItem);
             $scope.clearItem = angular.bind(this, this.clearItem);
             $scope.currentMediaType = $stateParams.mediaType * 1;
-            console.log($stateParams);
             if (!$scope.currentMediaType) {
             }
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
@@ -65,7 +64,6 @@ var WeMedia;
         };
         PrecontractCtrl.prototype.pageChanged = function (index) {
             this.$scope.currentPageIndex = index;
-            console.log(this.$scope.currentPageIndex);
         };
         PrecontractCtrl.prototype.saveWechat = function ($valid) {
             var self = this;
@@ -80,8 +78,6 @@ var WeMedia;
                 });
                 this.$scope.wechatForm.items = ids.join('#');
                 this.$scope.wechatForm.Advertiser_ID = this.$rootScope.user.ID;
-                console.log('form:');
-                console.log(this.$scope.wechatForm);
                 this.OrderService.save(this.$scope.wechatForm).then(function (result) {
                     if (result && result.Status == 1) {
                         window.navigator.notification.alert('数据保存成功!', function () {
@@ -102,13 +98,13 @@ var WeMedia;
                 case 1:
                     break;
                 case 2:
-                    name = 'advertiser.weiboprecontract';
+                    name = 'advertiser.wechat';
                     break;
                 case 3:
-                    name = 'advertiser.friendsprecontract';
+                    name = 'advertiser.weibo';
                     break;
                 case 4:
-                    name = 'advertiser.precontractList';
+                    name = 'advertiser.friends';
                     break;
             }
             if (name) {
@@ -150,7 +146,6 @@ var WeMedia;
                 }
             });
             modalInstance.result.then(function (items) {
-                console.log(items);
                 if (items && items.length > 0) {
                     self.$scope.selectedList = self.$scope.selectedList.concat(items);
                     self.calcInfo();
@@ -255,7 +250,8 @@ var WeMedia;
             var self = this;
             var arg = {
                 pageSize: 10,
-                page: self.$scope.currentPageIndex
+                page: self.$scope.currentPageIndex,
+                isEnable: 1
             };
             var callbackObj = {
                 2: function () {

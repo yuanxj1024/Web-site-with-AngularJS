@@ -7,18 +7,20 @@ var WeMedia;
 (function (WeMedia) {
     'use strict';
     var Modal = (function () {
-        function Modal($scope, ModalService) {
+        function Modal($scope, ModalService, item) {
             this.$scope = $scope;
             this.ModalService = ModalService;
+            this.item = item;
             $scope.close = angular.bind(this, this.close);
             $scope.modalURL = ModalService.modalURL;
+            $scope.item = item;
         }
         Modal.prototype.close = function () {
             this.ModalService.currentModal.close();
         };
         return Modal;
     })();
-    Modal.$inject = ['$scope', 'ModalService'];
+    Modal.$inject = ['$scope', 'ModalService', 'item'];
     WeMedia.ControllerModule.controller('ModalCtrl', Modal);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=modal.js.map

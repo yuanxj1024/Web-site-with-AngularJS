@@ -24,7 +24,7 @@
         <div class="msg-header">公告</div>
         <div class="msg-body">
           <div class="item" ng-repeat="item in noticeList track by $index">
-            <a href="/">{{item.Title}}</a><span>{{calcDate(item.AddTime) | date : 'yyyy-MM-dd'}}</span>
+            <a ng-click="openNotice(item.ID)" href="javascript:;">{{item.Title}}</a><span>{{calcDate(item.AddTime) | date : 'yyyy-MM-dd'}}</span>
           </div>
           <div class="item" ng-if="noticeList.length<= 0">暂无公告</div>
         </div>
@@ -161,3 +161,16 @@
     </div>
   </div>
 </div>
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-header">
+    <h3 class="modal-title">公告详情</h3>
+  </div>
+  <div class="modal-body">
+    <p>
+      {{item.Intro}}
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="close()">关闭</button>
+  </div>
+</script>

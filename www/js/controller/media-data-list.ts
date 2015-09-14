@@ -92,9 +92,7 @@ module WeMedia {
             $scope.currentPage = 1;
 
             this.init();
-
             //this.refresh();
-
         } //end constructor
 
         init() {
@@ -286,7 +284,8 @@ module WeMedia {
                 page: this.$scope.currentPage,
                 pageSize: this.$scope.pageSize,
                 fansNumber: this.$scope.selected.fansNumber?this.$scope.selected.fansNumber.ID : 0,
-                price:  this.$scope.selected.price ?this.$scope.selected.price.ID : 0
+                price:  this.$scope.selected.price ?this.$scope.selected.price.ID : 0,
+                isEnable: 1
             };
         }
     }

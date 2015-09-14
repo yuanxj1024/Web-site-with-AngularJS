@@ -1,34 +1,54 @@
 <div class="main-nav">
   <div ng-include="'./page/header.html'" ></div>
 </div>
-<div class="sub-header-wrap">
-  <div class="container center">
-    <ul class="nav nav-pills">
-      <li><a href="#">账户信息</a></li>
-      <li><a href="#">账户使用明细</a></li>
-    </ul>
-  </div>
-</div>
-<div class="content-wrap container paddingTop">
-  <div class="border padding ">
-    <h4 class="page-title"><i class="glyphicon glyphicon-file"></i>账单详情</h4>
-    <div class="bill-info-wrap">
-      基本信息
+<div class="container marginTop user-center" ng-controller="UserCenterCtrl">
+  <div class="line-wrap">
+    <div class="header-tab marginLeft">
+      <h4>帐户信息</h4>
     </div>
-    <div class="bill-list-wrap">
-      <table class="table">
+    <div class="bill-wrap padding">
+      <table class="table table-hover">
         <tr>
-          <td>abd1</td>
-          <td>abd2</td>
-          <td>abd3</td>
+          <th>公司名称</th>
+          <th>联系人</th>
+          <th>余额</th>
+          <th>冻结资金</th>
+          <th>可用资金</th>
         </tr>
         <tr>
-          <td>abd1</td>
-          <td>abd2</td>
-          <td>abd3</td>
+          <td>{{user.Company}}</td>
+          <td>{{user.LinkName}}</td>
+          <td>{{user.TotalAmount | currency: '￥'}}</td>
+          <td>{{user.AmountFrozen | currency: '￥'}}</td>
+          <td>{{user.AvailableBanance | currency: '￥'}}</td>
         </tr>
       </table>
-      
     </div>
+    <div class="header-tab marginLeft">
+      <h4>账单明细</h4>
+    </div>
+    <div class="search-wrap form-inline padding">
+      <label>起止时间</label> <input type="text" class="form-control"/> - <input type="text" class="form-control"/>
+      <button class="btn btn-info">查询</button>
+    </div>
+    <div class="padding">
+      <table class="table table-hover">
+        <tr>
+          <th>订单号</th>
+          <th>日期</th>
+          <th>活动名称</th>
+          <!--<th>提交</th>-->
+          <th>资源名</th>
+          <th>类型</th>
+          <th>金额</th>
+          <th>可用金额</th>
+          <th>余额</th>
+        </tr>
+        <tr>
+          <td colspan="8" class="txt-center">暂无数据</td>
+        </tr>
+      </table>
+    </div>
+
   </div>
 </div>

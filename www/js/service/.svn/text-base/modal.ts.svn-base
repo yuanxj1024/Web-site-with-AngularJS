@@ -22,14 +22,10 @@ module WeMedia {
             public $modal: any
 
         ) {
-            console.log($modal);
 
         }
-
         open(size: string, url:string) :void {
-
             this.modalURL = url;
-
             this.currentModal = this.$modal.open({
                 animation: true,
                 templateUrl: './page/modal.html',
@@ -37,7 +33,6 @@ module WeMedia {
                 size: size
             });
         }
-
     }
 
     ModalService.$inject = ['$rootScope', '$modal'];

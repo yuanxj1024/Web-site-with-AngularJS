@@ -1,13 +1,13 @@
 K 25
 svn:wc:ra_dav:version-url
 V 38
-/svn/WeMedia/!svn/ver/224/FrontEnd/www
+/svn/WeMedia/!svn/ver/237/FrontEnd/www
 END
 admedialogin.html
 K 25
 svn:wc:ra_dav:version-url
 V 56
-/svn/WeMedia/!svn/ver/226/FrontEnd/www/admedialogin.html
+/svn/WeMedia/!svn/ver/229/FrontEnd/www/admedialogin.html
 END
 advertiserlogin.html
 K 25
@@ -19,7 +19,7 @@ register.html
 K 25
 svn:wc:ra_dav:version-url
 V 52
-/svn/WeMedia/!svn/ver/226/FrontEnd/www/register.html
+/svn/WeMedia/!svn/ver/230/FrontEnd/www/register.html
 END
 index.html
 K 25
@@ -31,5 +31,5 @@ home.html
 K 25
 svn:wc:ra_dav:version-url
 V 48
-/svn/WeMedia/!svn/ver/205/FrontEnd/www/home.html
+/svn/WeMedia/!svn/ver/238/FrontEnd/www/home.html
 END

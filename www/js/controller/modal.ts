@@ -11,15 +11,18 @@ module  WeMedia {
     interface IModalScope extends ng.IScope {
         close: Function;
         modalURL:string;
+        item: any;
     }
 
     class Modal {
         constructor(
             public $scope: IModalScope,
-            public ModalService: IModalService
+            public ModalService: IModalService,
+            public item: any
         ) {
             $scope.close = angular.bind(this, this.close);
             $scope.modalURL = ModalService.modalURL;
+            $scope.item = item;
 
         }
 
@@ -28,6 +31,6 @@ module  WeMedia {
         }
     }
 
-    Modal.$inject = ['$scope','ModalService'];
+    Modal.$inject = ['$scope','ModalService', 'item'];
     ControllerModule.controller('ModalCtrl', Modal);
 }

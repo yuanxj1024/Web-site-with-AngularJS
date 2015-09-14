@@ -9,6 +9,8 @@ module WeMedia {
     export interface ICommonService {
         noticeList(arg:any): ng.IPromise<any>;
 
+        noticeDetail(id: number): ng.IPromise<any>;
+
     }
 
     export interface ICommonResource extends ng.resource.IResourceClass<ng.resource.IResource<any>> {
@@ -31,7 +33,16 @@ module WeMedia {
                     params: {
                         action: 'list'
                     }
+                },
+                detail: {
+                    method: 'GET',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        action: 'detail'
+                    }
                 }
+
             });
 
 
@@ -48,6 +59,21 @@ module WeMedia {
                 deferred.reject(err);
             });
 
+            return deferred.promise;
+        }
+
+        noticeDetail(id: number): ng.IPromise<any> {
+            var deferred = this.$q.defer();
+            this.noticeResource.detail({
+                id: id
+            } ,null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
             return deferred.promise;
         }
     }

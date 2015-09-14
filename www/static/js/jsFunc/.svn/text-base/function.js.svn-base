@@ -101,7 +101,7 @@ $(document).ready(function () {
         url: '/API/User/register',
         method: 'POST',
         data: {
-          role: $('[name="role"]').val(),
+          role: $('[name="role"]:checked').val(),
           mobile: $('#loginName').val(),
           password: $('#mobileCode').val()
         },

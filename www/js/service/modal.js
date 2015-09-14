@@ -10,7 +10,6 @@ var WeMedia;
         function ModalService($rootScope, $modal) {
             this.$rootScope = $rootScope;
             this.$modal = $modal;
-            console.log($modal);
         }
         ModalService.prototype.open = function (size, url) {
             this.modalURL = url;

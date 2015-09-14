@@ -15,6 +15,9 @@ module WeMedia {
         noticeList: Array<any>;
         orderList: Array<any>;
         getStatus: Function;
+
+        openNotice: Function;
+        modalInstance: any;
     }
 
     class Dashboard {
@@ -22,10 +25,13 @@ module WeMedia {
             public $rootScope: IWMRootScope,
             public $scope: IDashboardScope,
             public CommonService: ICommonService,
-            public OrderService: IOrderService
+            public OrderService: IOrderService,
+            public $modal: any,
+            public ModalService: any
         ) {
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this,this.test);
+            $scope.openNotice = angular.bind(this,this.openNotice);
 
             $scope.noticeList = [];
             $scope.orderList = [];
@@ -73,10 +79,29 @@ module WeMedia {
                     return '审核通过';
             }
         }
+        openNotice(id){
+            var self = this;
+            self.CommonService.noticeDetail(id).then(function(result){
+                self.$scope.modalInstance = self.$modal.open({
+                    animation: true,
+                    templateUrl: 'myModalContent.html',
+                    controller: 'ModalCtrl',
+                    size: 'sm',
+                    resolve: {
+                        item: function () {
+                            return result.Data[0];
+                        }
+                    }
+                });
+                self.ModalService.currentModal = self.$scope.modalInstance;
 
+            }, function(err){
+
+            });
+        }
     }
 
-    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService'];
+    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService'];
     ControllerModule.controller('DashboardCtrl', Dashboard);
 
 }

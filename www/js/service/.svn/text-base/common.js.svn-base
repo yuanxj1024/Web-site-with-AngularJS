@@ -18,12 +18,34 @@ var WeMedia;
                     params: {
                         action: 'list'
                     }
+                },
+                detail: {
+                    method: 'GET',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        action: 'detail'
+                    }
                 }
             });
         }
         Common.prototype.noticeList = function (arg) {
             var deferred = this.$q.defer();
             this.noticeResource.list(arg, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Common.prototype.noticeDetail = function (id) {
+            var deferred = this.$q.defer();
+            this.noticeResource.detail({
+                id: id
+            }, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }
