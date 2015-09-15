@@ -9,18 +9,18 @@
     <div class="bill-wrap padding">
       <table class="table table-hover">
         <tr>
-          <th>公司名称</th>
-          <th>联系人</th>
-          <th>余额</th>
+          <th>账户名</th>
+          <!--<th>账号类型</th>-->
+          <th>卡号</th>
           <th>冻结资金</th>
           <th>可用资金</th>
         </tr>
         <tr>
-          <td>{{user.Company}}</td>
-          <td>{{user.LinkName}}</td>
-          <td>{{user.TotalAmount | currency: '￥'}}</td>
-          <td>{{user.AmountFrozen | currency: '￥'}}</td>
-          <td>{{user.AvailableBanance | currency: '￥'}}</td>
+          <td>{{user.Mobile}}</td>
+          <!--<td>{{user.LinkName}}</td>-->
+          <td>{{user.TotalAmount||0 | currency: '￥'}}</td>
+          <td>{{user.AmountFrozen||0 | currency: '￥'}}</td>
+          <td>{{user.AvailableBanance||0 | currency: '￥'}}</td>
         </tr>
       </table>
     </div>

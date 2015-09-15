@@ -179,6 +179,16 @@ var WeMedia;
                     'templateUrl': './page/advertiser/bill.html'
                 }
             }
+        }).state('advertiser.recharge', {
+            'url': '/recharge',
+            'params': {
+                'mediaType': ''
+            },
+            'views': {
+                'advertiser': {
+                    'templateUrl': './page/advertiser/recharge.html'
+                }
+            }
         }).state('admedia', {
             'url': '/admedia',
             'abstract': true,

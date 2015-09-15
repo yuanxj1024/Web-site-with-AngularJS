@@ -195,6 +195,7 @@
           <tr>
             <th>&nbsp;</th>
             <th>账户名</th>
+            <th>类型</th>
             <th>粉丝量</th>
             <th>性别</th>
             <th>硬广直发价</th>
@@ -214,6 +215,7 @@
                 <p class="media-name"><a href="{{item.WeiBoURL}}">{{item.NickName}}</a></p>
               </div>
             </td>
+            <td>{{item.ClassName}}</td>
             <td>
               {{item.FansNumber}}
             </td>
@@ -225,7 +227,7 @@
             <td><a href="#">详情</a></td>
           </tr>
           <tr ng-if="list.length <= 0|| totalItems<=0">
-            <td colspan="9">
+            <td colspan="10">
               暂无数据。
             </td>
           </tr>
@@ -237,6 +239,7 @@
           <tr>
             <th>&nbsp;</th>
             <th>账号</th>
+            <th>类别</th>
             <th>所在地</th>
             <th>性别</th>
             <th>好友数</th>
@@ -256,6 +259,7 @@
                 <p>微信号:{{item.WX.slice(0,2) + '****'}}</p>
               </div>
             </td>
+            <td>{{item.ClassName}}</td>
             <td>{{item.ProvinceName}},{{item.CityName}}</td>
             <td>{{item.sex == 1 ? '男': '女'}}</td>
             <td>{{item.FriendNumber}}</td>
@@ -266,7 +270,7 @@
             <td><a href="#">详情</a></td>
           </tr>
           <tr ng-if="list.length <= 0|| totalItems<=0">
-            <td colspan="8">
+            <td colspan="9">
               暂无数据。
             </td>
           </tr>

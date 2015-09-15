@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 63
-/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/controller/advertiser
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/controller/advertiser
 END
 user-center.ts
 K 25
@@ -9,11 +9,11 @@ svn:wc:ra_dav:version-url
 V 78
 /svn/WeMedia/!svn/ver/149/FrontEnd/www/js/controller/advertiser/user-center.ts
 END
-dashboard.js
+precontract-list.ts
 K 25
 svn:wc:ra_dav:version-url
-V 76
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/controller/advertiser/dashboard.js
+V 83
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/controller/advertiser/precontract-list.ts
 END
 wechat-precontract.ts
 K 25
@@ -21,17 +21,11 @@ svn:wc:ra_dav:version-url
 V 85
 /svn/WeMedia/!svn/ver/169/FrontEnd/www/js/controller/advertiser/wechat-precontract.ts
 END
-precontract-list.ts
+precontract-list.js.map
 K 25
 svn:wc:ra_dav:version-url
-V 83
-/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/controller/advertiser/precontract-list.ts
-END
-star.js
-K 25
-svn:wc:ra_dav:version-url
-V 71
-/svn/WeMedia/!svn/ver/109/FrontEnd/www/js/controller/advertiser/star.js
+V 87
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/controller/advertiser/precontract-list.js.map
 END
 wechat-precontract.js.map
 K 25
@@ -39,17 +33,47 @@ svn:wc:ra_dav:version-url
 V 89
 /svn/WeMedia/!svn/ver/169/FrontEnd/www/js/controller/advertiser/wechat-precontract.js.map
 END
-precontract-list.js.map
+star.js
 K 25
 svn:wc:ra_dav:version-url
-V 87
-/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/controller/advertiser/precontract-list.js.map
+V 71
+/svn/WeMedia/!svn/ver/109/FrontEnd/www/js/controller/advertiser/star.js
+END
+bill.js
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/WeMedia/!svn/ver/247/FrontEnd/www/js/controller/advertiser/bill.js
+END
+star.ts
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/WeMedia/!svn/ver/87/FrontEnd/www/js/controller/advertiser/star.ts
+END
+dashboard.js
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/controller/advertiser/dashboard.js
+END
+bill.ts
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/WeMedia/!svn/ver/240/FrontEnd/www/js/controller/advertiser/bill.ts
 END
 user-center.js
 K 25
 svn:wc:ra_dav:version-url
 V 78
-/svn/WeMedia/!svn/ver/209/FrontEnd/www/js/controller/advertiser/user-center.js
+/svn/WeMedia/!svn/ver/240/FrontEnd/www/js/controller/advertiser/user-center.js
+END
+precontract-list.js
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/controller/advertiser/precontract-list.js
 END
 wechat-precontract.js
 K 25
@@ -57,21 +81,15 @@ svn:wc:ra_dav:version-url
 V 85
 /svn/WeMedia/!svn/ver/179/FrontEnd/www/js/controller/advertiser/wechat-precontract.js
 END
-precontract-list.js
+bill.js.map
 K 25
 svn:wc:ra_dav:version-url
-V 83
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/controller/advertiser/precontract-list.js
+V 75
+/svn/WeMedia/!svn/ver/240/FrontEnd/www/js/controller/advertiser/bill.js.map
 END
 dashboard.ts
 K 25
 svn:wc:ra_dav:version-url
 V 76
-/svn/WeMedia/!svn/ver/229/FrontEnd/www/js/controller/advertiser/dashboard.ts
-END
-star.ts
-K 25
-svn:wc:ra_dav:version-url
-V 70
-/svn/WeMedia/!svn/ver/87/FrontEnd/www/js/controller/advertiser/star.ts
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/controller/advertiser/dashboard.ts
 END

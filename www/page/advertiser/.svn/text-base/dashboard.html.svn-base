@@ -6,7 +6,7 @@
     <div class="top">
       <div class="account">
         <div>余额:</div>
-        <div><span class="money">{{user.AvailableBalance || 1980 | currency:''}}</span>元</div>
+        <div><span class="money">{{user.AvailableBalance || 0 | currency:''}}</span>元</div>
         <div>
           <a ng-click="test()" href="#" class="btn btn-primary center">充值</a>
         </div>
@@ -14,10 +14,10 @@
       <div class="order-info">
         <div class="item">
           <span>总订单数:</span>
-          <span class="right"><span class="money">0</span>单</span></div>
+          <span class="right"><span class="money">{{orderInfo.totalItems}}</span>单</span></div>
         <div class="item">
           <span>进行中的订单数:</span>
-          <span class="right"><span class="money">2</span>单</span>
+          <span class="right"><span class="money">{{orderInfo.totalItems}}</span>单</span>
         </div>
       </div>
       <div class="message">
@@ -31,127 +31,51 @@
         <!--<a class="more" href="#">详情>></a>-->
       </div>
     </div>
-    <div class="body">
+    <div class="body" ng-controller="PrecontractListCtrl">
       <div class="header">活动列表</div>
-      <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-        <th>活动名称</th>
-        <th>平台</th>
-        <th>创建时间</th>
-        <th>预计推广开始时间</th>
-        <th>预计推广结束时间</th>
-        <th>状态</th>
-        <th>操作</th>
-        </tr>
-        </thead>
-        <tr ng-repeat="item in orderList track by $index">
-          <td>{{item.Title}}</td>
-          <td>微信</td>
-          <td>{{item.AddTime | date : 'yyyy-MM-dd'}}</td>
-          <td>{{item.StartTime | date: 'yyyy-MM-dd'}}</td>
-          <td>{{item.EndTime | date: 'yyyy-MM-dd'}}</td>
-          <td>{{getStatus(item.State)}}</td>
-          <td><a href="#">修改</a></td>
-        </tr>
-        <tr class="" ng-if="orderList.length <=0">
-          <td class="no-data" colspan="7">
-            暂无订单数据
-          </td>
-        </tr>
-      </table>
+        <table class="table table-striped table-hover">
+          <tr>
+            <th>活动名称</th>
+            <th>预约结果反馈时间</th>
+            <th>预计推广时间</th>
+            <th>推广结束时间</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+          <tr ng-repeat="item in dataList track by $index">
+            <td>{{item.Title}}</td>
+            <td>{{calcDate(item.FeedbackTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+            <td>{{calcDate(item.StartTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+            <td>{{calcDate(item.EndTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+            <td>{{calcDate(item.AddTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
+            <td>{{getStatus(item.State)}}</td>
+            <td>
+              <a ng-click="removeItem(item.ID)" href="javascript:;">删除</a>
+            </td>
+          </tr>
+          <tr ng-if="dataList.length <=0">
+            <td colspan="8" class="no-data">暂无数据</td>
+          </tr>
+        </table>
     </div>
     <div class="new-media-list-wrap">
       <div class="page-title">最新资源</div>
       <div class="new-media-list">
 
-        <div class="item">
-          <div class="header-img">
-            <img src="http://tp1.sinaimg.cn/1786572501/180/0/0" alt=""/>
+        <div class="item" ng-repeat="item in newList track by $index">
+          <div class
+                       ="header-img">
+            <img ng-src="{{window.location.origin + item.WeiBoImage}}" alt=""/>
           </div>
           <div class="media-info">
-            <div class="title info-item"><a href="#">环球高清影城</a>
+            <div class="title info-item"><a href="javascript:;">{{item.NickName}}</a>
               <span class="media-icon weibo"></span>
             </div>
-            <div class="info-item">地区：广东,广州</div>
-            <div class="info-item">粉丝：638306</div>
-            <div class="info-item detail-wrap">软广转发价:￥94
-              <span class="see-detail"><a href="#">查看</a></span>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="header-img">
-            <img src="http://tp1.sinaimg.cn/2458764680/180/0/0" alt=""/>
-          </div>
-          <div class="media-info">
-            <div class="title info-item"><a href="#">爱汽车的泡泡</a>
-              <span class="media-icon weibo"></span>
-            </div>
-            <div class="info-item">地区：辽宁,鞍山</div>
-            <div class="info-item">粉丝：151840</div>
-            <div class="info-item detail-wrap">软广转发价:￥78
-              <span class="see-detail"><a href="#">查看</a></span>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="header-img">
-            <img src="http://tp1.sinaimg.cn/3280582030/180/0/0" alt=""/>
-          </div>
-          <div class="media-info">
-            <div class="title info-item"><a href="#">IT数码总汇</a>
-              <span class="media-icon weibo"></span>
-            </div>
-            <div class="info-item">地区：辽宁,沈阳</div>
-            <div class="info-item">粉丝：503856</div>
-            <div class="info-item detail-wrap">软广转发价:￥165
-              <span class="see-detail"><a href="#">查看</a></span>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="header-img">
-            <img src="http://tp1.sinaimg.cn/1734049030/180/0/0" alt=""/>
-          </div>
-          <div class="media-info">
-            <div class="title info-item"><a href="#">千团网</a>
-              <span class="media-icon weibo"></span>
-            </div>
-            <div class="info-item">地区：北京,朝阳区</div>
-            <div class="info-item">粉丝：22732</div>
-            <div class="info-item detail-wrap">软广转发价:￥326
-              <span class="see-detail"><a href="#">查看</a></span>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="header-img">
-            <img src="http://tp1.sinaimg.cn/2471379627/180/0/0" alt=""/>
-          </div>
-          <div class="media-info">
-            <div class="title info-item"><a href="#">揭秘震惊事件</a>
-              <span class="media-icon weibo"></span>
-            </div>
-            <div class="info-item">地区：广东,广州</div>
-            <div class="info-item">粉丝：190000</div>
-            <div class="info-item detail-wrap">软广转发价:￥323
-              <span class="see-detail"><a href="#">查看</a></span>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="header-img">
-            <img src="http://tp1.sinaimg.cn/1709597893/180/0/0" alt=""/>
-          </div>
-          <div class="media-info">
-            <div class="title info-item"><a href="#">幽默搞笑视频精选</a>
-              <span class="media-icon weibo"></span>
-            </div>
-            <div class="info-item">地区：上海,黄浦区</div>
-            <div class="info-item">粉丝：3701779</div>
-            <div class="info-item detail-wrap">软广转发价:￥89
-              <span class="see-detail"><a href="#">查看</a></span>
+            <!--<div class="info-item">地区：广东,广州</div>-->
+            <div class="info-item">粉丝：{{item.FansNumber}}</div>
+            <div class="info-item detail-wrap">软广转发价:{{item.RGZhuanFaPrice | currency:'￥'}}
+              <span class="see-detail"><a href="javascript:;">查看</a></span>
             </div>
           </div>
         </div>

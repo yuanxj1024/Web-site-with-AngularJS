@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 39
-/svn/WeMedia/!svn/ver/185/FrontEnd/scss
+/svn/WeMedia/!svn/ver/240/FrontEnd/scss
 END
 notification.scss
 K 25
@@ -55,7 +55,7 @@ user.scss
 K 25
 svn:wc:ra_dav:version-url
 V 49
-/svn/WeMedia/!svn/ver/146/FrontEnd/scss/user.scss
+/svn/WeMedia/!svn/ver/240/FrontEnd/scss/user.scss
 END
 flex.scss
 K 25

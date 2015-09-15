@@ -1,7 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
 V 49
-/svn/WeMedia/!svn/ver/237/FrontEnd/www/js/service
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service
 END
 SearchTypes.ts
 K 25
@@ -37,7 +37,7 @@ WechatPublic.js
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/WechatPublic.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/WechatPublic.js
 END
 BillService.ts
 K 25
@@ -61,7 +61,7 @@ Region.js
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/Region.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/Region.js
 END
 WechatPublic.ts
 K 25
@@ -73,25 +73,25 @@ WechatFriends.js
 K 25
 svn:wc:ra_dav:version-url
 V 66
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/WechatFriends.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/WechatFriends.js
 END
 WeiboService.js
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/WeiboService.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/WeiboService.js
 END
 common.js
 K 25
 svn:wc:ra_dav:version-url
 V 59
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/common.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/common.js
 END
 SearchTypes.js
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/SearchTypes.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/SearchTypes.js
 END
 StarService.js
 K 25
@@ -109,13 +109,13 @@ modal.js
 K 25
 svn:wc:ra_dav:version-url
 V 58
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/modal.js
+/svn/WeMedia/!svn/ver/248/FrontEnd/www/js/service/modal.js
 END
 OrderService.js
 K 25
 svn:wc:ra_dav:version-url
 V 65
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/OrderService.js
+/svn/WeMedia/!svn/ver/247/FrontEnd/www/js/service/OrderService.js
 END
 Region.ts
 K 25
@@ -151,5 +151,5 @@ BillService.js
 K 25
 svn:wc:ra_dav:version-url
 V 64
-/svn/WeMedia/!svn/ver/238/FrontEnd/www/js/service/BillService.js
+/svn/WeMedia/!svn/ver/247/FrontEnd/www/js/service/BillService.js
 END

@@ -73,6 +73,10 @@ var WeMedia;
                 if (result && result.Data) {
                     self.$scope.dataList = result.Data || [];
                     self.$scope.totalItems = result.TotalItems || 0;
+                    self.$rootScope.$emit('event:refresh-order-info', {
+                        totalItems: result.TotalItems || 0,
+                        process: 0
+                    });
                 }
                 else {
                     self.$scope.totalItems = 0;

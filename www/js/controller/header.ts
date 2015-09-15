@@ -37,6 +37,7 @@ module WeMedia {
             $scope.precontract = angular.bind(this, this.precontract);
             $scope.stateName = $state.current.name;
             $scope.userName = $rootScope.user.UserName || $rootScope.user['Company'] ||$rootScope.user['Mobile'];
+            console.log('isadowner:'+ $rootScope.isAdOwner);
 
         }
 

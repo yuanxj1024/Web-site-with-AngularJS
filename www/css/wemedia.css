@@ -712,6 +712,9 @@ a {
     .user-center .line-wrap .form-wrap .settings .pwd-wrap {
       margin-bottom: 15px; }
 
+.page-inner-title {
+  display: inline-block; }
+
 .notify-over-layer {
   margin: 0;
   padding: 0;

@@ -6,7 +6,7 @@
     <div class="top">
       <div class="account">
         <div>总收益:</div>
-        <div><span class="money">{{user.AvailableBalance || 1980 | currency:''}}</span>元</div>
+        <div><span class="money">{{user.AvailableBalance || 0 | currency:''}}</span>元</div>
         <div>
           <span ng-click="test()" href="#" class="btn btn-info center">账单明细</span>
         </div>
@@ -24,9 +24,10 @@
         <div class="msg-header">公告</div>
         <div class="msg-body">
           <div class="item" ng-repeat="item in noticeList track by $index">
-            <a  ng-click="openNotice(item.ID)" href="javascript:;">{{item.Title}}</a><span>{{item.AddTime | date : 'yyyy-MM-dd'}}</span></div>
+            <a ng-click="openNotice(item.ID)" href="javascript:;">{{item.Title}}</a><span>{{calcDate(item.AddTime) | date : 'yyyy-MM-dd'}}</span>
+          </div>
+          <div class="item" ng-if="noticeList.length<= 0">暂无公告</div>
         </div>
-        <!--<a class="more" href="#">详情>></a>-->
       </div>
     </div>
     <div class="body">
@@ -65,7 +66,7 @@
         </tr>
       </table>
     </div>
-    <div class="new-media-list-wrap">
+    <div class="new-media-list-wrap ng-hide">
       <div class="page-title">最新资源</div>
       <div class="new-media-list">
 

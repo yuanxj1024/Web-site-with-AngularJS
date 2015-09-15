@@ -5,23 +5,35 @@
 /// <reference path="../../app.ts" />
 /// <reference path="../../service/common.ts" />
 /// <reference path="../../service/OrderService.ts" />
+/// <reference path="../../service/WeiboService.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
     var Dashboard = (function () {
-        function Dashboard($rootScope, $scope, CommonService, OrderService, $modal, ModalService) {
+        function Dashboard($rootScope, $scope, CommonService, OrderService, $modal, ModalService, WeiboService) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.CommonService = CommonService;
             this.OrderService = OrderService;
             this.$modal = $modal;
             this.ModalService = ModalService;
+            this.WeiboService = WeiboService;
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this, this.test);
             $scope.openNotice = angular.bind(this, this.openNotice);
             $scope.noticeList = [];
             $scope.orderList = [];
+            $scope.orderInfo = {
+                totalItems: 0,
+                process: 0
+            };
             this.init();
+            $rootScope.$on('event:refresh-order-info', function (e, data) {
+                if (data) {
+                    $scope.orderInfo.totalItems = data.totalItems;
+                    $scope.orderInfo.process = data.process;
+                }
+            });
         }
         Dashboard.prototype.init = function () {
             var self = this;
@@ -39,6 +51,15 @@ var WeMedia;
                     self.$scope.orderList = result.Data;
                 }
             }, function (err) {
+            });
+            self.WeiboService.list({
+                pageSize: 6,
+                page: 1,
+                isEnable: 1
+            }).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.newList = result.Data || [];
+                }
             });
         };
         Dashboard.prototype.test = function () {
@@ -79,7 +100,7 @@ var WeMedia;
         };
         return Dashboard;
     })();
-    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService'];
+    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService', 'WeiboService'];
     WeMedia.ControllerModule.controller('DashboardCtrl', Dashboard);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=dashboard.js.map

@@ -5,6 +5,7 @@
 /// <reference path="../../app.ts" />
 /// <reference path="../../service/common.ts" />
 /// <reference path="../../service/OrderService.ts" />
+/// <reference path="../../service/WeiboService.ts" />
 module WeMedia {
     'use strict';
 
@@ -15,6 +16,9 @@ module WeMedia {
         noticeList: Array<any>;
         orderList: Array<any>;
         getStatus: Function;
+        orderInfo: any;
+
+        newList: any;
 
         openNotice: Function;
         modalInstance: any;
@@ -27,7 +31,8 @@ module WeMedia {
             public CommonService: ICommonService,
             public OrderService: IOrderService,
             public $modal: any,
-            public ModalService: any
+            public ModalService: any,
+            public WeiboService: any
         ) {
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this,this.test);
@@ -35,7 +40,19 @@ module WeMedia {
 
             $scope.noticeList = [];
             $scope.orderList = [];
+            $scope.orderInfo = {
+                totalItems: 0,
+                process: 0
+            };
             this.init();
+
+            $rootScope.$on('event:refresh-order-info', function(e,data){
+                if(data){
+                    $scope.orderInfo.totalItems = data.totalItems;
+                    $scope.orderInfo.process = data.process;
+                }
+
+            });
 
         }
         init() {
@@ -56,6 +73,16 @@ module WeMedia {
                     self.$scope.orderList = result.Data;
                 }
             }, function(err){
+            });
+
+            self.WeiboService.list({
+                pageSize: 6,
+                page:1 ,
+                isEnable: 1
+            }).then(function(result){
+                if(result && result.Data){
+                    self.$scope.newList = result.Data || [];
+                }
             });
 
         }
@@ -101,7 +128,7 @@ module WeMedia {
         }
     }
 
-    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService'];
+    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService', 'WeiboService'];
     ControllerModule.controller('DashboardCtrl', Dashboard);
 
 }

@@ -12,11 +12,13 @@
     </div>
   </div>
   <div class="header-wrap">
-  <div class="container header-nav main-width" ng-class="{true:'dashboard-width'}[stateName == 'advertiser.dashboard']">
+  <div class="container header-nav main-width" ng-class="{true:'dashboard-width'}[stateName == 'advertiser.dashboard'|| stateName =='admedia.dashboard' ]">
     <div class="collapse navbar-collapse">
       <!-- 广告主-->
       <ul ng-if="isAdOwner" class="nav navbar-nav">
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">我的推特</a></li>
+        <li ui-sref-active="active">
+          <a href="#" ui-sref="advertiser.dashboard">我的推特</a>
+        </li>
         <!--<li ui-sref-active="active">-->
           <!--<a ui-sref="advertiser.star" href="#" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">明星 </a>j-->
         <!--</li>-->
@@ -35,11 +37,13 @@
         <li ui-sref-active="active">
           <a  ui-sref="advertiser.user" href="#"  role="button" aria-haspopup="true" aria-expanded="false">用户中心</a>
         </li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">帮助中心</a></li>
+        <li><a href="#">帮助中心</a></li>
       </ul>
       <!-- 自媒体-->
       <ul ng-if="!isAdOwner" class="nav navbar-nav">
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">我的推特</a></li>
+        <li ui-sref-active="active">
+          <a href="#" ui-sref="admedia.dashboard">我的推特</a>
+        </li>
         <li ui-sref-active="active">
           <a ui-sref="admedia.account.wechat" href="#" role="button" aria-haspopup="true" aria-expanded="false">账号管理 </a>
         </li>
@@ -55,7 +59,7 @@
         <li ui-sref-active="active">
           <a ui-sref="advertiser.user" href="#"  role="button" aria-haspopup="true" aria-expanded="false">用户中心 </a>
         </li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.dashboard">帮助中心</a></li>
+        <li ui-sref-active="active"><a href="#">帮助中心</a></li>
       </ul>
     </div>
 

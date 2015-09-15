@@ -170,6 +170,7 @@ module WeMedia {
         refresh(state='', args={}) {
             var self = this;
             args = angular.extend({}, this.createSearchArg(),args);
+            console.log(args);
             var callbackObj = {
                 2: function(){
                     self.WechatPublicService.list(args).then(function(result){
@@ -285,7 +286,8 @@ module WeMedia {
                 pageSize: this.$scope.pageSize,
                 fansNumber: this.$scope.selected.fansNumber?this.$scope.selected.fansNumber.ID : 0,
                 price:  this.$scope.selected.price ?this.$scope.selected.price.ID : 0,
-                isEnable: 1
+                isEnable: 1,
+                ClassID: this.$scope.selected.common.ID || 0
             };
         }
     }

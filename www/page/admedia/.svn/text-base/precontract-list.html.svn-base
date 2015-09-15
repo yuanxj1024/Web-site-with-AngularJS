@@ -28,11 +28,11 @@
         </div>
         <div class="form-group">
           <label class="" for="exampleInputEmail3">资源名称：</label>
-          <input type="email" class="form-control input-sm" id="exampleInputEmail3" placeholder="账号名称">
+          <input type="email" class="form-control input-sm" id="exampleInputEmail3" placeholder="资源名称">
         </div>
         <div class="form-group">
           <label class="" for="exampleInputEmail3">预约名称：</label>
-          <input type="email" class="form-control input-sm" placeholder="账号名称">
+          <input type="email" class="form-control input-sm" placeholder="预约名称">
         </div>
         <!--<div class="form-group">-->
           <!--<label class="" for="exampleInputEmail3">起止时间：</label>-->
