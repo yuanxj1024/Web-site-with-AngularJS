@@ -1,72 +1,64 @@
 /**
- * Created by AaronYuan on 15/8/17.
+ * Created by AaronYuan on 9/19/15.
  */
 /// <reference path="../app.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
-    var Order = (function () {
-        function Order($rootScope, $q, $resource) {
+    var MediaAccount = (function () {
+        function MediaAccount($rootScope, $q, $resource) {
             this.$rootScope = $rootScope;
             this.$q = $q;
             this.$resource = $resource;
             this.selectedList = [];
-            this.orderResource = $resource('/API/OrderReservation/:action', {
+            this.accountResource = $resource('/API/MediaAccount/:action', {
                 'action': '@action'
             }, {
-                dashboard: {
-                    method: 'GET',
-                    accessToken: true,
-                    isArray: true,
-                    params: {
-                        'action': 'dashboard'
-                    }
-                },
-                saveOrder: {
-                    method: 'GET',
-                    accessToken: true,
-                    isArray: false,
-                    params: {
-                        'action': 'save'
-                    }
-                },
                 list: {
                     method: 'GET',
-                    accessToken: true,
                     isArray: false,
+                    needAccessToken: true,
                     params: {
                         'action': 'list'
                     }
                 },
-                cancel: {
+                saveData: {
                     method: 'POST',
-                    accessToken: true,
                     isArray: false,
+                    needAccessToken: true,
                     params: {
-                        'action': 'cancel'
+                        'action': 'add'
                     }
                 },
-                detail: {
-                    method: 'GET',
-                    accessToken: true,
+                updateStatus: {
+                    method: 'POST',
                     isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'status'
+                    }
+                },
+                oneItem: {
+                    method: 'GET',
+                    isArray: false,
+                    needAccessToken: true,
                     params: {
                         'action': 'detail'
                     }
                 },
-                myOrder: {
+                updateItem: {
                     method: 'GET',
-                    accessToken: true,
                     isArray: false,
+                    needAccessToken: true,
                     params: {
-                        'action': 'myOrderList'
+                        'action': 'update'
                     }
                 }
             });
         }
-        Order.prototype.dashboard = function () {
+        MediaAccount.prototype.list = function (args) {
             var deferred = this.$q.defer();
-            this.orderResource.dashboard(null, null, function (result) {
+            this.accountResource.list(args, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }
@@ -76,9 +68,9 @@ var WeMedia;
             });
             return deferred.promise;
         };
-        Order.prototype.save = function (arg) {
+        MediaAccount.prototype.save = function (model) {
             var deferred = this.$q.defer();
-            this.orderResource.saveOrder(arg, null, function (result) {
+            this.accountResource.saveData(model, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }
@@ -88,9 +80,9 @@ var WeMedia;
             });
             return deferred.promise;
         };
-        Order.prototype.list = function (arg) {
+        MediaAccount.prototype.updateStatus = function (args) {
             var deferred = this.$q.defer();
-            this.orderResource.list(arg, null, function (result) {
+            this.accountResource.updateStatus(args, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }
@@ -100,9 +92,9 @@ var WeMedia;
             });
             return deferred.promise;
         };
-        Order.prototype.cancel = function (id) {
+        MediaAccount.prototype.oneItem = function (id) {
             var deferred = this.$q.defer();
-            this.orderResource.cancel({ id: id }, null, function (result) {
+            this.accountResource.oneItem({ ID: id }, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }
@@ -112,11 +104,11 @@ var WeMedia;
             });
             return deferred.promise;
         };
-        Order.prototype.detail = function (id) {
+        MediaAccount.prototype.updateItem = function (model) {
             var deferred = this.$q.defer();
-            this.orderResource.detail({ id: id }, null, function (result) {
+            this.accountResource.updateItem(model, null, function (result) {
                 if (typeof result == 'string') {
-                    result.JSON.parse(result);
+                    result = JSON.parse(result);
                 }
                 deferred.resolve(result);
             }, function (err) {
@@ -124,21 +116,9 @@ var WeMedia;
             });
             return deferred.promise;
         };
-        Order.prototype.myOrderList = function (args) {
-            var deferred = this.$q.defer();
-            this.orderResource.myOrder(args, null, function (result) {
-                if (typeof result == 'string') {
-                    result.JSON.parse(result);
-                }
-                deferred.resolve(result);
-            }, function (err) {
-                deferred.reject(err);
-            });
-            return deferred.promise;
-        };
-        return Order;
+        return MediaAccount;
     })();
-    Order.$inject = ['$rootScope', '$q', '$resource'];
-    WeMedia.ServiceModule.service('OrderService', Order);
+    MediaAccount.$inject = ['$rootScope', '$q', '$resource'];
+    WeMedia.ServiceModule.service('MediaAccountService', MediaAccount);
 })(WeMedia || (WeMedia = {}));
-//# sourceMappingURL=OrderService.js.map
+//# sourceMappingURL=MediaAccount.js.map

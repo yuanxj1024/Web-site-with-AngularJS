@@ -125,10 +125,10 @@
                     <td>
                       {{item.NickName}}
                     </td>
-                    <td><p>{{item.SingleYing | currency: '￥'}}</p><p>{{item.SingleRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.MoreFirstYing | currency: '￥'}}</p><p>{{item.MoreFirstRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.MoreSecondYing | currency: '￥'}}</p><p>{{item.MoreSecondRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.MoreThreeYing | currency: '￥'}}</p><p>{{item.MoreThreeRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
                     <td><span ng-click="deleteItem(item.ID)" class="glyphicon glyphicon-remove"></span></td>
                   </tr>
                   <tr ng-if="selectedList.length <= 0">
@@ -145,12 +145,12 @@
                   <span><p>硬广:{{selectedTotalInfo.MoreFirstYing | currency: '￥'}}</p><p>软广:{{selectedTotalInfo.MoreFirstRuan | currency: '￥'}}</p></span>
                   <span><p>硬广:{{selectedTotalInfo.MoreSecondYing | currency: '￥'}}</p><p>软广:{{selectedTotalInfo.MoreSecondRuan | currency: '￥'}}</p></span>
                   <span><p>硬广:{{selectedTotalInfo.MoreThreeYing | currency: '￥'}}</p><p>软广:{{selectedTotalInfo.MoreThreeRuan | currency: '￥'}}</p></span>
-                  <span><a href="javascript:;">清空</a> </span>
+                  <!--<span><a href="javascript:;">清空</a> </span>-->
                 </div>
               </div>
 
               <!-- 微博-->
-              <div ng-if="currentMediaType == 3" class="selected-list">
+              <div ng-if="currentMediaType == 1" class="selected-list">
                 <table class="table table-striped table-hover">
                   <tr>
                     <th>账号</th>
@@ -164,10 +164,10 @@
                     <td>
                       {{item.NickName}}
                     </td>
-                    <td><p>{{item.SingleYing | currency: '￥'}}</p><p>{{item.SingleRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.MoreFirstYing | currency: '￥'}}</p><p>{{item.MoreFirstRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.MoreSecondYing | currency: '￥'}}</p><p>{{item.MoreSecondRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.MoreThreeYing | currency: '￥'}}</p><p>{{item.MoreThreeRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
                     <td><span class="glyphicon glyphicon-remove"></span></td>
                   </tr>
                   <tr ng-if="selectedList.length <= 0">
@@ -177,19 +177,19 @@
                   </tr>
                 </table>
               </div>
-              <div ng-if="currentMediaType == 3 && selectedList.length > 0" class="selected-result-info">
+              <div ng-if="currentMediaType == 1 && selectedList.length > 0" class="selected-result-info">
                 <div class="item">
                   <span><p>合计信息</p>{{selectedList.length}}项</span>
                   <span><p>硬直:{{selectedTotalInfo.YGZhiFaPrice | currency: '￥'}}</p></span>
                   <span><p>软直:{{selectedTotalInfo.YGZhuanFaPrice | currency: '￥'}}</p></span>
                   <span><p>硬转:{{selectedTotalInfo.RGZhiFaPrice | currency: '￥'}}</p></p></span>
                   <span><p>软转:{{selectedTotalInfo.RGZhuanFaPrice | currency: '￥'}}</p></span>
-                  <span><a href="javascript:;">清空</a> </span>
+                  <!--<span><a href="javascript:;">清空</a> </span>-->
                 </div>
               </div>
 
               <!-- 微信朋友圈-->
-              <div ng-if="currentMediaType == 4" class="selected-list">
+              <div ng-if="currentMediaType == 3" class="selected-list">
                 <table class="table table-striped table-hover">
                   <tr>
                     <th>微信昵称</th>
@@ -202,8 +202,8 @@
                     <td>
                       {{item.NickName}}
                     </td>
-                    <td>{{item.Price | currency: '￥'}}</td>
-                    <td>{{item.FriendNumber}}</td>
+                    <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
+                    <td>{{item.FansNumber}}</td>
                     <td>{{item.ProvinceName}},{{item.CityName}}</td>
                     <td><span class="glyphicon glyphicon-remove"></span></td>
                   </tr>
@@ -214,11 +214,11 @@
                   </tr>
                 </table>
               </div>
-              <div ng-if="currentMediaType == 4 && selectedList.length > 0" class="selected-result-info">
+              <div ng-if="currentMediaType == 3 && selectedList.length > 0" class="selected-result-info">
                 <div class="item">
                   <span><p>合计信息</p>{{selectedList.length}}项</span>
                   <span><p>总价:{{selectedTotalInfo.Price | currency: '￥'}}</p></span>
-                  <span><a href="javascript:;">清空</a> </span>
+                  <!--<span><a href="javascript:;">清空</a> </span>-->
                 </div>
               </div>
 
@@ -282,10 +282,10 @@
               <td>
                 {{item.NickName}}
               </td>
-              <td><p>{{item.SingleYing | currency: '￥'}}</p><p>{{item.SingleRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.MoreFirstYing | currency: '￥'}}</p><p>{{item.MoreFirstRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.MoreSecondYing | currency: '￥'}}</p><p>{{item.MoreSecondRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.MoreThreeYing | currency: '￥'}}</p><p>{{item.MoreThreeRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
               <td><span class="glyphicon glyphicon-remove"></span></td>
             </tr>
             <tr ng-if="selectedList.length <= 0">
@@ -295,7 +295,7 @@
             </tr>
           </table>
           <!-- 微博-->
-          <table  ng-if="mediaType == 3" class="table table-striped table-hover">
+          <table  ng-if="mediaType == 1" class="table table-striped table-hover">
             <tr>
               <th></th>
               <th>账号</th>
@@ -310,10 +310,10 @@
               <td>
                 {{item.NickName}}
               </td>
-              <td><p>{{item.SingleYing | currency: '￥'}}</p><p>{{item.SingleRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.MoreFirstYing | currency: '￥'}}</p><p>{{item.MoreFirstRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.MoreSecondYing | currency: '￥'}}</p><p>{{item.MoreSecondRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.MoreThreeYing | currency: '￥'}}</p><p>{{item.MoreThreeRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
               <td><span class="glyphicon glyphicon-remove"></span></td>
             </tr>
             <tr ng-if="selectedList.length <= 0">
@@ -323,7 +323,7 @@
             </tr>
           </table>
           <!-- 朋友圈-->
-          <table ng-if="mediaType == 4" class="table table-striped table-hover">
+          <table ng-if="mediaType == 3" class="table table-striped table-hover">
             <tr>
               <th></th>
               <th>微信昵称</th>
@@ -337,7 +337,7 @@
               <td>
                 {{item.NickName}}
               </td>
-              <td>{{item.Price | currency: '￥'}}</td>
+              <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
               <td>{{item.FansNumber}}</td>
               <td>{{item.ProvinceName}},{{item.CityName}}</td>
               <td><span class="glyphicon glyphicon-remove"></span></td>

@@ -8,19 +8,19 @@
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信账号</label>
             <div class="col-xs-4">
-              <input type="text" ng-required="true" class="form-control" placeholder="微信账号" ng-model="wechatForm.WX" >
+              <input type="text" ng-required="true" class="form-control" placeholder="微信账号" ng-model="accountForm.AccountName" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信昵称</label>
             <div class="col-xs-4">
-              <input type="text" ng-required="true" class="form-control" placeholder="" ng-model="wechatForm.NickName" >
+              <input type="text" ng-required="true" class="form-control" placeholder="" ng-model="accountForm.NickName" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信头像</label>
             <div class="col-xs-6">
-              <img class="upload-img" ng-src="{{wechatForm.WXImage}}" alt=""/>
+              <img class="upload-img" ng-src="{{accountForm.Image}}" alt=""/>
               <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file,'wx_head')" name="file" ngf-pattern="'image/*"
                       accept="image/*" ngf-max-size="10MB" ngf-min-height="100">选择文件</a>
               <!--<input class="col-xs-6" type="file" ng-required="true"><span class="btn btn-default">上传</span>-->
@@ -30,7 +30,7 @@
             <label class="col-xs-2 control-label"><span class="must-star">*</span>粉丝人数</label>
             <div class="col-xs-4">
               <div class="input-group">
-                <input type="number" ng-required="true" class="form-control" placeholder="" ng-model="wechatForm.FansNumber">
+                <input type="number" ng-required="true" class="form-control" placeholder="" ng-model="accountForm.FansNumber">
                 <div class="input-group-addon">人</div>
               </div>
             </div>
@@ -40,7 +40,7 @@
             <div class="col-xs-4">
               <div class="account-type-list row">
                 <div class="col-xs-3" ng-repeat="item in searchTypeData.common">
-                  <label class="radio-inline" ><input ng-model="wechatForm.ClassID" type="radio" ng-value="item" name="account-type"/>{{item.ClassName}}</label>
+                  <label class="radio-inline" ><input ng-model="accountForm.ClassID" type="radio" ng-value="item" name="account-type"/>{{item.ClassName}}</label>
                 </div>
               </div>
             </div>
@@ -48,14 +48,14 @@
           <!--<div class="form-group">-->
             <!--<label class="col-xs-2 control-label"><span class="must-star">*</span>所在行业</label>-->
             <!--<div class="col-xs-2">-->
-              <!--<select name="industry" ng-required="true" class="form-control" ng-options="item.ClassName for item in searchTypeData.industry" ng-model="wechatForm.ClassMediaFieldID">-->
+              <!--<select name="industry" ng-required="true" class="form-control" ng-options="item.ClassName for item in searchTypeData.industry" ng-model="accountForm.ClassMediaFieldID">-->
               <!--</select>-->
             <!--</div>-->
           <!--</div>-->
           <!--<div class="form-group">-->
             <!--<label class="col-xs-2 control-label"><span class="must-star">*</span>职业</label>-->
             <!--<div class="col-xs-2">-->
-              <!--<select name="profession" ng-required="true" class="form-control" ng-options="item.ClassName for item in searchTypeData.employment" ng-model="wechatForm.ClassProfessionID">-->
+              <!--<select name="profession" ng-required="true" class="form-control" ng-options="item.ClassName for item in searchTypeData.employment" ng-model="accountForm.ClassProfessionID">-->
               <!--</select>-->
             <!--</div>-->
           <!--</div>-->
@@ -64,13 +64,13 @@
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">硬广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="wechatForm.SingleYing" >
+                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="accountForm.SingleYing" >
               </div>
             </div>
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">软广</div>
-                <input type="number" ng-required="true" class="form-control"  placeholder="0" ng-model="wechatForm.SingleRuan">
+                <input type="number" ng-required="true" class="form-control"  placeholder="0" ng-model="accountForm.SingleRuan">
               </div>
             </div>
           </div>
@@ -79,13 +79,13 @@
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">硬广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0"   ng-model="wechatForm.MoreFirstYing">
+                <input type="number" ng-required="true" class="form-control" placeholder="0"   ng-model="accountForm.MoreFirstYing">
               </div>
             </div>
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">软广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0"  ng-model="wechatForm.MoreFirstRuan">
+                <input type="number" ng-required="true" class="form-control" placeholder="0"  ng-model="accountForm.MoreFirstRuan">
               </div>
             </div>
           </div>
@@ -94,13 +94,13 @@
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">硬广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0"   ng-model="wechatForm.MoreSecondYing">
+                <input type="number" ng-required="true" class="form-control" placeholder="0"   ng-model="accountForm.MoreSecondYing">
               </div>
             </div>
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">软广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0"   ng-model="wechatForm.MoreSecondRuan">
+                <input type="number" ng-required="true" class="form-control" placeholder="0"   ng-model="accountForm.MoreSecondRuan">
               </div>
             </div>
           </div>
@@ -109,20 +109,20 @@
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">硬广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0"  ng-model="wechatForm.MoreThreeYing">
+                <input type="number" ng-required="true" class="form-control" placeholder="0"  ng-model="accountForm.MoreThreeYing">
               </div>
             </div>
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">软广</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0"  ng-model="wechatForm.MoreThreeRuan">
+                <input type="number" ng-required="true" class="form-control" placeholder="0"  ng-model="accountForm.MoreThreeRuan">
               </div>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>账号介绍</label>
             <div class="col-xs-4">
-              <textarea name=""  cols="30" rows="5" class="form-control" ng-model="wechatForm.Intro"></textarea>
+              <textarea name=""  cols="30" rows="5" class="form-control" ng-model="accountForm.Intro"></textarea>
             </div>
           </div>
           <div class="form-group">
@@ -135,23 +135,23 @@
 
         </form>
         <!-- 微博-->
-        <form ng-if="currentMediaType == 3" name="addWeiboForm " ng-submit="save(addWeiboForm.$valid)" class="form-horizontal">
+        <form ng-if="currentMediaType == 1" name="addWeiboForm " ng-submit="save(addWeiboForm.$valid)" class="form-horizontal">
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微博地址</label>
             <div class="col-xs-4">
-              <input type="text" ng-required="true" class="form-control" placeholder="微博地址" ng-model="weiboForm.WeiBoURL" >
+              <input type="text" ng-required="true" class="form-control" placeholder="微博地址" ng-model="accountForm.URL" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微博昵称</label>
             <div class="col-xs-4">
-              <input type="text" ng-required="true" class="form-control" ng-model="weiboForm.NickName" >
+              <input type="text" ng-required="true" class="form-control" ng-model="accountForm.NickName" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微博头像</label>
             <div class="col-xs-6">
-              <img class="upload-img" ng-src="{{weiboForm.WeiBoImage}}" alt=""/>
+              <img class="upload-img" ng-src="{{accountForm.Image}}" alt=""/>
               <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file,'wb_head')" name="file" ngf-pattern="'image/*"
                  accept="image/*" ngf-max-size="10MB" ngf-min-height="100">选择文件</a>
               <!--<input class="col-xs-6" type="file" ng-required="true"><button class="btn btn-default">上传</button>-->
@@ -161,7 +161,7 @@
             <label class="col-xs-2 control-label"><span class="must-star">*</span>粉丝人数</label>
             <div class="col-xs-4">
               <div class="input-group">
-                <input type="number" ng-required="true" class="form-control" ng-model="weiboForm.FansNumber">
+                <input type="number" ng-required="true" class="form-control" ng-model="accountForm.FansNumber">
                 <div class="input-group-addon">人</div>
               </div>
             </div>
@@ -171,7 +171,7 @@
             <div class="col-xs-4">
               <div class="account-type-list row">
                 <div class="col-xs-3" ng-repeat="item in searchTypeData.common track by $index">
-                  <label class="radio-inline" ><input ng-model="weiboForm.selectClass" type="radio" ng-value="item" name="account-type"/>{{item.ClassName}}</label>
+                  <label class="radio-inline" ><input ng-model="accountForm.ClassID" type="radio" ng-value="item" name="account-type"/>{{item.ClassName}}</label>
                 </div>
               </div>
             </div>
@@ -179,14 +179,14 @@
           <!--<div class="form-group">-->
             <!--<label class="col-xs-2 control-label"><span class="must-star">*</span>所在行业</label>-->
             <!--<div class="col-xs-2">-->
-              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.industry" ng-model="weiboForm.selectMedia">-->
+              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.industry" ng-model="accountForm.selectMedia">-->
               <!--</select>-->
             <!--</div>-->
           <!--</div>-->
           <!--<div class="form-group">-->
             <!--<label class="col-xs-2 control-label"><span class="must-star">*</span>职业</label>-->
             <!--<div class="col-xs-2">-->
-              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.employment" ng-model="weiboForm.selectProfession">-->
+              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.employment" ng-model="accountForm.selectProfession">-->
               <!--</select>-->
             <!--</div>-->
           <!--</div>-->
@@ -195,13 +195,13 @@
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">硬直</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="weiboForm.YGZhiFaPrice" >
+                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="accountForm.YGZhiFaPrice" >
               </div>
             </div>
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">软直</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="weiboForm.RGZhiFaPrice">
+                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="accountForm.RGZhiFaPrice">
               </div>
             </div>
           </div>
@@ -210,20 +210,20 @@
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">硬转</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="weiboForm.YGZhuanFaPrice">
+                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="accountForm.YGZhuanFaPrice">
               </div>
             </div>
             <div class="col-xs-2">
               <div class="input-group">
                 <div class="input-group-addon">软转</div>
-                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="weiboForm.RGZhuanFaPrice">
+                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="accountForm.RGZhuanFaPrice">
               </div>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>账号介绍</label>
             <div class="col-xs-4">
-              <textarea name=""  cols="30" rows="5" class="form-control" ng-model="weiboForm.Intro"></textarea>
+              <textarea name=""  cols="30" rows="5" class="form-control" ng-model="accountForm.Intro"></textarea>
             </div>
           </div>
           <div class="form-group">
@@ -235,25 +235,25 @@
           </div>
         </form>
         <!-- 朋友圈-->
-        <form ng-if="currentMediaType == 4" name="addFriendsForm " ng-submit="save(addFriendsForm.$valid)" class="form-horizontal">
+        <form ng-if="currentMediaType == 3" name="addFriendsForm " ng-submit="save(addFriendsForm.$valid)" class="form-horizontal">
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信账号</label>
             <div class="col-xs-4">
-              <input type="text" ng-required="true" class="form-control" placeholder="微信账号" ng-model="friendsForm.WX" >
+              <input type="text" ng-required="true" class="form-control" placeholder="微信账号" ng-model="accountForm.AccountName" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信昵称</label>
             <div class="col-xs-4">
-              <input type="text" ng-required="true" class="form-control" placeholder="" ng-model="friendsForm.NickName" >
+              <input type="text" ng-required="true" class="form-control" placeholder="" ng-model="accountForm.NickName" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>性别</label>
             <div class="col-xs-4">
               <div class="form-inline">
-                <label ><input type="radio" ng-model="friendsForm.Sex" checked value="1" name="sex"/>男</label>
-                <label ><input type="radio" ng-model="friendsForm.Sex" value="0" name="sex"/>女</label>
+                <label ><input type="radio" ng-model="accountForm.Sex" checked value="1" name="sex"/>男</label>
+                <label ><input type="radio" ng-model="accountForm.Sex" value="0" name="sex"/>女</label>
               </div>
             </div>
           </div>
@@ -261,7 +261,7 @@
             <label class="col-xs-2 control-label"><span class="must-star">*</span>生日</label>
             <div class="col-xs-4">
               <div class="input-group input-append input-prepend">
-                <input type="text" class="form-control" min-date="Date string | '2015-8-11'" date-time ng-model="friendsForm.Birthday" auto-close="true" required="true" min-view="date" max-view="date" format="yyyy-MM-dd" partial="true">
+                <input type="text" class="form-control" min-date="Date string | '2015-8-11'" date-time ng-model="accountForm.Birthday" auto-close="true" required="true" min-view="date" max-view="date" format="yyyy-MM-dd" partial="true">
                 <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
               </div>
             </div>
@@ -269,17 +269,17 @@
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信头像</label>
             <div class="col-xs-6">
-              <img class="upload-img" ng-src="{{friendsForm.WXImage}}" alt=""/>
+              <img class="upload-img" ng-src="{{accountForm.Image}}" alt=""/>
               <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file,'fri_head')" name="file" ngf-pattern="'image/*"
                  accept="image/*" ngf-max-size="10MB" ngf-min-height="100">选择文件</a>
-              <!--<input class="col-xs-6" type="file" ng-required="true" ng-model="friendsForm.WXImage"><button class="btn btn-default">上传</button>-->
+              <!--<input class="col-xs-6" type="file" ng-required="true" ng-model="accountForm.WXImage"><button class="btn btn-default">上传</button>-->
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>粉丝人数</label>
             <div class="col-xs-4">
               <div class="input-group">
-                <input type="number" ng-required="true" class="form-control" ng-model="friendsForm.FriendNumber">
+                <input type="number" ng-required="true" class="form-control" ng-model="accountForm.FansNumber">
                 <div class="input-group-addon">人</div>
               </div>
             </div>
@@ -287,7 +287,7 @@
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>微信人数截图</label>
             <div class="col-xs-6">
-              <img class="upload-img" ng-src="{{friendsForm.FriendNumberImage}}" alt=""/>
+              <img class="upload-img" ng-src="{{accountForm.FriendNumberImage}}" alt=""/>
               <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file,'fri_fans')" name="file" ngf-pattern="'image/*"
                  accept="image/*" ngf-max-size="10MB" ngf-min-height="100">选择文件</a>
               <!--<input class="col-xs-6" type="file" ng-required="true"><button class="btn btn-default">上传</button>-->
@@ -297,9 +297,9 @@
             <label class="col-xs-2 control-label"><span class="must-star">*</span>地区</label>
             <div class="col-xs-4">
               <div class="input-group form-inline">
-                <select class="form-control" ng-required="true" ng-options="item.ClassName for item in provinceList" ng-model="friendsForm.ProvinceID" >
+                <select class="form-control" ng-required="true" ng-options="item.ClassName for item in provinceList" ng-model="accountForm.ProvinceID" >
                 </select>
-                <select class="form-control marginLeft" ng-required="true" ng-options="item.ClassName for item in cityList" ng-model="friendsForm.CityID" >
+                <select class="form-control marginLeft" ng-required="true" ng-options="item.ClassName for item in cityList" ng-model="accountForm.CityID" >
                 </select>
               </div>
             </div>
@@ -309,7 +309,7 @@
             <div class="col-xs-4">
               <div class="account-type-list row">
                 <div class="col-xs-3" ng-repeat="item in searchTypeData.common">
-                  <label class="radio-inline" ><input ng-model="friendsForm.ClassID" type="radio" ng-value="item" name="account-type"/>{{item.ClassName}}</label>
+                  <label class="radio-inline" ><input ng-model="accountForm.ClassID" type="radio" ng-value="item" name="account-type"/>{{item.ClassName}}</label>
                 </div>
               </div>
             </div>
@@ -317,14 +317,14 @@
           <!--<div class="form-group">-->
             <!--<label class="col-xs-2 control-label"><span class="must-star">*</span>所在行业</label>-->
             <!--<div class="col-xs-2">-->
-              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.industry" ng-model="friendsForm.ClassMediaFieldID">-->
+              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.industry" ng-model="accountForm.ClassMediaFieldID">-->
               <!--</select>-->
             <!--</div>-->
           <!--</div>-->
           <!--<div class="form-group">-->
             <!--<label class="col-xs-2 control-label"><span class="must-star">*</span>职业</label>-->
             <!--<div class="col-xs-2">-->
-              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.employment" ng-model="friendsForm.ClassProfessionID">-->
+              <!--<select class="form-control" ng-options="item.ClassName for item in searchTypeData.employment" ng-model="accountForm.ClassProfessionID">-->
               <!--</select>-->
             <!--</div>-->
           <!--</div>-->
@@ -332,14 +332,14 @@
             <label class="col-xs-2 control-label"><span class="must-star">*</span>报价</label>
             <div class="col-xs-2">
               <div class="input-group">
-                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="friendsForm.Price" >
+                <input type="number" ng-required="true" class="form-control" placeholder="0" ng-model="accountForm.Price" >
               </div>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-2 control-label"><span class="must-star">*</span>账号介绍</label>
             <div class="col-xs-4">
-              <textarea cols="30" rows="5" class="form-control" ng-model="friendsForm.Intro"></textarea>
+              <textarea cols="30" rows="5" class="form-control" ng-model="accountForm.Intro"></textarea>
             </div>
           </div>
           <div class="form-group">

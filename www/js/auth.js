@@ -70,6 +70,7 @@ var WeMedia;
             return defrred.promise;
         };
         AuthInfo.prototype.userInfo = function (user) {
+            if (user === void 0) { user = null; }
             if (user && user.Mobile) {
                 this.$cookies.put('authUser', JSON.stringify(user));
                 return user;

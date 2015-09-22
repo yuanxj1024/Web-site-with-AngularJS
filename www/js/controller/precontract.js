@@ -5,23 +5,23 @@
 /// <reference path="../app.ts" />
 /// <reference path="../config.ts" />
 /// <reference path="../service/modal.ts" />
-/// <reference path="../service/WechatPublic.ts" />
-/// <reference path="../service/WeiboService.ts" />
-/// <reference path="../service/WechatFriends.ts" />
 /// <reference path="../service/OrderService.ts" />
+/// <reference path="../service/MediaAccount.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
     var PrecontractCtrl = (function () {
-        function PrecontractCtrl($rootScope, $scope, $state, $stateParams, ModalService, WechatPublicService, OrderService, $modal) {
+        function PrecontractCtrl($rootScope, $scope, $state, $stateParams, ModalService, 
+            //public WechatPublicService: IWechatPublicService,
+            OrderService, $modal, MediaAccountService) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.ModalService = ModalService;
-            this.WechatPublicService = WechatPublicService;
             this.OrderService = OrderService;
             this.$modal = $modal;
+            this.MediaAccountService = MediaAccountService;
             $scope.open = angular.bind(this, this.open);
             $scope.openList = angular.bind(this, this.openList);
             $scope.openAgreement = angular.bind(this, this.openAgreement);
@@ -167,23 +167,23 @@ var WeMedia;
             var self = this;
             var callbackobj = {
                 2: function (item) {
-                    self.$scope.selectedTotalInfo.SingleYing += item.SingleYing;
-                    self.$scope.selectedTotalInfo.SingleRuan += item.SingleRuan;
-                    self.$scope.selectedTotalInfo.MoreFirstYing += item.MoreFirstYing;
-                    self.$scope.selectedTotalInfo.MoreFirstRuan += item.MoreFirstRuan;
-                    self.$scope.selectedTotalInfo.MoreSecondYing += item.MoreSecondYing;
-                    self.$scope.selectedTotalInfo.MoreSecondRuan += item.MoreSecondRuan;
-                    self.$scope.selectedTotalInfo.MoreThreeYing += item.MoreThreeYing;
-                    self.$scope.selectedTotalInfo.MoreThreeRuan += item.MoreThreeRuan;
+                    self.$scope.selectedTotalInfo.SingleYing += item.PriceJSON.SingleYing;
+                    self.$scope.selectedTotalInfo.SingleRuan += item.PriceJSON.SingleRuan;
+                    self.$scope.selectedTotalInfo.MoreFirstYing += item.PriceJSON.MoreFirstYing;
+                    self.$scope.selectedTotalInfo.MoreFirstRuan += item.PriceJSON.MoreFirstRuan;
+                    self.$scope.selectedTotalInfo.MoreSecondYing += item.PriceJSON.MoreSecondYing;
+                    self.$scope.selectedTotalInfo.MoreSecondRuan += item.PriceJSON.MoreSecondRuan;
+                    self.$scope.selectedTotalInfo.MoreThreeYing += item.PriceJSON.MoreThreeYing;
+                    self.$scope.selectedTotalInfo.MoreThreeRuan += item.PriceJSON.MoreThreeRuan;
+                },
+                1: function (item) {
+                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.PriceJSON.YGZhiFaPrice;
+                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.PriceJSON.YGZhuanFaPrice;
+                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.PriceJSON.RGZhiFaPrice;
+                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.PriceJSON.RGZhiFaPriceRGZhiFaPrice;
                 },
                 3: function (item) {
-                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.YGZhiFaPrice;
-                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.YGZhuanFaPrice;
-                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.RGZhiFaPrice;
-                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.RGZhiFaPriceRGZhiFaPrice;
-                },
-                4: function (item) {
-                    self.$scope.selectedTotalInfo.Price += item.Price;
+                    self.$scope.selectedTotalInfo.Price += item.PriceJSON.Price;
                 }
             };
             angular.forEach(this.$scope.selectedList, callbackobj[self.$scope.currentMediaType]);
@@ -211,13 +211,11 @@ var WeMedia;
     })();
     //数据弹出层
     var Modal = (function () {
-        function Modal($scope, $modalInstance, mediaType, WechatPublicService, WeiboService, WechatFriendService) {
+        function Modal($scope, $modalInstance, mediaType, MediaAccountService) {
             this.$scope = $scope;
             this.$modalInstance = $modalInstance;
             this.mediaType = mediaType;
-            this.WechatPublicService = WechatPublicService;
-            this.WeiboService = WeiboService;
-            this.WechatFriendService = WechatFriendService;
+            this.MediaAccountService = MediaAccountService;
             $scope.cancel = angular.bind(this, this.cancel);
             $scope.ok = angular.bind(this, this.ok);
             $scope.addItem = angular.bind(this, this.addItem);
@@ -251,50 +249,20 @@ var WeMedia;
             var arg = {
                 pageSize: 10,
                 page: self.$scope.currentPageIndex,
-                isEnable: 1
+                isEnable: 1,
+                ChannelID: this.mediaType
             };
-            var callbackObj = {
-                2: function () {
-                    self.WechatPublicService.list(arg).then(function (result) {
-                        if (result && result.Data) {
-                            self.$scope.items = result.Data;
-                            self.$scope.totalItems = result.TotalItems;
-                        }
-                        else {
-                            self.$scope.totalItems = 0;
-                        }
-                    }, function () {
-                        self.$scope.totalItems = 0;
-                    });
-                },
-                3: function () {
-                    self.WeiboService.list(arg).then(function (result) {
-                        if (result) {
-                            self.$scope.items = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }
-                        else {
-                            self.$scope.totalItems = 0;
-                        }
-                    }, function (err) {
-                        self.$scope.totalItems = 0;
-                    });
-                },
-                4: function () {
-                    self.WechatFriendService.list(arg).then(function (result) {
-                        if (result) {
-                            self.$scope.items = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }
-                        else {
-                            self.$scope.totalItems = 0;
-                        }
-                    }, function (err) {
-                        self.$scope.totalItems = 0;
-                    });
+            self.MediaAccountService.list(arg).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.items = result.Data;
+                    self.$scope.totalItems = result.TotalItems;
                 }
-            };
-            callbackObj[this.mediaType]();
+                else {
+                    self.$scope.totalItems = 0;
+                }
+            }, function () {
+                self.$scope.totalItems = 0;
+            });
         };
         Modal.prototype.ok = function () {
             var list = [];
@@ -317,9 +285,9 @@ var WeMedia;
         };
         return Modal;
     })();
-    Modal.$inject = ['$scope', '$modalInstance', 'mediaType', 'WechatPublicService', 'WeiboService', 'WechatFriendService'];
+    Modal.$inject = ['$scope', '$modalInstance', 'mediaType', 'MediaAccountService'];
     WeMedia.ControllerModule.controller('DataModalCtrl', Modal);
-    PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'WechatPublicService', 'OrderService', '$modal'];
+    PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'OrderService', '$modal', 'MediaAccountService'];
     WeMedia.ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     WeMedia.ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
 })(WeMedia || (WeMedia = {}));

@@ -4,11 +4,9 @@
 /// <reference path="../app.ts" />
 /// <reference path="../config.ts" />
 /// <reference path="../service/SearchTypes.ts" />
-/// <reference path="../service/WechatPublic.ts" />
-/// <reference path="../service/WeiboService.ts" />
-/// <reference path="../service/WechatFriends.ts" />
 /// <reference path="../service/OrderService.ts" />
 /// <reference path="../service/Region.ts" />
+/// <reference path="../service/MediaAccount" />
 
 module WeMedia {
     'use strict';
@@ -44,6 +42,12 @@ module WeMedia {
         addItem: Function;
     }
 
+    var stateNames = {
+        1:'advertiser.weiboprecontract',
+        2: 'advertiser.wechatprecontract',
+        3: 'advertiser.friendsprecontract'
+    };
+
     class MediaDataList {
         constructor (
             public $scope: IMediaDataListScope,
@@ -51,11 +55,12 @@ module WeMedia {
             public $state: ng.ui.IStateService,
             public $stateParams: IWMStateParamsService,
             public SearchTypeService: ISearchTypeService,
-            public WechatPublicService: IWechatPublicService,
-            public WechatFriendsService: IWechatFriendService,
-            public WeiboService: IWeiboService,
+            //public WechatPublicService: IWechatPublicService,
+            //public WechatFriendsService: IWechatFriendService,
+            //public WeiboService: IWeiboService,
             public OrderService: IOrderService,
-            public RegionService: IRegionService
+            public RegionService: IRegionService,
+            public MediaAccountService: IMediaAccountService
         ) {
             if(!$stateParams.mediaType) {
                 //$scope.goToIndex();
@@ -170,41 +175,15 @@ module WeMedia {
         refresh(state='', args={}) {
             var self = this;
             args = angular.extend({}, this.createSearchArg(),args);
-            console.log(args);
-            var callbackObj = {
-                2: function(){
-                    self.WechatPublicService.list(args).then(function(result){
-                        if(result && result.Data){
-                            self.$scope.list = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems ||0;
-                        }
-                    }, function(err){
-                        console.log(err);
-                    });
-                },
-                3: function(){
-                    self.WeiboService.list(args).then(function(result){
-                        if(result && result.Data){
-                            self.$scope.list = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems ||0;
-                        }
-                    }, function(err){
-                        console.log(err);
-                    });
-                },
-                4:function(){
-                    self.WechatFriendsService.list(args).then(function(result){
-                        if(result && result.Data){
-                            self.$scope.list = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems ||0;
-                        }
-                    }, function(err){
-                        console.log(err);
-                    });
+            self.MediaAccountService.list(args).then(function(result){
+                if(result && result.Data){
+                    self.$scope.list = result.Data || [];
+                    self.$scope.totalItems = result.TotalItems ||0;
                 }
-            };
-
-            callbackObj[this.$scope.currentMediaType]();
+            }, function(err){
+                console.log(err);
+            });
+            //callbackObj[this.$scope.currentMediaType]();
         }
 
         favoriteList(state='',args={}){
@@ -243,26 +222,8 @@ module WeMedia {
             angular.forEach(this.$scope.selectedMediaObject, function(val,key){
                 self.OrderService.selectedList.push(val);
             });
-            //if(self.OrderService.selectedList.length <= 0){
-            //    window.navigator.notification.alert('！', null);
-            //    return null;
-            //}
 
-            switch (this.$scope.currentMediaType) {
-                case 1:
-                    this.$state.go('advertiser.starprecontract');
-                    break;
-                case 2:
-                    this.$state.go('advertiser.wechatprecontract');
-                    //this.WechatPublicService.selectedList = [];
-                    break;
-                case 3:
-                    this.$state.go('advertiser.weiboprecontract');
-                    break;
-                case 4:
-                    this.$state.go('advertiser.friendsprecontract');
-                    break;
-            }
+            this.$state.go(stateNames[this.$scope.currentMediaType]);
         }
 
         addItem(item:any):void {
@@ -282,6 +243,7 @@ module WeMedia {
 
         createSearchArg() {
             return {
+                ChannelID: this.$scope.currentMediaType,
                 page: this.$scope.currentPage,
                 pageSize: this.$scope.pageSize,
                 fansNumber: this.$scope.selected.fansNumber?this.$scope.selected.fansNumber.ID : 0,
@@ -292,7 +254,7 @@ module WeMedia {
         }
     }
 
-    MediaDataList.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'SearchTypeService', 'WechatPublicService', 'WechatFriendService', 'WeiboService', 'OrderService', 'RegionService'];
+    MediaDataList.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'SearchTypeService', 'OrderService', 'RegionService','MediaAccountService'];
     ControllerModule.controller('MediaDataListCtrl', MediaDataList);
     ControllerModule.controller('WechatDataListCtrl', MediaDataList);
     ControllerModule.controller('WeiboDataListCtrl', MediaDataList);

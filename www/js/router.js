@@ -28,17 +28,6 @@ var WeMedia;
                     'controller': 'MediaDataListCtrl'
                 }
             }
-        }).state('advertiser.star', {
-            'url': '/star',
-            'params': {
-                'mediaType': '1'
-            },
-            'views': {
-                'advertiser': {
-                    'templateUrl': './page/media-data-list.html',
-                    'controller': 'MediaDataListCtrl'
-                }
-            }
         }).state('advertiser.wechat', {
             'url': '/wechat',
             'params': {
@@ -53,7 +42,7 @@ var WeMedia;
         }).state('advertiser.weibo', {
             'url': '/weibo',
             'params': {
-                'mediaType': '3'
+                'mediaType': '1'
             },
             'views': {
                 'advertiser': {
@@ -64,23 +53,12 @@ var WeMedia;
         }).state('advertiser.friends', {
             'url': '/friends',
             'params': {
-                'mediaType': '4'
+                'mediaType': '3'
             },
             'views': {
                 'advertiser': {
                     'templateUrl': './page/media-data-list.html',
                     'controller': 'FriendsDataListCtrl'
-                }
-            }
-        }).state('advertiser.starprecontract', {
-            'url': '/starprecontract',
-            'params': {
-                'mediaType': '1',
-                'isEdit': 0
-            },
-            'views': {
-                'advertiser': {
-                    'templateUrl': './page/precontract.html'
                 }
             }
         }).state('advertiser.wechatprecontract', {
@@ -98,7 +76,7 @@ var WeMedia;
         }).state('advertiser.weiboprecontract', {
             'url': '/weiboprecontract',
             'params': {
-                'mediaType': '3',
+                'mediaType': '1',
                 'isEdit': 0,
                 'editID': 0
             },
@@ -110,7 +88,7 @@ var WeMedia;
         }).state('advertiser.friendsprecontract', {
             'url': '/friendsprecontract',
             'params': {
-                'mediaType': '4',
+                'mediaType': '3',
                 'isEdit': 0,
                 'editID': 0
             },
@@ -216,45 +194,73 @@ var WeMedia;
         }).state('admedia.account.weibo', {
             'url': '/weibo',
             'params': {
-                'mediaType': '3'
+                'mediaType': '1'
             },
             'templateUrl': './page/admedia/account-list.html'
         }).state('admedia.account.friends', {
             'url': '/friends',
             'params': {
-                'mediaType': '4'
+                'mediaType': '3'
             },
             'templateUrl': './page/admedia/account-list.html'
         }).state('admedia.account.addwechat', {
             'url': '/addwechat',
             'params': {
-                'mediaType': '2'
+                'mediaType': '2',
+                'ID': ''
             },
             'templateUrl': './page/admedia/add-account.html'
         }).state('admedia.account.addweibo', {
             'url': '/addweibo',
             'params': {
-                'mediaType': '3'
+                'mediaType': '1',
+                'ID': ''
             },
             'templateUrl': './page/admedia/add-account.html'
         }).state('admedia.account.addfriends', {
             'url': '/addfriends',
             'params': {
-                'mediaType': '4'
+                'mediaType': '3',
+                'ID': ''
             },
             'templateUrl': './page/admedia/add-account.html'
         }).state('admedia.preorderlist', {
             'url': '/preorderlist',
             'views': {
                 'admedia': {
-                    'templateUrl': './page/admedia/precontract-list.html'
+                    'templateUrl': './page/admedia/order.html'
                 }
             }
+        }).state('admedia.preorderlist.all', {
+            'url': '/all',
+            'params': {
+                'orderType': 1
+            },
+            'templateUrl': './page/admedia/precontract-list.html'
+        }).state('admedia.preorderlist.unexecute', {
+            'url': '/unexecute',
+            'params': {
+                'orderType': 2
+            },
+            'templateUrl': './page/admedia/precontract-list.html'
+        }).state('admedia.preorderlist.finished', {
+            'url': '/finished',
+            'params': {
+                'orderType': 3
+            },
+            'templateUrl': './page/admedia/precontract-list.html'
         }).state('admedia.bill', {
             'url': '/bill',
             'views': {
                 'admedia': {
                     'templateUrl': './page/admedia/bill-info.html'
+                }
+            }
+        }).state('admedia.bindcard', {
+            'url': '/bindcard',
+            'views': {
+                'admedia': {
+                    'templateUrl': './page/admedia/bind-card.html'
                 }
             }
         }).state('precontract', {

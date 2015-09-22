@@ -48,17 +48,18 @@ module WeMedia {
     }
 
     export interface IWMStateParamsService extends ng.ui.IStateParamsService {
-        mediaType:MediaType
+        mediaType:MediaType;
+        ID?: number;
+        orderType: number;
     }
 
     //媒体类型
     export enum MediaType {
-        star = 1,
         wechat = 2,
-        weibo = 3,
-        friend = 4
+        weibo = 1,
+        friend =3
     }
-    export var allMedias:string[] = ['', '明星', '微信公众号', '新浪微博', '微信朋友圈'];
+    export var allMedias:string[] = ['', '新浪微博','微信公众号', '微信朋友圈'];
 
     //应用启动入口-构造函数
     class AppInit {
@@ -70,11 +71,12 @@ module WeMedia {
             $cookies: ng.cookies.ICookieStoreService,
             AuthService: IAuthInfoService
         ) {
-            $rootScope.isDebug = location.host.indexOf('127.0.0.1') >= 0;
+            $rootScope.isDebug = location.host.indexOf('8080') >= 0;
             if($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
                 var userinfo = {
+                    ID: 1,
                     Mobile: '12313123123',
                     name: 'Aaron Yuan',
                     UserName: 'AaaronYuan',
@@ -87,6 +89,14 @@ module WeMedia {
                 $rootScope.isAdOwner = $cookies.get('isAdvertiser') == 'true';
             }
 
+            $rootScope.goToIndex = function() {
+                if($rootScope.isAdOwner) {
+                    $state.go('advertiser.dashboard');
+                }else {
+                    $state.go('advertiser.dashboard');
+                }
+            };
+
             $rootScope.accessToken = $cookies.get('accessToken');
             var user = AuthService.userInfo(null);
             if(user && user.Mobile) {
@@ -96,6 +106,10 @@ module WeMedia {
                         $state.go('advertiser.user');
                     });
                 }
+                //else{
+                //    $rootScope.goToIndex();
+                //}
+
             } else {
                 var url = window.location.origin + '/advertiserlogin.html';
                 window.navigator.notification.alert('登陆信息已经过期，请重新登陆！', function(){
@@ -122,13 +136,7 @@ module WeMedia {
             $rootScope.redirect =  function(url:string) {
                 window.location.href = url;
             };
-            $rootScope.goToIndex = function() {
-                if($rootScope.isAdOwner) {
-                    $state.go('advertiser.dashboard');
-                }else {
-                    $state.go('advertiser.dashboard');
-                }
-            };
+
 
             $rootScope.calcDate = function(text){
                 if(text){

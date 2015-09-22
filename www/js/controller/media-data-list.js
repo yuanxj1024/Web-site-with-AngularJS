@@ -4,26 +4,31 @@
 /// <reference path="../app.ts" />
 /// <reference path="../config.ts" />
 /// <reference path="../service/SearchTypes.ts" />
-/// <reference path="../service/WechatPublic.ts" />
-/// <reference path="../service/WeiboService.ts" />
-/// <reference path="../service/WechatFriends.ts" />
 /// <reference path="../service/OrderService.ts" />
 /// <reference path="../service/Region.ts" />
+/// <reference path="../service/MediaAccount" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
+    var stateNames = {
+        1: 'advertiser.weiboprecontract',
+        2: 'advertiser.wechatprecontract',
+        3: 'advertiser.friendsprecontract'
+    };
     var MediaDataList = (function () {
-        function MediaDataList($scope, $rootScope, $state, $stateParams, SearchTypeService, WechatPublicService, WechatFriendsService, WeiboService, OrderService, RegionService) {
+        function MediaDataList($scope, $rootScope, $state, $stateParams, SearchTypeService, 
+            //public WechatPublicService: IWechatPublicService,
+            //public WechatFriendsService: IWechatFriendService,
+            //public WeiboService: IWeiboService,
+            OrderService, RegionService, MediaAccountService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.SearchTypeService = SearchTypeService;
-            this.WechatPublicService = WechatPublicService;
-            this.WechatFriendsService = WechatFriendsService;
-            this.WeiboService = WeiboService;
             this.OrderService = OrderService;
             this.RegionService = RegionService;
+            this.MediaAccountService = MediaAccountService;
             if (!$stateParams.mediaType) {
             }
             $scope.pageChanged = angular.bind(this, this.pageChanged);
@@ -124,40 +129,15 @@ var WeMedia;
             if (args === void 0) { args = {}; }
             var self = this;
             args = angular.extend({}, this.createSearchArg(), args);
-            console.log(args);
-            var callbackObj = {
-                2: function () {
-                    self.WechatPublicService.list(args).then(function (result) {
-                        if (result && result.Data) {
-                            self.$scope.list = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }
-                    }, function (err) {
-                        console.log(err);
-                    });
-                },
-                3: function () {
-                    self.WeiboService.list(args).then(function (result) {
-                        if (result && result.Data) {
-                            self.$scope.list = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }
-                    }, function (err) {
-                        console.log(err);
-                    });
-                },
-                4: function () {
-                    self.WechatFriendsService.list(args).then(function (result) {
-                        if (result && result.Data) {
-                            self.$scope.list = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }
-                    }, function (err) {
-                        console.log(err);
-                    });
+            self.MediaAccountService.list(args).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.list = result.Data || [];
+                    self.$scope.totalItems = result.TotalItems || 0;
                 }
-            };
-            callbackObj[this.$scope.currentMediaType]();
+            }, function (err) {
+                console.log(err);
+            });
+            //callbackObj[this.$scope.currentMediaType]();
         };
         MediaDataList.prototype.favoriteList = function (state, args) {
             if (state === void 0) { state = ''; }
@@ -194,20 +174,7 @@ var WeMedia;
             angular.forEach(this.$scope.selectedMediaObject, function (val, key) {
                 self.OrderService.selectedList.push(val);
             });
-            switch (this.$scope.currentMediaType) {
-                case 1:
-                    this.$state.go('advertiser.starprecontract');
-                    break;
-                case 2:
-                    this.$state.go('advertiser.wechatprecontract');
-                    break;
-                case 3:
-                    this.$state.go('advertiser.weiboprecontract');
-                    break;
-                case 4:
-                    this.$state.go('advertiser.friendsprecontract');
-                    break;
-            }
+            this.$state.go(stateNames[this.$scope.currentMediaType]);
         };
         MediaDataList.prototype.addItem = function (item) {
             var self = this;
@@ -226,6 +193,7 @@ var WeMedia;
         };
         MediaDataList.prototype.createSearchArg = function () {
             return {
+                ChannelID: this.$scope.currentMediaType,
                 page: this.$scope.currentPage,
                 pageSize: this.$scope.pageSize,
                 fansNumber: this.$scope.selected.fansNumber ? this.$scope.selected.fansNumber.ID : 0,
@@ -236,7 +204,7 @@ var WeMedia;
         };
         return MediaDataList;
     })();
-    MediaDataList.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'SearchTypeService', 'WechatPublicService', 'WechatFriendService', 'WeiboService', 'OrderService', 'RegionService'];
+    MediaDataList.$inject = ['$scope', '$rootScope', '$state', '$stateParams', 'SearchTypeService', 'OrderService', 'RegionService', 'MediaAccountService'];
     WeMedia.ControllerModule.controller('MediaDataListCtrl', MediaDataList);
     WeMedia.ControllerModule.controller('WechatDataListCtrl', MediaDataList);
     WeMedia.ControllerModule.controller('WeiboDataListCtrl', MediaDataList);

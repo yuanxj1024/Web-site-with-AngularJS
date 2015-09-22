@@ -84,7 +84,7 @@ module WeMedia {
                     accessToken: true,
                     isArray: false,
                     params: {
-                        'action': 'detail'
+                        'action': 'myOrderList'
                     }
                 }
             });

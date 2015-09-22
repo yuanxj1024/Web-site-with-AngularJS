@@ -1,4 +1,7 @@
 .svn
 /.svn/
 .svn/*
+*/.svn/*
+*.svn-base
+
 *.svn-base

@@ -22,21 +22,21 @@ var WeMedia;
     WeMedia.AppModule = angular.module('WeMedia', ['ngFileUpload', 'ui.bootstrap', 'ui.router', 'ngCookies', 'WeMedia.controllers', 'WeMedia.services', 'WeMedia.directives']);
     //媒体类型
     (function (MediaType) {
-        MediaType[MediaType["star"] = 1] = "star";
         MediaType[MediaType["wechat"] = 2] = "wechat";
-        MediaType[MediaType["weibo"] = 3] = "weibo";
-        MediaType[MediaType["friend"] = 4] = "friend";
+        MediaType[MediaType["weibo"] = 1] = "weibo";
+        MediaType[MediaType["friend"] = 3] = "friend";
     })(WeMedia.MediaType || (WeMedia.MediaType = {}));
     var MediaType = WeMedia.MediaType;
-    WeMedia.allMedias = ['', '明星', '微信公众号', '新浪微博', '微信朋友圈'];
+    WeMedia.allMedias = ['', '新浪微博', '微信公众号', '微信朋友圈'];
     //应用启动入口-构造函数
     var AppInit = (function () {
         function AppInit($rootScope, $injector, $state, $location, $cookies, AuthService) {
-            $rootScope.isDebug = location.host.indexOf('127.0.0.1') >= 0;
+            $rootScope.isDebug = location.host.indexOf('8080') >= 0;
             if ($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
                 var userinfo = {
+                    ID: 1,
                     Mobile: '12313123123',
                     name: 'Aaron Yuan',
                     UserName: 'AaaronYuan',
@@ -49,6 +49,14 @@ var WeMedia;
                 //角色设定
                 $rootScope.isAdOwner = $cookies.get('isAdvertiser') == 'true';
             }
+            $rootScope.goToIndex = function () {
+                if ($rootScope.isAdOwner) {
+                    $state.go('advertiser.dashboard');
+                }
+                else {
+                    $state.go('advertiser.dashboard');
+                }
+            };
             $rootScope.accessToken = $cookies.get('accessToken');
             var user = AuthService.userInfo(null);
             if (user && user.Mobile) {
@@ -82,14 +90,6 @@ var WeMedia;
             };
             $rootScope.redirect = function (url) {
                 window.location.href = url;
-            };
-            $rootScope.goToIndex = function () {
-                if ($rootScope.isAdOwner) {
-                    $state.go('advertiser.dashboard');
-                }
-                else {
-                    $state.go('advertiser.dashboard');
-                }
             };
             $rootScope.calcDate = function (text) {
                 if (text) {

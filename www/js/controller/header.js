@@ -26,7 +26,6 @@ var WeMedia;
             $scope.precontract = angular.bind(this, this.precontract);
             $scope.stateName = $state.current.name;
             $scope.userName = $rootScope.user.UserName || $rootScope.user['Company'] || $rootScope.user['Mobile'];
-            console.log('isadowner:' + $rootScope.isAdOwner);
         }
         HeaderCtrl.prototype.precontract = function (type) {
             if (type === void 0) { type = 1 /* star */; }

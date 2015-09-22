@@ -1,0 +1,16 @@
+<div class="main-nav">
+  <div ng-include="'./page/header.html'" ></div>
+</div>
+<div class="sub-header-wrap">
+  <div class="container center">
+    <ul class="nav nav-pills">
+      <li ui-sref-active="active"><a ui-sref="admedia.preorderlist.all" href="#">全部订单</a></li>
+      <li ui-sref-active="active"><a ui-sref="admedia.preorderlist.unexecute" href="#">待执行订单</a></li>
+      <li ui-sref-active="active"><a ui-sref="admedia.preorderlist.finished" href="#">已完成订单</a></li>
+    </ul>
+  </div>
+</div>
+<div ng-controller="AdMediaPrecontactListCtrl">
+  <ui-view></ui-view>
+</div>
+

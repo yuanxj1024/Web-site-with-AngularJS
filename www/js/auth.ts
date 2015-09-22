@@ -9,7 +9,7 @@ module WeMedia {
 
     declare  var window;
     export interface IUser {
-        Id: number;
+        ID: number;
         Mobile:string;
         UserName: string;
     }
@@ -106,17 +106,15 @@ module WeMedia {
             return defrred.promise;
         }
 
-        userInfo(user:IUser): IUser {
+        userInfo(user:IUser = null): IUser {
            if(user && user.Mobile) {
                this.$cookies.put('authUser', JSON.stringify(user));
                return user;
            } else {
-
                var userInfo = this.$cookies.get('authUser');
                if(userInfo) {
                    return JSON.parse(userInfo);
                }
-
                return null;
            }
         }

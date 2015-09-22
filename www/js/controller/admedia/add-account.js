@@ -3,28 +3,36 @@
  */
 /// <reference path="../../app.ts" />
 /// <reference path="../../service/SearchTypes.ts" />
-/// <reference path="../../service/WeChatPublic.ts" />
-/// <reference path="../../service/WeiboService" />
-/// <reference path="../../service/WechatFriends.ts" />
 /// <reference path="../../service/Region.ts" />
+/// <reference path="../../service/MediaAccount.ts" />
+/// <reference path="../../auth.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
+    var stateNames = {
+        1: 'admedia.account.weibo',
+        2: 'admedia.account.wechat',
+        3: 'admedia.account.friends'
+    };
     var AddAccount = (function () {
-        function AddAccount($rootScope, $scope, $state, $stateParams, SearchTypeService, WechatPublicService, WeiboService, WechatFriend, Upload, $timeout, RegionService) {
+        function AddAccount($rootScope, $scope, $state, $stateParams, SearchTypeService, MediaAccountService, 
+            //public WechatPublicService: IWechatPublicService,
+            //public WeiboService: IWeiboService,
+            //public WechatFriend: IWechatFriendService,
+            Upload, $timeout, RegionService, AuthService) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.SearchTypeService = SearchTypeService;
-            this.WechatPublicService = WechatPublicService;
-            this.WeiboService = WeiboService;
-            this.WechatFriend = WechatFriend;
+            this.MediaAccountService = MediaAccountService;
             this.Upload = Upload;
             this.$timeout = $timeout;
             this.RegionService = RegionService;
+            this.AuthService = AuthService;
             $scope.currentMediaType = $stateParams.mediaType;
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
+            $scope.editID = $stateParams.ID;
             $scope.goBack = angular.bind(this, this.goBack);
             $scope.save = angular.bind(this, this.save);
             $scope.uploadFile = angular.bind(this, this.uploadFile);
@@ -48,106 +56,142 @@ var WeMedia;
             }, function (err) {
                 console.log(err);
             });
-            this.SearchTypeService.industry().then(function (result) {
-                self.$scope.searchTypeData.industry = result;
-            }, function (err) {
-                console.log(err);
-            });
-            this.SearchTypeService.employment().then(function (result) {
-                self.$scope.searchTypeData.employment = result;
-            }, function (err) {
-                console.log(err);
-            });
-            this.$scope.$watch('friendsForm.ProvinceID', function (newValue, oldValue) {
+            //this.SearchTypeService.industry().then(function(result){
+            //    self.$scope.searchTypeData.industry = result;
+            //}, function(err){
+            //    console.log(err);
+            //});
+            //
+            //this.SearchTypeService.employment().then(function(result){
+            //    self.$scope.searchTypeData.employment = result;
+            //}, function(err){
+            //    console.log(err);
+            //});
+            this.$scope.$watch('accountForm.ProvinceID', function (newValue, oldValue) {
                 if (newValue && newValue.ID) {
                     self.$scope.cityList = self.getRegionList(null, newValue.ID);
-                    self.$scope.friendsForm.CityID = self.$scope.cityList[0];
+                    self.$scope.accountForm.CityID = self.$scope.cityList[0];
                 }
                 else {
                     self.$scope.cityList = [];
                 }
             });
-            self.$scope.provinceList = this.getRegionList(0, null);
+            if (this.$scope.currentMediaType == 3) {
+                self.$scope.provinceList = this.getRegionList(0, null);
+            }
         };
         AddAccount.prototype.initForms = function () {
-            this.$scope.wechatForm = {
-                'WX': '',
-                'WXImage': '',
-                'NickName': '',
-                'FansNumber': '',
-                'ClassID': '',
-                'ClassName': '',
-                'SingleYing': '',
-                'SingleRuan': '',
-                'MoreFirstYing': '',
-                'MoreFirstRuan': '',
-                'MoreSecondYing': '',
-                'MoreSecondRuan': '',
-                'MoreThreeYing': '',
-                'MoreThreeRuan': '',
-                'Intro': '',
-                'ClassMediaFieldID': '',
-                'ClassMediaFieldName': '',
-                'ClassProfessionID': '',
-                'ClassProfessionName': ''
-            };
-            this.$scope.resetWechat = angular.copy(this.$scope.wechatForm);
-            this.$scope.weiboForm = {
-                WeiBoURL: '',
-                WeiBoImage: '',
+            this.$scope.accountForm = {
+                Media_ID: this.$rootScope.user.ID,
+                ChannelID: this.$scope.currentMediaType,
+                AccountName: '',
+                Image: '',
+                URL: '',
                 NickName: '',
                 FansNumber: '',
-                ClassID: '',
-                ClassName: '',
-                YGZhuanFaPrice: '',
-                YGZhiFaPrice: '',
-                RGZhuanFaPrice: '',
-                RGZhiFaPrice: '',
-                Intro: '',
-                ClassMediaFieldID: '',
-                ClassMediaFieldName: '',
-                ClassProfessionID: '',
-                ClassProfessionName: '',
-                selectClass: '',
-                selectMedia: '',
-                selectProfession: ''
-            };
-            this.$scope.resetWeibo = angular.copy(this.$scope.weiboForm);
-            this.$scope.friendsForm = {
-                WX: '',
-                WXImage: '',
-                NickName: '',
-                FriendNumber: '',
-                FriendNumberImage: '',
-                FriendNumberState: '',
+                Sex: '0',
                 Birthday: '',
-                Sex: '',
                 ProvinceID: '',
                 ProvinceName: '',
                 CityID: '',
                 CityName: '',
-                Price: '',
                 ClassID: '',
                 ClassName: '',
+                Price: '',
+                MinPrice: '',
+                MaxPrice: '',
                 Intro: '',
+                Content: '',
+                State: '',
+                IsEnable: '',
+                IsReservation: '',
                 ClassMediaFieldID: '',
                 ClassMediaFieldName: '',
                 ClassProfessionID: '',
-                ClassProfessionName: ''
+                ClassProfessionName: '',
+                CheckAdminId: '',
+                CheckAdminName: '',
+                CheckReason: '',
+                CheckTime: '',
+                AddTime: '',
+                //  公众号
+                SingleYing: '',
+                SingleRuan: '',
+                MoreFirstYing: '',
+                MoreFirstRuan: '',
+                MoreSecondYing: '',
+                MoreSecondRuan: '',
+                MoreThreeYing: '',
+                MoreThreeRuan: '',
+                //微博
+                YGZhuanFaPrice: '',
+                YGZhiFaPrice: '',
+                RGZhuanFaPrice: '',
+                RGZhiFaPrice: ''
             };
-            this.$scope.resetFriend = angular.copy(this.$scope.friendsForm);
+            var self = this;
+            if (this.$scope.editID) {
+                self.bindEditForm();
+            }
+            this.$scope.resetForm = angular.copy(this.$scope.accountForm);
+        };
+        AddAccount.prototype.bindEditForm = function () {
+            var self = this;
+            this.MediaAccountService.oneItem(this.$scope.editID).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.accountForm = result.Data[0];
+                    var priceJson = self.$scope.accountForm.PriceJSON;
+                    self.$timeout(function () {
+                        angular.forEach(self.$scope.searchTypeData.common, function (item) {
+                            if (item.ID == self.$scope.accountForm.ClassID) {
+                                self.$scope.accountForm.ClassID = item;
+                            }
+                        });
+                    }, 400);
+                    self.$scope.accountForm.Price = priceJson.Price;
+                    self.$scope.accountForm.SingleYing = priceJson.SingleYing;
+                    self.$scope.accountForm.SingleRuan = priceJson.SingleRuan;
+                    self.$scope.accountForm.MoreFirstYing = priceJson.MoreFirstYing;
+                    self.$scope.accountForm.MoreFirstRuan = priceJson.MoreFirstRuan;
+                    self.$scope.accountForm.MoreSecondYing = priceJson.MoreSecondYing;
+                    self.$scope.accountForm.MoreSecondRuan = priceJson.MoreSecondRuan;
+                    self.$scope.accountForm.MoreThreeYing = priceJson.MoreThreeYing;
+                    self.$scope.accountForm.MoreThreeRuan = priceJson.MoreThreeRuan;
+                    self.$scope.accountForm.YGZhuanFaPrice = priceJson.YGZhuanFaPrice;
+                    self.$scope.accountForm.YGZhiFaPrice = priceJson.YGZhiFaPrice;
+                    self.$scope.accountForm.RGZhuanFaPrice = priceJson.RGZhuanFaPrice;
+                    self.$scope.accountForm.RGZhiFaPrice = priceJson.RGZhiFaPrice;
+                    self.$scope.accountForm.AddTime = self.dateFormt(result.Data[0].AddTime);
+                    self.$scope.accountForm.Birthday = self.dateFormt(result.Data[0].Birthday);
+                    self.$scope.resetForm = angular.copy(self.$scope.accountForm);
+                }
+                else {
+                    window.navigator.notification.alert('获取数据异常，暂时无法编辑。', function () {
+                        self.$state.go(stateNames[self.$scope.currentMediaType]);
+                    });
+                }
+            }, function (err) {
+                window.navigator.notification.alert('获取数据异常，暂时无法编辑。', function () {
+                    self.$state.go(stateNames[self.$scope.currentMediaType]);
+                });
+            });
+        };
+        AddAccount.prototype.dateFormt = function (time) {
+            if (time) {
+                var t = time.substring(6, 19);
+                return new Date(t * 1);
+            }
+            return null;
         };
         AddAccount.prototype.goBack = function () {
             switch (this.$scope.currentMediaType * 1) {
                 case 1:
+                    this.$state.go('admedia.account.weibo');
                     break;
                 case 2:
                     this.$state.go('admedia.account.wechat');
                     break;
                 case 3:
-                    this.$state.go('admedia.account.weibo');
-                    break;
-                case 4:
                     this.$state.go('admedia.account.friends');
                     break;
             }
@@ -157,110 +201,65 @@ var WeMedia;
                 ZENG.msgbox.show('请完成所有项的数据，数据不完整，无法保存!', 1);
                 return;
             }
-            if (this.$scope.currentMediaType == 2) {
-                this.$scope.wechatForm.Media_ID = this.$rootScope.user.ID;
-                this.saveWechat();
-            }
-            else if (this.$scope.currentMediaType == 3) {
-                this.$scope.weiboForm.Media_ID = this.$rootScope.user.ID;
-                this.saveWeibo();
-            }
-            else if (this.$scope.currentMediaType == 4) {
-                this.$scope.friendsForm.Media_ID = this.$rootScope.user.ID;
-                this.saveFriends();
-            }
+            this.saveAccount();
         };
-        AddAccount.prototype.saveWechat = function () {
+        AddAccount.prototype.saveAccount = function () {
             var self = this;
-            self.$scope.wechatForm.ClassName = self.$scope.wechatForm.ClassID.ClassName;
-            self.$scope.wechatForm.ClassID = self.$scope.wechatForm.ClassID.ID;
+            if (!self.$scope.accountForm.ClassID) {
+                ZENG.msgbox.show('请选择类型!', 1);
+                return;
+            }
+            self.$scope.accountForm.ClassName = self.$scope.accountForm.ClassID.ClassName;
+            self.$scope.accountForm.ClassID = self.$scope.accountForm.ClassID.ID;
             //self.$scope.wechatForm.ClassMediaFieldName = self.$scope.wechatForm.ClassMediaFieldID.ClassName;
             //self.$scope.wechatForm.ClassMediaFieldID = self.$scope.wechatForm.ClassMediaFieldID.ID;
             //
             //self.$scope.wechatForm.ClassProfessionName = self.$scope.wechatForm.ClassProfessionID.ClassName;
             //self.$scope.wechatForm.ClassProfessionID = self.$scope.wechatForm.ClassProfessionID.ID;
-            self.$scope.wechatForm.WXImage = self.$scope.wechatForm.WXImage.replace(window.location.origin, '');
-            this.WechatPublicService.save(this.$scope.wechatForm).then(function (result) {
-                if (result && result.Status == 1) {
-                    window.navigator.notification.confirm('保存成功，继续添加？', function (index) {
-                        if (index == 1) {
-                            self.$state.go('admedia.account.wechat');
-                        }
-                        else if (index == 2) {
-                            self.$scope.wechatForm = angular.copy(self.$scope.resetWechat, {});
-                            $('form')[0].reset();
-                        }
-                    }, '提示', ['取消', '继续添加'], '');
-                }
-                else if (result && result.Status != 1) {
-                    window.navigator.notification.alert(result.Message, null);
-                }
-            }, function (err) {
-                window.navigator.notification.alert("数据保存失败，请稍候重试", null);
-            });
-        };
-        AddAccount.prototype.saveWeibo = function () {
-            var self = this;
-            self.$scope.weiboForm.ClassName = self.$scope.weiboForm.selectClass.ClassName;
-            self.$scope.weiboForm.ClassID = self.$scope.weiboForm.selectClass.ID;
-            //self.$scope.weiboForm.ClassMediaFieldName = self.$scope.weiboForm.selectMedia.ClassName;
-            //self.$scope.weiboForm.ClassMediaFieldID = self.$scope.weiboForm.selectMedia.ID;
-            //
-            //self.$scope.weiboForm.ClassProfessionName = self.$scope.weiboForm.selectProfession.ClassName;
-            //self.$scope.weiboForm.ClassProfessionID = self.$scope.weiboForm.selectProfession.ID;
-            self.$scope.weiboForm.WeiBoImage = self.$scope.weiboForm.WeiBoImage.replace(window.location.origin, '');
-            this.WeiboService.save(this.$scope.weiboForm).then(function (result) {
-                if (result && result.Status == 1) {
-                    window.navigator.notification.confirm('保存成功，继续添加？', function (index) {
-                        if (index == 1) {
-                            self.$state.go('admedia.account.weibo');
-                        }
-                        else if (index == 2) {
-                            self.$scope.weiboForm = angular.copy(self.$scope.resetWeibo, {});
-                            $('form')[0].reset();
-                        }
-                    }, '提示', ['取消', '继续添加'], '');
-                }
-                else if (result && result.Status != 1) {
-                    window.navigator.notification.alert(result.Message, null);
-                }
-            }, function (err) {
-                window.navigator.notification.alert("数据保存失败，请稍候重试", null);
-            });
-        };
-        AddAccount.prototype.saveFriends = function () {
-            var self = this;
-            self.$scope.friendsForm.ClassName = self.$scope.friendsForm.ClassID.ClassName;
-            self.$scope.friendsForm.ClassID = self.$scope.friendsForm.ClassID.ID;
-            //self.$scope.friendsForm.ClassMediaFieldName = self.$scope.friendsForm.ClassMediaFieldID.ClassName;
-            //self.$scope.friendsForm.ClassMediaFieldID = self.$scope.friendsForm.ClassMediaFieldID.ID;
-            //
-            //self.$scope.friendsForm.ClassProfessionName = self.$scope.friendsForm.ClassProfessionID.ClassName;
-            //self.$scope.friendsForm.ClassProfessionID = self.$scope.friendsForm.ClassProfessionID.ID;
-            self.$scope.friendsForm.WXImage = self.$scope.friendsForm.WXImage.replace(window.location.origin, '');
-            self.$scope.friendsForm.FriendNumberImage = self.$scope.friendsForm.FriendNumberImage.replace(window.location.origin, '');
-            self.$scope.friendsForm.ProvinceName = self.$scope.friendsForm.ProvinceID.ClassName;
-            self.$scope.friendsForm.ProvinceID = self.$scope.friendsForm.ProvinceID.ID;
-            self.$scope.friendsForm.CityName = self.$scope.friendsForm.CityID.ClassName;
-            self.$scope.friendsForm.CityID = self.$scope.friendsForm.CityID.ID;
-            this.WechatFriend.save(this.$scope.friendsForm).then(function (result) {
-                if (result && result.Status == 1) {
-                    window.navigator.notification.confirm('保存成功，继续添加？', function (index) {
-                        if (index == 1) {
-                            self.$state.go('admedia.account.friends');
-                        }
-                        else if (index == 2) {
-                            self.$scope.friendsForm = angular.copy(self.$scope.resetFriend, {});
-                            $('form')[0].reset();
-                        }
-                    }, '提示', ['取消', '继续添加'], '');
-                }
-                else if (result && result.Status != 1) {
-                    window.navigator.notification.alert(result.Message, null);
-                }
-            }, function (err) {
-                window.navigator.notification.alert("数据保存失败，请稍候重试", null);
-            });
+            if (this.$scope.currentMediaType == 3) {
+                self.$scope.accountForm.ProvinceName = self.$scope.accountForm.ProvinceID.ClassName;
+                self.$scope.accountForm.ProvinceID = self.$scope.accountForm.ProvinceID.ID;
+                self.$scope.accountForm.CityName = self.$scope.accountForm.CityID.ClassName;
+                self.$scope.accountForm.CityID = self.$scope.accountForm.CityID.ID;
+            }
+            self.$scope.accountForm.Image = self.$scope.accountForm.Image.replace(window.location.origin, '');
+            self.$scope.accountForm.MaxPrice = self.findValue('max');
+            self.$scope.accountForm.MinPrice = self.findValue('min');
+            self.$scope.accountForm.PriceJSON = self.priceJson();
+            if (self.$scope.editID) {
+                self.MediaAccountService.updateItem(this.$scope.accountForm).then(function (result) {
+                    if (result && result.Status >= 1) {
+                        window.navigator.notification.alert('修改成功!', function () {
+                            self.$state.go(stateNames[self.$scope.currentMediaType]);
+                        });
+                    }
+                    else {
+                        window.navigator.notification.alert("数据保存失败，请稍候重试", null);
+                    }
+                }, function (err) {
+                    window.navigator.notification.alert("数据保存失败，请稍候重试", null);
+                });
+            }
+            else {
+                this.MediaAccountService.save(this.$scope.accountForm).then(function (result) {
+                    if (result && result.Status >= 1) {
+                        window.navigator.notification.confirm('保存成功，继续添加？', function (index) {
+                            if (index == 1) {
+                                self.$state.go(stateNames[self.$scope.currentMediaType]);
+                            }
+                            else if (index == 2) {
+                                self.$scope.accountForm = angular.copy(self.$scope.resetForm, {});
+                                $('form')[0].reset();
+                            }
+                        }, '提示', ['取消', '继续添加'], '');
+                    }
+                    else if (result && result.Status <= 0) {
+                        window.navigator.notification.alert(result.Message || '保存失败', null);
+                    }
+                }, function (err) {
+                    window.navigator.notification.alert("数据保存失败，请稍候重试", null);
+                });
+            }
         };
         AddAccount.prototype.uploadFile = function (file, type) {
             var self = this;
@@ -294,16 +293,16 @@ var WeMedia;
             path = window.location.origin + path;
             switch (type) {
                 case 'wx_head':
-                    this.$scope.wechatForm.WXImage = path;
+                    this.$scope.accountForm.Image = path;
                     break;
                 case 'fri_fans':
-                    this.$scope.friendsForm.FriendNumberImage = path;
+                    this.$scope.accountForm.FriendNumberImage = path;
                     break;
                 case 'wb_head':
-                    this.$scope.weiboForm.WeiBoImage = path;
+                    this.$scope.accountForm.Image = path;
                     break;
                 case 'fri_head':
-                    this.$scope.friendsForm.WXImage = path;
+                    this.$scope.accountForm.Image = path;
                     break;
             }
         };
@@ -318,7 +317,7 @@ var WeMedia;
                                 list.push(item);
                             }
                         });
-                        self.$scope.friendsForm.ProvinceID = list[0];
+                        self.$scope.accountForm.ProvinceID = list[0];
                     }
                     else if (!type && parId > 0) {
                         angular.forEach(data, function (item) {
@@ -333,9 +332,54 @@ var WeMedia;
             });
             return list;
         };
+        AddAccount.prototype.priceJson = function () {
+            var form = this.$scope.accountForm;
+            return JSON.stringify({
+                Price: form.Price || 0,
+                SingleYing: form.SingleYing || 0,
+                SingleRuan: form.SingleRuan || 0,
+                MoreFirstYing: form.MoreFirstYing || 0,
+                MoreFirstRuan: form.MoreFirstRuan || 0,
+                MoreSecondYing: form.MoreSecondYing || 0,
+                MoreSecondRuan: form.MoreSecondRuan || 0,
+                MoreThreeYing: form.MoreThreeYing || 0,
+                MoreThreeRuan: form.MoreThreeRuan || 0,
+                //微博
+                YGZhuanFaPrice: form.YGZhuanFaPrice || 0,
+                YGZhiFaPrice: form.YGZhiFaPrice || 0,
+                RGZhuanFaPrice: form.RGZhuanFaPrice || 0,
+                RGZhiFaPrice: form.RGZhiFaPrice || 0
+            });
+        };
+        AddAccount.prototype.findValue = function (type) {
+            if (type === void 0) { type = 'min'; }
+            var form = this.$scope.accountForm;
+            var arr = [
+                form.Price * 1 || 0,
+                form.SingleYing * 1 || 0,
+                form.SingleRuan * 1 || 0,
+                form.MoreFirstYing * 1 || 0,
+                form.MoreFirstRuan * 1 || 0,
+                form.MoreSecondYing * 1 || 0,
+                form.MoreSecondRuan * 1 || 0,
+                form.MoreThreeYing * 1 || 0,
+                form.MoreThreeRuan * 1 || 0,
+                form.YGZhuanFaPrice * 1 || 0,
+                form.YGZhiFaPrice * 1 || 0,
+                form.RGZhuanFaPrice * 1 || 0,
+                form.RGZhiFaPrice * 1 || 0
+            ];
+            if (type == 'min') {
+                return Math.min.apply(Math, arr);
+            }
+            else if (type == 'max') {
+                return Math.max.apply(Math, arr);
+            }
+            return 0;
+        };
         return AddAccount;
     })();
-    AddAccount.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'SearchTypeService', 'WechatPublicService', 'WeiboService', 'WechatFriendService', 'Upload', '$timeout', 'RegionService'];
+    AddAccount.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'SearchTypeService', 'MediaAccountService', 'Upload', '$timeout', 'RegionService', 'AuthService'];
     WeMedia.ControllerModule.controller('AddAccountCtrl', AddAccount);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=add-account.js.map

@@ -2,9 +2,7 @@
  * Created by AaronYuan on 8/19/15.
  */
 /// <reference path="../../app.ts" />
-/// <reference path="../../service/WechatPublic.ts" />
-/// <reference path="../../service/WeiboService.ts" />
-/// <reference path="../../service/WechatFriends.ts" />
+/// <reference path="../../service/MediaAccount.ts" />
 
 module WeMedia {
     'use strict';
@@ -31,6 +29,7 @@ module WeMedia {
         uploadFile:Function;
         fileContainer: any;
 
+        editItem: Function;
     }
 
     class Account {
@@ -39,9 +38,10 @@ module WeMedia {
             public $scope: IAccountScope,
             public $state: ng.ui.IStateService,
             public $stateParams: IWMStateParamsService,
-            public WechatPublicService: IWechatPublicService,
-            public WeiboService: IWeiboService,
-            public WechatFrinedService: IWechatFriendService
+            public MediaAccountService: IMediaAccountService
+            //public WechatPublicService: IWechatPublicService,
+            //public WeiboService: IWeiboService,
+            //public WechatFrinedService: IWechatFriendService
         ) {
             var self =this;
             $scope.currentMediaType = $stateParams.mediaType;
@@ -51,6 +51,7 @@ module WeMedia {
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.search = angular.bind(this, this.search);
             $scope.openOrClose = angular.bind(this, this.openOrClose);
+            $scope.editItem = angular.bind(this, this.editItem);
 
             $scope.checkedItems = [];
             $scope.currentPage = 1;
@@ -63,6 +64,7 @@ module WeMedia {
 
             $rootScope.$on('$stateChangeSuccess', function(e,state){
                 if(['admedia.account.wechat', 'admedia.account.weibo','admedia.account.friends'].indexOf(state.name) > -1){
+                    self.$scope.currentMediaType = state.params.mediaType;
                     self.refresh(state,null);
                     self.$scope.searchArgs.checkedItems = {};
                 }
@@ -73,65 +75,30 @@ module WeMedia {
 
         refresh(state, args){
             var self = this;
-            switch (state.name) {
-                case 'admedia.account.wechat':
-                    this.$scope.currentMediaType = 2;
-                    this.WechatPublicService.list(args).then(function(result){
-                        if(result){
-                            self.$scope.data = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }
-                    },function(err){
-                        self.$scope.totalItems = 0;
-                    });
-                    break;
-                case 'admedia.account.weibo':
-                    this.$scope.currentMediaType = 3;
-                    this.WeiboService.list(args).then(function(result){
-                        if(result) {
-                            self.$scope.data = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems || 0;
-                        }else{
-                            self.$scope.totalItems = 0;
-                        }
-                    }, function(err){
-                        self.$scope.totalItems = 0;
-                    });
-                    break;
-                case 'admedia.account.friends':
-                    this.$scope.currentMediaType = 4;
-                    this.WechatFrinedService.list(args).then(function(result){
-                        if(result) {
-                            self.$scope.data = result.Data || [];
-                            self.$scope.totalItems = result.TotalItems||0;
-                        } else {
-                            self.$scope.totalItems = 0;
-                        }
-                    }, function(err){
-                        self.$scope.totalItems = 0;
-                    });
-                    break;
-            }
+            args = angular.extend({
+                MediaID:this.$rootScope.user.ID,
+                ChannelID: this.$scope.currentMediaType
+            }, args);
+
+            this.MediaAccountService.list(args).then(function(result){
+                if(result) {
+                    self.$scope.data = result.Data || [];
+                    self.$scope.totalItems = result.TotalItems || 0;
+                }else{
+                    self.$scope.totalItems = 0;
+                }
+            }, function(err){
+                self.$scope.totalItems = 0;
+            });
         }
 
         addAccount(){
-            var name = '';
-            switch(this.$scope.currentMediaType*1) {
-                case 1:
-                    break;
-                case 2:
-                    name = 'admedia.account.addwechat';
-                    break;
-                case 3:
-                    name = 'admedia.account.addweibo';
-                    break;
-                case 4:
-                    name = 'admedia.account.addfriends';
-                    break;
-            }
-            if(name) {
-                this.$state.go(name);
-            }
+            var type = {
+                1:  'admedia.account.addweibo',
+                2: 'admedia.account.addwechat',
+                3: 'admedia.account.addfriends'
+            };
+            this.$state.go(type[this.$scope.currentMediaType]);
         }
 
         pageChanged(page) {
@@ -154,7 +121,6 @@ module WeMedia {
 
         search() {
             var self = this;
-            console.log(this.$scope.searchArgs);
             this.refresh(this.$state.current, {
                 pageSize: this.$scope.pageSize,
                 page: this.$scope.currentPage,
@@ -169,41 +135,44 @@ module WeMedia {
                     list.push(key);
                 }
             });
-            console.log(list.join('#'));
             if(list.length == 0){
                 ZENG.msgbox.show('请先选择操作的资源!',1);
                 return ;
             }
             var self = this;
-            switch (this.$state.current.name) {
-                case  "admedia.account.wechat":
-                    this.WechatPublicService.updateStatus({
-                        ids: list.join('#'),
-                        status: tag? 1: 0
-                    }).then(function (result) {
-                        if(result && result.Status == 1){
-                            ZENG.msgbox.show('操作成功!',4);
-                            self.refresh(self.$state.current, {
-                                pageSize: self.$scope.pageSize,
-                                page: self.$scope.currentPage
-                            });
-                        }else {
-                            ZENG.msgbox.show('操作失败，稍后重试!',5);
-                        }
-                    }, function(err) {
-                        ZENG.msgbox.show('操作失败，稍后重试!',5);
+            this.MediaAccountService.updateStatus({
+                ids: list.join('#'),
+                status: tag? 1: 0
+            }).then(function (result) {
+                if(result && result.Status == 1){
+                    ZENG.msgbox.show('操作成功!',4);
+                    self.refresh(self.$state.current, {
+                        pageSize: self.$scope.pageSize,
+                        page: self.$scope.currentPage
                     });
-                    break;
-                case  "admedia.account.weibo":
-                    break;
-                case  "admedia.account.friends":
-                    break;
-            }
+                }else {
+                    ZENG.msgbox.show('操作失败，稍后重试!',5);
+                }
+            }, function(err) {
+                ZENG.msgbox.show('操作失败，稍后重试!',5);
+            });
+        }
+
+        editItem(id){
+            var url = {
+                1: 'admedia.account.addweibo',
+                2:  'admedia.account.addwechat',
+                3:  'admedia.account.addfriends'
+            };
+
+            this.$state.go( url[this.$scope.currentMediaType], {
+                ID: id
+            });
         }
 
     }
 
-    Account.$inject = ['$rootScope', '$scope' , '$state', '$stateParams', 'WechatPublicService', 'WeiboService', 'WechatFriendService'];//, '$stateProvider'];
+    Account.$inject = ['$rootScope', '$scope' , '$state', '$stateParams','MediaAccountService',];
     ControllerModule.controller('AccountCtrl', Account);
 }
 
