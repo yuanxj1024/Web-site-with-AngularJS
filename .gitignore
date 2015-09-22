@@ -1,4 +1,4 @@
+.svn
+/.svn/
 
-scss/.svn/entries
-.svn/
-.svn/*
+*.svn-base
