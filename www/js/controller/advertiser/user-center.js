@@ -30,7 +30,9 @@ var WeMedia;
                 if (result && result.Status > 0) {
                     self.$rootScope.user = self.$scope.form;
                     self.AuthService.userInfo(self.$scope.form);
-                    window.navigator.notification.alert('数据保存成功!');
+                    //window.navigator.notification.alert('数据保存成功!');
+                    ZENG.msgbox.show('数据保存成功', 4);
+                    self.$rootScope.goToIndex();
                 }
                 else {
                     window.navigator.notification.alert('数据保存失败，请稍后重试');

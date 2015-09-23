@@ -4,26 +4,25 @@
 <head>
   <meta charset="utf-8">
   <title>推特</title>
+  <!-- build:css css/wemedia.all.css -->
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/non-responsive.css">
   <link rel="stylesheet" href="../bower_components/angular-datepicker/dist/index.css">
   <link rel="stylesheet" href="./css/wemedia.css">
   <link rel="stylesheet" href="./js/plugin/msgbox/msgbox.css">
-
+  <!-- endbuild -->
 </head>
 <body ng-app="WeMedia">
-<!--<div class="main-nav">-->
-  <!--<div ng-include="'./page/header.html'" ></div>-->
-<!--</div>-->
 <div class="main-body center">
   <ui-view></ui-view>
 </div>
 <div ng-include="'./page/footer.html'"></div>
+
+<!-- build:js js/wemedia.all.js -->
 <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
 <script type="text/javascript" src="../bower_components/ng-file-upload/ng-file-upload.min.js"></script>
 <script type="text/javascript" src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script type="text/javascript" src="../bower_components/angular-resource/angular-resource.min.js"></script>
-<!--<script type="text/javascript" src="../bower_components/angular-animate/angular-animate.min.js"></script>-->
 <script type="text/javascript" src="../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
 <script type="text/javascript" src="../bower_components/angular-cookies/angular-cookies.min.js"></script>
 <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
@@ -45,7 +44,6 @@
 <script type="text/javascript" src="./js/controller/advertiser/star.js"></script>
 <script type="text/javascript" src="./js/controller/advertiser/dashboard.js"></script>
 <script type="text/javascript" src="./js/controller/advertiser/precontract-list.js"></script>
-<script type="text/javascript" src="./js/controller/admedia/precontract-list.js"></script>
 <script type="text/javascript" src="./js/controller/admedia/account.js"></script>
 <script type="text/javascript" src="./js/controller/admedia/add-account.js"></script>
 <script type="text/javascript" src="./js/controller/admedia/precontact-list.js"></script>
@@ -65,6 +63,6 @@
 <script type="text/javascript" src="./js/service/BillService.js"></script>
 <script type="text/javascript" src="./js/service/Region.js"></script>
 <script type="text/javascript" src="./js/service/MediaAccount.js"></script>
-
+<!-- endbuild -->
 </body>
 </html>
