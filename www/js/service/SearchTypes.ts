@@ -72,6 +72,7 @@ module WeMedia {
         }
 
         common(mediaType:number):ng.IPromise<any> {
+            mediaType = 1;
             var deferred = this.$q.defer();
             var data = allClassData.common[mediaType];
             if(data && data.length > 0) {

@@ -49,6 +49,7 @@ var WeMedia;
             });
         }
         SearchTypes.prototype.common = function (mediaType) {
+            mediaType = 1;
             var deferred = this.$q.defer();
             var data = allClassData.common[mediaType];
             if (data && data.length > 0) {

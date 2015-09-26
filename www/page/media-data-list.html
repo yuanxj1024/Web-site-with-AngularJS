@@ -4,22 +4,17 @@
 <div>
   <div class="sub-header-wrap">
     <div class="container center">
-      <ul class="nav nav-pills" ng-if="currentMediaType == 1">
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.star">明星号资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.starprecontract">预约明星资源活动</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':2})">预约活动列表</a></li>
-      </ul>
       <ul class="nav nav-pills" ng-if="currentMediaType == 2">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechat">公众号资源</a></li>
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">预约公众号资源活动</a></li>
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">预约活动列表</a></li>
       </ul>
-      <ul class="nav nav-pills" ng-if="currentMediaType == 3">
+      <ul class="nav nav-pills" ng-if="currentMediaType == 1">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weibo">微博资源</a></li>
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">预约微博资源活动</a></li>
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">预约活动列表</a></li>
       </ul>
-      <ul class="nav nav-pills" ng-if="currentMediaType == 4">
+      <ul class="nav nav-pills" ng-if="currentMediaType == 3">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friends">朋友圈资源</a></li>
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">预约朋友圈资源活动</a></li>
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">预约活动列表</a></li>
@@ -54,7 +49,7 @@
           </ul>
           <div class="input-wrap">
             <input type="text" ng-model="searchKey" placeholder="输入关键字">
-            <button class="glyphicon glyphicon-search" type="button"></button>
+            <button class="glyphicon glyphicon-search" ng-click="" type="button"></button>
           </div>
         </div>
       </div>

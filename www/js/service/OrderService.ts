@@ -14,6 +14,7 @@ module WeMedia {
         detail(id:number): ng.IPromise<any>;
 
         myOrderList(args:any): ng.IPromise<any>;
+        orderDetailState(args:any): ng.IPromise<any>;
 
         selectedList: Array<any>;
     }
@@ -25,6 +26,7 @@ module WeMedia {
         cancel(params:Object, data:Object, success?:Function, error?:Function);
         detail(params:Object, data:Object, success?:Function, error?:Function);
         myOrder(params:Object, data:Object, success?:Function, error?:Function);
+        orderDetailState(params:Object, data:Object, success?:Function, error?:Function);
     }
 
     class Order {
@@ -85,6 +87,14 @@ module WeMedia {
                     isArray: false,
                     params: {
                         'action': 'myOrderList'
+                    }
+                },
+                orderDetailState: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'comfirmOrder'
                     }
                 }
             });
@@ -163,7 +173,18 @@ module WeMedia {
                 deferred.reject(err);
             });
             return deferred.promise;
-
+        }
+        orderDetailState(args:any){
+            var deferred = this.$q.defer();
+            this.orderResource.orderDetailState(args ,null, function(result){
+                if(typeof result == 'string'){
+                    result.JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
         }
     }
 

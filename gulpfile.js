@@ -17,9 +17,7 @@ var path = require('path');
 var statics = 'http://statics.as.missfresh.cn/frontend';
 //var statics = '.';
 
-
-//测试一下提交，请忽略注释
-
+var output = './dest/';
 var paths = {
   sass: ['./scss/**/*.scss']
 };
@@ -74,7 +72,7 @@ gulp.task('usemin', function(cd) {
       css: [minifyCss(), 'concat']
       //js: [rev()]
     }))
-    .pipe(gulp.dest('./dest/'));
+    .pipe(gulp.dest(output));
 });
 
 gulp.task('move-to-dest', function() {
@@ -82,17 +80,23 @@ gulp.task('move-to-dest', function() {
     './www/font/**/*',
     './www/img/**/*',
     './www/template/**/*',
-    './www/page/**/*',
+    './www/page/**/*'
     //'./www/css/**/*',
     //'./www/js/**/*',
     //'./www/*.js'
     //'./www/home.html'
   ], {base: './www'})
-    .pipe(gulp.dest('./dest/'));
+    .pipe(gulp.dest(output));
 });
 
 gulp.task('prepare-web', ['clean-dest'], function() {
   gulp.start('usemin', 'move-to-dest');
 });
+
+gulp.task('release', function() {
+  output = '../WeMedia/';
+  gulp.start('usemin', 'move-to-dest');
+});
+
 
 

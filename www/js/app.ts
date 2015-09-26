@@ -71,7 +71,7 @@ module WeMedia {
             $cookies: ng.cookies.ICookieStoreService,
             AuthService: IAuthInfoService
         ) {
-            $rootScope.isDebug = false; //location.host.indexOf(':') >= 0;
+            $rootScope.isDebug = false;
             if($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
@@ -83,7 +83,7 @@ module WeMedia {
                     Company: 'tests'
                 };
                 $cookies.put('authUser', JSON.stringify(userinfo));
-                $rootScope.isAdOwner = false;
+                $rootScope.isAdOwner = !false;
             } else {
                 //角色设定
                 $rootScope.isAdOwner = $cookies.get('isAdvertiser') == 'true';

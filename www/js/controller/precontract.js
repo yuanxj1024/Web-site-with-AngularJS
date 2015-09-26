@@ -72,11 +72,21 @@ var WeMedia;
             }
             this.$scope.wechatForm.mediaType = this.$scope.currentMediaType * 1 - 1;
             if (this.validate()) {
-                var ids = [];
+                var ids = [], list = [];
                 angular.forEach(this.$scope.selectedList, function (item) {
                     ids.push(item.ID);
+                    list.push({
+                        ID: item.ID,
+                        Name: item.AccountName,
+                        Image: item.Image,
+                        PriceRange: item.MinPrice + '-' + item.MaxPrice,
+                        MaxPrice: item.MaxPrice,
+                        FansNumber: item.FansNumber,
+                        DetailNo: item.DetailNo
+                    });
                 });
                 this.$scope.wechatForm.items = ids.join('#');
+                //this.$scope.wechatForm.dataList = JSON.stringify(list);
                 this.$scope.wechatForm.Advertiser_ID = this.$rootScope.user.ID;
                 this.OrderService.save(this.$scope.wechatForm).then(function (result) {
                     if (result && result.Status == 1) {
@@ -96,14 +106,12 @@ var WeMedia;
             var name = '';
             switch (this.$scope.currentMediaType * 1) {
                 case 1:
+                    name = 'advertiser.weibo';
                     break;
                 case 2:
                     name = 'advertiser.wechat';
                     break;
                 case 3:
-                    name = 'advertiser.weibo';
-                    break;
-                case 4:
                     name = 'advertiser.friends';
                     break;
             }

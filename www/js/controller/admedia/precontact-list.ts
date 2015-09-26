@@ -7,7 +7,7 @@
 module WeMedia {
     'use strict';
 
-    declare var window;
+    declare var window, ZENG;
 
     var orderTypeNames = {
         1: '全部',
@@ -25,15 +25,17 @@ module WeMedia {
             $scope.getChannelName = angular.bind(this, this.getChannelName);
             $scope.getStateName = angular.bind(this, this.getStateName);
             $scope.searchHandler = angular.bind(this, this.searchHandler);
+            $scope.updateState = angular.bind(this, this.updateState);
 
-            $scope.orderType = this.convertOrderType($stateParams.orderType);
+            $scope.orderType = $stateParams.orderType;
             $scope.orderTitle = orderTypeNames[$stateParams.orderType];
 
             var self = this;
 
             this.init();
             this.$rootScope.$on('$stateChangeSuccess', function(e,state){
-                $scope.orderType = self.convertOrderType(state.params.orderType);
+                $scope.orderType = state.params.orderType;
+                console.log($scope.orderType);
                 $scope.orderTitle = orderTypeNames[state.params.orderType];
                 self.refresh();
             });
@@ -85,8 +87,6 @@ module WeMedia {
                 self.$scope.dataList= [];
                 self.$scope.totalItems = 0;
             });
-
-
         }
 
         getChannelName(code) {
@@ -99,10 +99,30 @@ module WeMedia {
 
         getStateName(code){
             return {
-                1: '审核中',
-                2: '审核不通过',
-                3: '审核通过'
+                1: '待确认',
+                2: '已同意',
+                3: '待执行',
+                4: '执行完成'
             }[code];
+        }
+
+        updateState(id: number, state:number = 1){
+            var args = {
+                id: id,
+                state: state
+            },
+                self = this;
+            self.OrderService.orderDetailState(args).then(function(result){
+                if(result && result.Status*1 > 0){
+                    self.refresh();
+                    ZENG.msgbox.show('操作成功!',4);
+                }else{
+                    ZENG.msgbox.show('操作失败，请稍候重试!',1);
+                }
+            }, function(){
+                ZENG.msgbox.show('操作失败，请稍候重试!',5);
+            });
+
         }
 
         searchHandler(){

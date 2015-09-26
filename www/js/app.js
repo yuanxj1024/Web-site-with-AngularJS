@@ -31,7 +31,7 @@ var WeMedia;
     //应用启动入口-构造函数
     var AppInit = (function () {
         function AppInit($rootScope, $injector, $state, $location, $cookies, AuthService) {
-            $rootScope.isDebug = false; //location.host.indexOf(':') >= 0;
+            $rootScope.isDebug = false;
             if ($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
@@ -43,7 +43,7 @@ var WeMedia;
                     Company: 'tests'
                 };
                 $cookies.put('authUser', JSON.stringify(userinfo));
-                $rootScope.isAdOwner = false;
+                $rootScope.isAdOwner = !false;
             }
             else {
                 //角色设定

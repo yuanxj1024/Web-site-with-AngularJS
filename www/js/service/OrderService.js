@@ -61,6 +61,14 @@ var WeMedia;
                     params: {
                         'action': 'myOrderList'
                     }
+                },
+                orderDetailState: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'comfirmOrder'
+                    }
                 }
             });
         }
@@ -127,6 +135,18 @@ var WeMedia;
         Order.prototype.myOrderList = function (args) {
             var deferred = this.$q.defer();
             this.orderResource.myOrder(args, null, function (result) {
+                if (typeof result == 'string') {
+                    result.JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Order.prototype.orderDetailState = function (args) {
+            var deferred = this.$q.defer();
+            this.orderResource.orderDetailState(args, null, function (result) {
                 if (typeof result == 'string') {
                     result.JSON.parse(result);
                 }

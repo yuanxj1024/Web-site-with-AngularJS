@@ -120,9 +120,9 @@ module WeMedia {
                 case 1:
                     return '待审核';
                 case 2:
-                    return '审核中';
+                    return '审核不通过';
                 case 3:
-                    return '审核未通过';
+                    return '通过';
                 case 4:
                     return '取消';
                 case 9:

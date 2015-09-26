@@ -34,6 +34,7 @@ var WeMedia;
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.createOrder = angular.bind(this, this.createOrder);
             $scope.addItem = angular.bind(this, this.addItem);
+            $scope.searchKeyword = angular.bind(this, this.searchKeyword);
             $scope.currentMediaType = $stateParams.mediaType * 1;
             $scope.tabIndex = 1;
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
@@ -199,8 +200,14 @@ var WeMedia;
                 fansNumber: this.$scope.selected.fansNumber ? this.$scope.selected.fansNumber.ID : 0,
                 price: this.$scope.selected.price ? this.$scope.selected.price.ID : 0,
                 isEnable: 1,
-                ClassID: this.$scope.selected.common.ID || 0
+                ClassID: this.$scope.selected.common.ID || 0,
+                keyword: ''
             };
+        };
+        MediaDataList.prototype.searchKeyword = function () {
+            this.$scope.currentPage = 1;
+            console.log(this.$scope.searchKey);
+            this.refresh();
         };
         return MediaDataList;
     })();
