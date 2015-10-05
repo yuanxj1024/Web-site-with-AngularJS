@@ -6,18 +6,18 @@
     <div class="container center">
       <ul class="nav nav-pills" ng-if="currentMediaType == 2">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechat">公众号资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">预约公众号资源活动</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">预约活动列表</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">发布公众号资源任务</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">发布任务列表</a></li>
       </ul>
       <ul class="nav nav-pills" ng-if="currentMediaType == 1">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weibo">微博资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">预约微博资源活动</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">预约活动列表</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">发布微博资源任务</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">发布任务列表</a></li>
       </ul>
       <ul class="nav nav-pills" ng-if="currentMediaType == 3">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friends">朋友圈资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">预约朋友圈资源活动</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">预约活动列表</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">发布朋友圈资源任务</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">发布任务列表</a></li>
       </ul>
     </div>
   </div>
@@ -37,19 +37,19 @@
       </div>
     </div>
     <div class="create-order-fixed-wrap" ng-if="selectedMediaTotal>0">
-      <span class="selected">已选中{{selectedMediaTotal}}项资源</span><button class="btn btn-success" ng-click="createOrder()">立即创建预约订单</button></div>
+      <span class="selected">已选中{{selectedMediaTotal}}项资源，参考总报价：{{totalSelectedMoney | currency: ''}}元</span><button class="btn btn-success" ng-click="createOrder()">立即创建预约订单</button></div>
 
     <div class="search-wrap">
       <div class="search-input row">
         <div class="search-left">
           <ul class="search-nav">
             <li ng-class="{true:'active'}[tabIndex ==1]"><a ng-click="tabIndex = 1" href="">全部资源</a></li>
-            <li ng-class="{true:'active'}[tabIndex ==2]"><a ng-click="tabIndex = 2" href="">收藏资源</a></li>
+            <!--<li ng-class="{true:'active'}[tabIndex ==2]"><a ng-click="tabIndex = 2" href="">收藏资源</a></li>-->
             <!--<li ng-class="{true:'active'}[tabIndex ==3]"><a ng-click="tabIndex = 3" href="">报价单资源</a></li>-->
           </ul>
           <div class="input-wrap">
             <input type="text" ng-model="searchKey" placeholder="输入关键字">
-            <button class="glyphicon glyphicon-search" ng-click="" type="button"></button>
+            <button class="glyphicon glyphicon-search" ng-click="searchKeyword()" type="button"></button>
           </div>
         </div>
       </div>
@@ -138,6 +138,7 @@
             <th>多图文第一条</th>
             <th>多图文第二条</th>
             <th>多图文3~N条</th>
+            <th>联系方式</th>
             <!--<th>操作</th>-->
           </tr>
           <tr ng-repeat="item in list track by $index">
@@ -148,18 +149,23 @@
             <td class="media-img">
               <img ng-src="{{window.location.origin + item.Image}}" alt=""/>
               <div class="item-info">
-                  <p class="media-name">{{item.NickName}} <i class="glyphicon glyphicon-qrcode"></i></p>
+                  <p class="media-name">{{item.NickName}} <i class="glyphicon glyphicon-qrcode wechat-qr-img"><img class="wechat-qr" onerror="this.style.display='none'" src="http://open.weixin.qq.com/qr/code/?username={{item.AccountName}}" alt=""/></i></p>
                   <!--<p><a href="javascript:;">二维码</a></p>-->
                   <p>微信号:{{item.AccountName}}</p>
               </div>
             </td>
             <td>{{item.FansNumber}}</td>
             <td>{{item.sex == 1 ? '男': '女'}}</td>
-            <td><p>硬{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>软{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
-            <td><p>硬{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>软{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
-            <td><p>硬{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>软{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
-            <td><p>硬{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>软{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
+            <td><p>硬：{{item.PriceJSON.SingleYing <=0?'不接':'￥'+item.PriceJSON.SingleYing.toFixed(2) }}</p><p>软：{{item.PriceJSON.SingleRuan <=0?'不接': item.PriceJSON.SingleRuan.toFixed(2)}}</p></td>
+            <td><p>硬：{{item.PriceJSON.MoreFirstYing <=0?'不接':'￥' + item.PriceJSON.MoreFirstYing.toFixed(2)}}</p><p>软：{{item.PriceJSON.MoreFirstRuan <=0?'不接':'￥' + item.PriceJSON.MoreFirstRuan.toFixed(2)}}</p></td>
+            <td><p>硬：{{item.PriceJSON.MoreSecondYing <=0?'不接':'￥' + item.PriceJSON.MoreSecondYing.toFixed(2)}}</p><p>软：{{item.PriceJSON.MoreSecondRuan <=0?'不接':'￥' + item.PriceJSON.MoreSecondRuan.toFixed(2)}}</p></td>
+            <td><p>硬：{{item.PriceJSON.MoreThreeYing <=0?'不接':'￥' + item.PriceJSON.MoreThreeYing.toFixed(2)}}</p><p>软：{{item.PriceJSON.MoreThreeRuan  <=0?'不接':'￥' +item.PriceJSON.MoreThreeRuan.toFixed(2)}}</p></td>
             <!--<td><a href="#">详情</a></td>-->
+            <td>
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=2763479749&site=qq&menu=yes" target="_blank">
+                <img src="http://wpa.qq.com/pa?p=2:2763479749:41 &r=0.22914223582483828" alt="qq交谈"/>
+              </a>
+            </td>
           </tr>
           <tr ng-if="list.length <= 0|| totalItems<=0">
             <td colspan="13">
@@ -181,6 +187,7 @@
             <th>硬广转发价</th>
             <th>软广直发价</th>
             <th>软广转发价</th>
+            <th>联系方式</th>
             <!--<th>操作</th>-->
           </tr>
           <tr ng-repeat="item in list track by $index">
@@ -203,6 +210,11 @@
             <td>{{item.PriceJSON.YGZhuanFaPrice | currency: '￥'}}</td>
             <td>{{item.PriceJSON.RGZhiFaPrice | currency: '￥'}}</td>
             <td>{{item.PriceJSON.RGZhuanFaPrice | currency: '￥'}}</td>
+            <td>
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=2763479749&site=qq&menu=yes" target="_blank">
+                <img src="http://wpa.qq.com/pa?p=2:2763479749:41 &r=0.22914223582483828" alt="qq交谈"/>
+              </a>
+            </td>
             <!--<td><a href="#">详情</a></td>-->
           </tr>
           <tr ng-if="list.length <= 0|| totalItems<=0">
@@ -224,6 +236,7 @@
             <th>好友数</th>
             <th>报价</th>
             <th>介绍</th>
+            <th>联系方式</th>
             <!--<th>操作</th>-->
           </tr>
           <tr ng-repeat="item in list track by $index">
@@ -238,13 +251,18 @@
                 <p>微信号:{{item.AccountName.slice(0,2) + '****'}}</p>
               </div>
             </td>
-            <td>{{item.ClassName}}</td>
-            <td>{{item.ProvinceName}},{{item.CityName}}</td>
+            <td>{{item.ClassName||'暂无'}}</td>
+            <td>{{item.ProvinceName|| '-'}},{{item.CityName || '-'}}</td>
             <td>{{item.sex == 1 ? '男': '女'}}</td>
             <td>{{item.FansNumber}}</td>
             <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
-            <td>
+            <td class="intro">
               <p class="media-intro">{{item.Intro}}</p>
+            </td>
+            <td>
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=2763479749&site=qq&menu=yes" target="_blank">
+                <img src="http://wpa.qq.com/pa?p=2:2763479749:41 &r=0.22914223582483828" alt="qq交谈"/>
+              </a>
             </td>
             <!--<td><a href="#">详情</a></td>-->
           </tr>

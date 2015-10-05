@@ -4,32 +4,27 @@
 <div ng-controller="PrecontractListCtrl">
 <div class="sub-header-wrap">
   <div class="container">
-    <ul class="nav nav-pills" ng-if="currentMediaType == 1">
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.star">明星号资源</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.starprecontract">预约明星资源活动</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.precontractList({'mediaType':1})">预约活动列表</a></li>
-    </ul>
     <ul class="nav nav-pills" ng-if="currentMediaType == 2">
       <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechat">公众号资源</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">预约公众号资源活动</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">预约活动列表</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">发布公众号资源任务</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">发布任务列表</a></li>
+    </ul>
+    <ul class="nav nav-pills" ng-if="currentMediaType == 1">
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weibo">微博资源</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">发布微博资源任务</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">发布任务列表</a></li>
     </ul>
     <ul class="nav nav-pills" ng-if="currentMediaType == 3">
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weibo">微博资源</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">预约微博资源活动</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">预约活动列表</a></li>
-    </ul>
-    <ul class="nav nav-pills" ng-if="currentMediaType == 4">
       <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friends">朋友圈资源</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">预约朋友圈资源活动</a></li>
-      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">预约活动列表</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">发布朋友圈资源任务</a></li>
+      <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">发布任务列表</a></li>
     </ul>
   </div>
 </div>
 <div class="precontract-wrap page-minHeight">
   <div class="precontract-body container">
     <div class="header">
-      <h4 class="page-title"><i class="glyphicon glyphicon-file"></i> {{currentMediaName}}预约活动列表</h4>
+      <h4 class="page-title"><i class="glyphicon glyphicon-file"></i> {{currentMediaName}}任务列表</h4>
     </div>
     <div class="main-body marginTop">
       <table class="table table-striped table-hover">

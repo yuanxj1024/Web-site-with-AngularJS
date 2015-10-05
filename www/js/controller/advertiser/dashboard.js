@@ -21,6 +21,9 @@ var WeMedia;
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this, this.test);
             $scope.openNotice = angular.bind(this, this.openNotice);
+            $scope.removeItem = angular.bind(this, this.removeItem);
+            $scope.getStateName = angular.bind(this, this.getStateName);
+            $scope.updateState = angular.bind(this, this.updateState);
             $scope.noticeList = [];
             $scope.orderList = [];
             $scope.orderInfo = {
@@ -39,19 +42,20 @@ var WeMedia;
             var self = this;
             this.CommonService.noticeList({
                 page: 1,
-                pageSize: 4
+                pageSize: 4,
+                type: self.$rootScope.isAdOwner ? 3 : 4
             }).then(function (result) {
                 if (result && result.Data) {
                     self.$scope.noticeList = result.Data;
                 }
             }, function (err) {
             });
-            this.OrderService.list({}).then(function (result) {
-                if (result && result.Data) {
-                    self.$scope.orderList = result.Data;
-                }
-            }, function (err) {
-            });
+            if (this.$rootScope.isAdOwner) {
+                self.getOrderList();
+            }
+            else {
+                this.admediaOrderList();
+            }
             self.WeiboService.list({
                 pageSize: 6,
                 page: 1,
@@ -60,6 +64,17 @@ var WeMedia;
                 if (result && result.Data) {
                     self.$scope.newList = result.Data || [];
                 }
+            });
+        };
+        Dashboard.prototype.getOrderList = function () {
+            var self = this;
+            this.OrderService.list({
+                userID: this.$rootScope.user.ID
+            }).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.orderList = result.Data;
+                }
+            }, function (err) {
             });
         };
         Dashboard.prototype.test = function () {
@@ -71,13 +86,13 @@ var WeMedia;
                 case 1:
                     return '待审核';
                 case 2:
-                    return '审核中';
+                    return '不通过';
                 case 3:
-                    return '审核未通过';
+                    return '通过';
                 case 4:
                     return '取消';
                 case 9:
-                    return '审核通过';
+                    return '完成';
             }
         };
         Dashboard.prototype.openNotice = function (id) {
@@ -96,6 +111,70 @@ var WeMedia;
                 });
                 self.ModalService.currentModal = self.$scope.modalInstance;
             }, function (err) {
+            });
+        };
+        Dashboard.prototype.removeItem = function (id) {
+            var self = this;
+            window.navigator.notification.confirm('确定放弃该预约吗？', function (index) {
+                if (index == 1) {
+                    self.OrderService.cancel(id).then(function (result) {
+                        if (result && result.Status == 1) {
+                            ZENG.msgbox.show('操作成功!', 4);
+                            self.getOrderList();
+                        }
+                        else {
+                            ZENG.msgbox.show('操作失败，请稍候重试!', 5);
+                        }
+                    }, function (err) {
+                        ZENG.msgbox.show('操作失败，请稍候重试!', 1);
+                    });
+                }
+            }, '放弃预约', ['确定', '取消']);
+        };
+        Dashboard.prototype.admediaOrderList = function () {
+            var self = this;
+            this.OrderService.myOrderList({
+                userID: self.$rootScope.user.ID,
+                page: 1,
+                pageSize: 15,
+                state: '',
+                name: '',
+                channelID: ''
+            }).then(function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                if (result && result.Data) {
+                    self.$scope.orderList = result.Data;
+                }
+            }, function () {
+                self.$scope.orderList = [];
+            });
+        };
+        Dashboard.prototype.getStateName = function (code) {
+            return {
+                1: '待确认',
+                2: '已同意',
+                3: '待执行',
+                4: '执行完成'
+            }[code];
+        };
+        Dashboard.prototype.updateState = function (id, state) {
+            if (state === void 0) { state = 1; }
+            var args = {
+                id: id,
+                state: state
+            }, self = this;
+            self.OrderService.orderDetailState(args).then(function (result) {
+                if (result && result.Status * 1 > 0) {
+                    self.admediaOrderList();
+                    ZENG.msgbox.show('操作成功!', 4);
+                }
+                else {
+                    ZENG.msgbox.show('操作失败，请稍候重试!', 1);
+                }
+            }, function () {
+                ZENG.msgbox.show('操作失败，请稍候重试!', 5);
             });
         };
         return Dashboard;

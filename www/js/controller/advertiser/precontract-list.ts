@@ -64,6 +64,7 @@ module WeMedia {
                 if(index == 1){
                     self.OrderService.cancel(id).then(function(result){
                         if(result && result.Status ==1){
+                            self.refresh();
                             window.navigator.notification.alert('操作成功!')
                         }else{
                             window.navigator.notification.alert('操作失败，请稍后重试!')
@@ -76,11 +77,10 @@ module WeMedia {
 
         }
         editItem(id: number) {
-            console.log(id);
             var stats = {
                 2: 'advertiser.wechatprecontract',
-                3: 'advertiser.weiboprecontract',
-                4: 'advertiser.friendsprecontract'
+                1: 'advertiser.weiboprecontract',
+                3: 'advertiser.friendsprecontract'
             };
             this.$state.go(stats[this.$scope.currentMediaType],{ editID: id});
         }
@@ -94,8 +94,10 @@ module WeMedia {
             var self = this;
             this.$scope.dataList = [];
             args = angular.extend(args, {
+                userID: self.$rootScope.user.ID,
                 pageIndex: self.$scope.currentPageIndex,
-                pageSize: self.$scope.pageSize
+                pageSize: self.$scope.pageSize,
+                channelID: this.$scope.currentMediaType
             });
             this.OrderService.list(args).then(function(result){
                 if(result && result.Data){

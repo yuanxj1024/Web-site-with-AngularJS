@@ -76,7 +76,6 @@ module WeMedia {
                 'url': '/wechatprecontract',
                 'params': {
                     'mediaType': '2',
-                    'isEdit': 0,
                     'editID': 0
                 },
                 'views': {
@@ -89,7 +88,6 @@ module WeMedia {
                 'url': '/weiboprecontract',
                 'params': {
                     'mediaType': '1',
-                    'isEdit': 0,
                     'editID': 0
                 },
                 'views': {
@@ -102,7 +100,6 @@ module WeMedia {
                 'url': '/friendsprecontract',
                 'params': {
                     'mediaType': '3',
-                    'isEdit': 0,
                     'editID': 0
                 },
                 'views': {
@@ -136,7 +133,7 @@ module WeMedia {
             .state('advertiser.weiboPreList', {
                 'url': '/weiboPreList',
                 'params': {
-                    'mediaType': '3'
+                    'mediaType': '1'
                 },
                 'views': {
                     'advertiser': {
@@ -147,7 +144,7 @@ module WeMedia {
             .state('advertiser.friendsPreList', {
                 'url': '/friendsPreList',
                 'params': {
-                    'mediaType': '4'
+                    'mediaType': '3'
                 },
                 'views': {
                     'advertiser': {

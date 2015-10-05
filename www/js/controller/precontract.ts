@@ -109,20 +109,11 @@ module WeMedia {
             if(!$valid) {
                 window.navigator.notification.alert('请将信息填写完整',null);
             }
-            this.$scope.wechatForm.mediaType = this.$scope.currentMediaType*1 -1;
+            this.$scope.wechatForm.mediaType = this.$scope.currentMediaType;
             if(this.validate()){
-                var ids = [], list=[];
+                var ids = [];
                 angular.forEach(this.$scope.selectedList, function(item){
                     ids.push(item.ID);
-                    list.push({
-                        ID: item.ID,
-                        Name: item.AccountName,
-                        Image: item.Image,
-                        PriceRange: item.MinPrice + '-'+item.MaxPrice,
-                        MaxPrice:item.MaxPrice,
-                        FansNumber: item.FansNumber,
-                        DetailNo : item.DetailNo
-                    });
                 });
 
                 this.$scope.wechatForm.items = ids.join('#');
@@ -131,7 +122,7 @@ module WeMedia {
 
                 this.OrderService.save(this.$scope.wechatForm).then(function(result){
                     if(result && result.Status == 1) {
-                        window.navigator.notification.alert('数据保存成功!',function(){
+                        window.navigator.notification.alert('您的订单创建完成，请等待审核。',function(){
                             self.goList();
                         });
 
@@ -355,7 +346,5 @@ module WeMedia {
     PrecontractCtrl.$inject = ['$rootScope','$scope', '$state', '$stateParams', 'ModalService',  'OrderService', '$modal', 'MediaAccountService'];
     ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
-    //ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
-    //ControllerModule.controller('PrecontractListCtrl', PrecontractCtrl);
 }
 

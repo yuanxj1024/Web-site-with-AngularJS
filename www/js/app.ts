@@ -71,7 +71,7 @@ module WeMedia {
             $cookies: ng.cookies.ICookieStoreService,
             AuthService: IAuthInfoService
         ) {
-            $rootScope.isDebug = false;
+            $rootScope.isDebug = true;
             if($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');

@@ -1,5 +1,5 @@
 <div class="top-heasder-wrap center" ng-controller="HeaderCtrl">
-  <div class="container top-header" ng-class="{true:'dashboard-width'}[stateName == 'advertiser.dashboard']">
+  <div class="container top-header" ng-class="{true:'dashboard-width'}[stateName == 'advertiser.dashboard'|| stateName =='admedia.dashboard']">
     <div class="company-name">
       <a href="/">
         <img src="/img/logo.png" alt=""/>
@@ -17,22 +17,22 @@
       <!-- 广告主-->
       <ul ng-if="isAdOwner" class="nav navbar-nav">
         <li ui-sref-active="active">
-          <a href="#" ui-sref="advertiser.dashboard">我的推特</a>
+          <a href="#" ui-sref="advertiser.dashboard">广告主账户</a>
         </li>
         <!--<li ui-sref-active="active">-->
           <!--<a ui-sref="advertiser.star" href="#" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">明星 </a>j-->
         <!--</li>-->
         <li ui-sref-active="active">
-          <a ui-sref="advertiser.wechat" href="#" class="dropdown-toggle"  role="button" aria-haspopup="true" aria-expanded="false">微信公众号</a>
+          <a ui-sref="advertiser.wechat" href="#" class="dropdown-toggle"  role="button" aria-haspopup="true" aria-expanded="false">查找微信公众号</a>
         </li>
         <li ui-sref-active="active">
-          <a ui-sref="advertiser.weibo" href="#" role="button" aria-haspopup="true" aria-expanded="false">新浪微博 </a>
+          <a ui-sref="advertiser.weibo" href="#" role="button" aria-haspopup="true" aria-expanded="false">查找新浪微博</a>
         </li>
         <li ui-sref-active="active">
-          <a ui-sref="advertiser.friends" href="#" role="button" aria-haspopup="true" aria-expanded="false">微信朋友圈 </a>
+          <a ui-sref="advertiser.friends" href="#" role="button" aria-haspopup="true" aria-expanded="false">查找微信朋友圈</a>
         </li>
-        <li>
-          <a ui-sref="advertiser.bill"  href="#" role="button" aria-haspopup="true" aria-expanded="false">账单查询 </a>
+        <li ui-sref-active="active">
+          <a ui-sref="advertiser.bill"  href="#" role="button" aria-haspopup="true" aria-expanded="false">账单查询</a>
         </li>
         <li ui-sref-active="active">
           <a  ui-sref="advertiser.user" href="#"  role="button" aria-haspopup="true" aria-expanded="false">用户中心</a>
@@ -42,7 +42,7 @@
       <!-- 自媒体-->
       <ul ng-if="!isAdOwner" class="nav navbar-nav">
         <li ui-sref-active="active">
-          <a href="#" ui-sref="admedia.dashboard">我的推特</a>
+          <a href="#" ui-sref="admedia.dashboard">媒介主账户</a>
         </li>
         <li ui-sref-active="active">
           <a ui-sref="admedia.account.wechat" href="#" role="button" aria-haspopup="true" aria-expanded="false">账号管理 </a>

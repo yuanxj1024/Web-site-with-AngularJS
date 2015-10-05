@@ -18,7 +18,7 @@
         <tr>
           <td>{{user.Mobile}}</td>
           <!--<td>{{user.LinkName}}</td>-->
-          <td>{{user.TotalAmount||0 | currency: '￥'}}</td>
+          <td>{{user.TotalAmount ||'' }}</td>
           <td>{{user.AmountFrozen||0 | currency: '￥'}}</td>
           <td>{{user.AvailableBanance||0 | currency: '￥'}}</td>
         </tr>

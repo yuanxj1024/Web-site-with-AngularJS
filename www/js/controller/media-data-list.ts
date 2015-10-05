@@ -6,7 +6,7 @@
 /// <reference path="../service/SearchTypes.ts" />
 /// <reference path="../service/OrderService.ts" />
 /// <reference path="../service/Region.ts" />
-/// <reference path="../service/MediaAccount" />
+/// <reference path="../service/MediaAccount.ts" />
 
 module WeMedia {
     'use strict';
@@ -40,6 +40,7 @@ module WeMedia {
 
         createOrder: Function;
         addItem: Function;
+        totalSelectedMoney: number;
         searchKeyword:Function;
     }
 
@@ -56,15 +57,12 @@ module WeMedia {
             public $state: ng.ui.IStateService,
             public $stateParams: IWMStateParamsService,
             public SearchTypeService: ISearchTypeService,
-            //public WechatPublicService: IWechatPublicService,
-            //public WechatFriendsService: IWechatFriendService,
-            //public WeiboService: IWeiboService,
             public OrderService: IOrderService,
             public RegionService: IRegionService,
             public MediaAccountService: IMediaAccountService
         ) {
             if(!$stateParams.mediaType) {
-                //$scope.goToIndex();
+                $scope.goToIndex();
             }
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.createOrder = angular.bind(this,this.createOrder);
@@ -72,6 +70,7 @@ module WeMedia {
             $scope.searchKeyword = angular.bind(this, this.searchKeyword);
 
             $scope.currentMediaType = $stateParams.mediaType*1;
+            $scope.totalSelectedMoney = 0;
             $scope.tabIndex = 1;
             $scope.currentMediaName = allMedias[$stateParams.mediaType];
             $scope.searchTypeData = $scope.searchTypeData|| {};
@@ -99,7 +98,7 @@ module WeMedia {
             $scope.currentPage = 1;
 
             this.init();
-            //this.refresh();
+
         } //end constructor
 
         init() {
@@ -239,6 +238,9 @@ module WeMedia {
             angular.forEach(this.$scope.selectedMediaItems, function(val,key){
                 if(val){
                     self.$scope.selectedMediaTotal += 1;
+                    if(!isNaN(item.MaxPrice)) {
+                        self.$scope.totalSelectedMoney += item.MaxPrice*1;
+                    }
                 }
             });
         }
@@ -252,13 +254,12 @@ module WeMedia {
                 price:  this.$scope.selected.price ?this.$scope.selected.price.ID : 0,
                 isEnable: 1,
                 ClassID: this.$scope.selected.common.ID || 0,
-                keyword: ''
+                keyword: this.$scope.searchKey
             };
         }
 
         searchKeyword() {
             this.$scope.currentPage = 1;
-            console.log(this.$scope.searchKey);
             this.refresh();
         }
     }

@@ -31,7 +31,7 @@
         <!--<a class="more" href="#">详情>></a>-->
       </div>
     </div>
-    <div class="body" ng-controller="PrecontractListCtrl">
+    <div class="body">
       <div class="header">活动列表</div>
         <table class="table table-striped table-hover">
           <tr>
@@ -43,7 +43,7 @@
             <th>状态</th>
             <th>操作</th>
           </tr>
-          <tr ng-repeat="item in dataList track by $index">
+          <tr ng-repeat="item in orderList track by $index">
             <td>{{item.Title}}</td>
             <td>{{calcDate(item.FeedbackTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
             <td>{{calcDate(item.StartTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
@@ -51,10 +51,10 @@
             <td>{{calcDate(item.AddTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
             <td>{{getStatus(item.State)}}</td>
             <td>
-              <a ng-click="removeItem(item.ID)" href="javascript:;">删除</a>
+              <a ng-if="item.State < 3" href="#" ng-click="removeItem(item.ID)">删除</a>
             </td>
           </tr>
-          <tr ng-if="dataList.length <=0">
+          <tr ng-if="orderList.length <=0">
             <td colspan="8" class="no-data">暂无数据</td>
           </tr>
         </table>
@@ -75,11 +75,11 @@
             <!--<div class="info-item">地区：广东,广州</div>-->
             <div class="info-item">粉丝：{{item.FansNumber}}</div>
             <div class="info-item detail-wrap">软广转发价:{{item.RGZhuanFaPrice | currency:'￥'}}
-              <span class="see-detail"><a href="javascript:;">查看</a></span>
+              <span class="see-detail"><a target="_blank" href="{{item.URL}}">查看</a></span>
             </div>
           </div>
         </div>
-        <div class="no-data">
+        <div ng-if="newList.length <= 0" class="no-data">
           暂无数据
         </div>
 

@@ -107,20 +107,20 @@
             <div class="form-group">
               <label class="col-xs-4 control-label"><span class="must-star">*</span>旧密码</label>
               <div class="col-xs-4">
-                <input type="password" required="true" name="oldPwd" class="form-control" ng-model="pwdForm.oldPwd" ng-model-options="{ updateOn: 'blur' }"/>
+                <input type="password" required="true" name="oldPwd" class="form-control" placeholder="请输入旧密码" ng-model="pwdForm.oldPwd" ng-model-options="{ updateOn: 'blur' }"/>
                 <span class="error-tip" ng-show="passwordForm.oldPwd.$error.oldPwd">请输入旧密码.</span>
               </div>
             </div>
             <div class="form-group">
               <label class="col-xs-4 control-label"><span class="must-star">*</span>新密码</label>
               <div class="col-xs-4">
-                <input type="password" maxlength="22" minlength="6" required="true" name="newPwd" class="form-control" ng-model="pwdForm.newPwd" ng-model-options="{ updateOn: 'blur' }"/>
+                <input type="password" maxlength="22" placeholder="请输入6-22位字母或数字" minlength="6" required="true" name="newPwd" class="form-control" ng-model="pwdForm.newPwd" ng-model-options="{ updateOn: 'blur' }"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-xs-4 control-label"><span class="must-star">*</span>确认密码</label>
               <div class="col-xs-4">
-                <input type="password" required="true" name="confirmPwd" class="form-control" ng-model="pwdForm.confirmPwd" ng-model-options="{ updateOn: 'blur' }"/>
+                <input type="password" required="true" name="confirmPwd" placeholder="请再次输入新密码" class="form-control" ng-model="pwdForm.confirmPwd" ng-model-options="{ updateOn: 'blur' }"/>
                 <span class="error-tip" ng-show="passwordForm.confirmPwd.$error.confirmPwd">请再次输入新密码.</span>
                 <span class="error-tip" ng-show="pwdForm.confirmPwd != pwdForm.newPwd">两次密码输入不一致.</span>
               </div>

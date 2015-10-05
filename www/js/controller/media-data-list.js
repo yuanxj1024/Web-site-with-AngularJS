@@ -6,7 +6,7 @@
 /// <reference path="../service/SearchTypes.ts" />
 /// <reference path="../service/OrderService.ts" />
 /// <reference path="../service/Region.ts" />
-/// <reference path="../service/MediaAccount" />
+/// <reference path="../service/MediaAccount.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
@@ -16,11 +16,7 @@ var WeMedia;
         3: 'advertiser.friendsprecontract'
     };
     var MediaDataList = (function () {
-        function MediaDataList($scope, $rootScope, $state, $stateParams, SearchTypeService, 
-            //public WechatPublicService: IWechatPublicService,
-            //public WechatFriendsService: IWechatFriendService,
-            //public WeiboService: IWeiboService,
-            OrderService, RegionService, MediaAccountService) {
+        function MediaDataList($scope, $rootScope, $state, $stateParams, SearchTypeService, OrderService, RegionService, MediaAccountService) {
             this.$scope = $scope;
             this.$rootScope = $rootScope;
             this.$state = $state;
@@ -30,12 +26,14 @@ var WeMedia;
             this.RegionService = RegionService;
             this.MediaAccountService = MediaAccountService;
             if (!$stateParams.mediaType) {
+                $scope.goToIndex();
             }
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.createOrder = angular.bind(this, this.createOrder);
             $scope.addItem = angular.bind(this, this.addItem);
             $scope.searchKeyword = angular.bind(this, this.searchKeyword);
             $scope.currentMediaType = $stateParams.mediaType * 1;
+            $scope.totalSelectedMoney = 0;
             $scope.tabIndex = 1;
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
             $scope.searchTypeData = $scope.searchTypeData || {};
@@ -59,7 +57,6 @@ var WeMedia;
             $scope.pageSize = 20;
             $scope.currentPage = 1;
             this.init();
-            //this.refresh();
         } //end constructor
         MediaDataList.prototype.init = function () {
             var self = this;
@@ -189,6 +186,9 @@ var WeMedia;
             angular.forEach(this.$scope.selectedMediaItems, function (val, key) {
                 if (val) {
                     self.$scope.selectedMediaTotal += 1;
+                    if (!isNaN(item.MaxPrice)) {
+                        self.$scope.totalSelectedMoney += item.MaxPrice * 1;
+                    }
                 }
             });
         };
@@ -201,12 +201,11 @@ var WeMedia;
                 price: this.$scope.selected.price ? this.$scope.selected.price.ID : 0,
                 isEnable: 1,
                 ClassID: this.$scope.selected.common.ID || 0,
-                keyword: ''
+                keyword: this.$scope.searchKey
             };
         };
         MediaDataList.prototype.searchKeyword = function () {
             this.$scope.currentPage = 1;
-            console.log(this.$scope.searchKey);
             this.refresh();
         };
         return MediaDataList;

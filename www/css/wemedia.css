@@ -523,6 +523,13 @@ a {
     border-bottom: solid 2px #088FC8 !important; }
   .star-wrap .data-table td p {
     margin: 0; }
+  .star-wrap .data-table td.intro {
+    text-align: center; }
+    .star-wrap .data-table td.intro p {
+      max-width: 220px;
+      max-height: 57px;
+      overflow: hidden;
+      margin: 0 auto; }
   .star-wrap .data-table .media-img {
     text-align: left; }
     .star-wrap .data-table .media-img img {
@@ -601,6 +608,21 @@ a {
   .create-order-fixed-wrap .selected {
     font-weight: bold;
     margin-right: 15px; }
+
+.wechat-qr-img {
+  position: relative; }
+  .wechat-qr-img:hover .wechat-qr {
+    visibility: visible; }
+  .wechat-qr-img .wechat-qr {
+    position: absolute;
+    visibility: hidden;
+    width: 80px;
+    height: 80px;
+    max-width: 80px !important;
+    max-height: 80px !important;
+    top: 20px;
+    left: 0;
+    border: 1px solid gainsboro; }
 
 .precontract-wrap .execute-time-wrap .time-split, .choose-resource-layer .execute-time-wrap .time-split {
   text-align: center;

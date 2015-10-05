@@ -31,7 +31,7 @@ var WeMedia;
     //应用启动入口-构造函数
     var AppInit = (function () {
         function AppInit($rootScope, $injector, $state, $location, $cookies, AuthService) {
-            $rootScope.isDebug = false;
+            $rootScope.isDebug = true;
             if ($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');

@@ -34,10 +34,11 @@ module WeMedia {
 
             this.init();
             this.$rootScope.$on('$stateChangeSuccess', function(e,state){
-                $scope.orderType = state.params.orderType;
-                console.log($scope.orderType);
-                $scope.orderTitle = orderTypeNames[state.params.orderType];
-                self.refresh();
+                if(state.params.orderType){
+                    $scope.orderType = state.params.orderType;
+                    $scope.orderTitle = orderTypeNames[state.params.orderType];
+                    self.refresh();
+                }
             });
         }
         convertOrderType(type){

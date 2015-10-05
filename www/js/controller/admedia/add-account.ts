@@ -300,7 +300,6 @@ module WeMedia {
                     window.navigator.notification.alert("数据保存失败，请稍候重试",null);
                 });
             }
-
         }
 
         uploadFile(file,type) {

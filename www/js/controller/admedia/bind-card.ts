@@ -19,7 +19,6 @@ module WeMedia {
         ){
             $scope.tabIndex = 0;
 
-
         }
 
     }

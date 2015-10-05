@@ -37,6 +37,7 @@ var WeMedia;
                 if (index == 1) {
                     self.OrderService.cancel(id).then(function (result) {
                         if (result && result.Status == 1) {
+                            self.refresh();
                             window.navigator.notification.alert('操作成功!');
                         }
                         else {
@@ -49,11 +50,10 @@ var WeMedia;
             }, '取消预约', ['确定', '取消']);
         };
         PrecontractList.prototype.editItem = function (id) {
-            console.log(id);
             var stats = {
                 2: 'advertiser.wechatprecontract',
-                3: 'advertiser.weiboprecontract',
-                4: 'advertiser.friendsprecontract'
+                1: 'advertiser.weiboprecontract',
+                3: 'advertiser.friendsprecontract'
             };
             this.$state.go(stats[this.$scope.currentMediaType], { editID: id });
         };
@@ -66,8 +66,10 @@ var WeMedia;
             var self = this;
             this.$scope.dataList = [];
             args = angular.extend(args, {
+                userID: self.$rootScope.user.ID,
                 pageIndex: self.$scope.currentPageIndex,
-                pageSize: self.$scope.pageSize
+                pageSize: self.$scope.pageSize,
+                channelID: this.$scope.currentMediaType
             });
             this.OrderService.list(args).then(function (result) {
                 if (result && result.Data) {
@@ -91,9 +93,9 @@ var WeMedia;
                 case 1:
                     return '待审核';
                 case 2:
-                    return '审核中';
+                    return '审核不通过';
                 case 3:
-                    return '审核未通过';
+                    return '通过';
                 case 4:
                     return '取消';
                 case 9:
