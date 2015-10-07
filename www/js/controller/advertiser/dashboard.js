@@ -5,25 +5,27 @@
 /// <reference path="../../app.ts" />
 /// <reference path="../../service/common.ts" />
 /// <reference path="../../service/OrderService.ts" />
-/// <reference path="../../service/WeiboService.ts" />
+/// <reference path="../../service/MediaAccount.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
     var Dashboard = (function () {
-        function Dashboard($rootScope, $scope, CommonService, OrderService, $modal, ModalService, WeiboService) {
+        function Dashboard($rootScope, $scope, CommonService, OrderService, $modal, ModalService, MediaAccountService, $state) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.CommonService = CommonService;
             this.OrderService = OrderService;
             this.$modal = $modal;
             this.ModalService = ModalService;
-            this.WeiboService = WeiboService;
+            this.MediaAccountService = MediaAccountService;
+            this.$state = $state;
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this, this.test);
             $scope.openNotice = angular.bind(this, this.openNotice);
             $scope.removeItem = angular.bind(this, this.removeItem);
             $scope.getStateName = angular.bind(this, this.getStateName);
             $scope.updateState = angular.bind(this, this.updateState);
+            $scope.editItem = angular.bind(this, this.editItem);
             $scope.noticeList = [];
             $scope.orderList = [];
             $scope.orderInfo = {
@@ -56,15 +58,22 @@ var WeMedia;
             else {
                 this.admediaOrderList();
             }
-            self.WeiboService.list({
-                pageSize: 6,
-                page: 1,
-                isEnable: 1
+            self.MediaAccountService.list({
+                pageSize: 6
             }).then(function (result) {
                 if (result && result.Data) {
                     self.$scope.newList = result.Data || [];
                 }
             });
+            //self.WeiboService.list({
+            //    pageSize: 6,
+            //    page:1 ,
+            //    isEnable: 1
+            //}).then(function(result){
+            //    if(result && result.Data){
+            //        self.$scope.newList = result.Data || [];
+            //    }
+            //});
         };
         Dashboard.prototype.getOrderList = function () {
             var self = this;
@@ -102,7 +111,7 @@ var WeMedia;
                     animation: true,
                     templateUrl: 'myModalContent.html',
                     controller: 'ModalCtrl',
-                    size: 'sm',
+                    size: 'lg',
                     resolve: {
                         item: function () {
                             return result.Data[0];
@@ -112,6 +121,20 @@ var WeMedia;
                 self.ModalService.currentModal = self.$scope.modalInstance;
             }, function (err) {
             });
+        };
+        Dashboard.prototype.trustHtml = function (val) {
+            var self = this;
+            //return function(input){
+            //return self.$sec.trustAsHtml(input);
+            //};
+        };
+        Dashboard.prototype.editItem = function (id, type) {
+            var stats = {
+                2: 'advertiser.wechatprecontract',
+                1: 'advertiser.weiboprecontract',
+                3: 'advertiser.friendsprecontract'
+            };
+            this.$state.go(stats[type], { editID: id });
         };
         Dashboard.prototype.removeItem = function (id) {
             var self = this;
@@ -179,7 +202,7 @@ var WeMedia;
         };
         return Dashboard;
     })();
-    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService', 'WeiboService'];
+    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService', 'MediaAccountService', '$state'];
     WeMedia.ControllerModule.controller('DashboardCtrl', Dashboard);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=dashboard.js.map

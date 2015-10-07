@@ -25,13 +25,16 @@ var WeMedia;
             $scope.orderTitle = orderTypeNames[$stateParams.orderType];
             var self = this;
             this.init();
-            this.$rootScope.$on('$stateChangeSuccess', function (e, state) {
-                if (state.params.orderType) {
-                    $scope.orderType = state.params.orderType;
-                    $scope.orderTitle = orderTypeNames[state.params.orderType];
-                    self.refresh();
-                }
-            });
+            //this.$rootScope.$on('$stateChangeSuccess', function(e,state){
+            //    console.log(23);
+            //    console.log(state);
+            //    if(state.name.indexOf('preorderlist') > 0 && state.params['orderType']){
+            //        $scope.orderType = state.params.orderType;
+            //        $scope.orderTitle = orderTypeNames[state.params.orderType];
+            //        //self.refresh();
+            //        self.init();
+            //    }
+            //});
         }
         PrecontactList.prototype.convertOrderType = function (type) {
             if (type == 1) {
@@ -59,11 +62,16 @@ var WeMedia;
         PrecontactList.prototype.refresh = function (args) {
             if (args === void 0) { args = {}; }
             var self = this;
+            var statelist = {
+                1: '',
+                2: '3',
+                3: '4'
+            };
             args = angular.extend({
                 userID: self.$rootScope.user.ID,
                 page: self.$scope.currentPageIndex,
                 pageSize: self.$scope.pageSize,
-                state: self.$scope.orderType,
+                state: statelist[self.$scope.orderType],
                 name: self.$scope.search.name,
                 channelID: self.$scope.search.channelID ? self.$scope.search.channelID : ''
             }, args);
@@ -120,5 +128,7 @@ var WeMedia;
     })();
     PrecontactList.$inject = ['$rootScope', '$scope', 'OrderService', '$stateParams'];
     WeMedia.ControllerModule.controller('AdMediaPrecontactListCtrl', PrecontactList);
+    WeMedia.ControllerModule.controller('PendingAdMediaPrecontactListCtrl', PrecontactList);
+    WeMedia.ControllerModule.controller('DoneAdMediaPrecontactListCtrl', PrecontactList);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=precontact-list.js.map

@@ -159,11 +159,11 @@
                     <td>
                       {{item.NickName}}
                     </td>
-                    <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
-                    <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
-                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                    <td><p>{{item.PriceJSON.YGZhiFaPrice | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.YGZhuanFaPrice | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.RGZhiFaPrice | currency: '￥'}}</p></td>
+                    <td><p>{{item.PriceJSON.RGZhuanFaPrice | currency: '￥'}}</p></td>
+                    <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
                   </tr>
                   <tr ng-if="selectedList.length <= 0">
                     <td colspan="6" class="txt-center">
@@ -200,7 +200,7 @@
                     <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
                     <td>{{item.FansNumber}}</td>
                     <td>{{item.ProvinceName}},{{item.CityName}}</td>
-                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                    <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
                   </tr>
                   <tr ng-if="selectedList.length <= 0">
                     <td colspan="6" class="txt-center">
@@ -243,7 +243,7 @@
           <div class="form-group">
             <label for="" class="col-xs-2 control-label">&nbsp;</label>
             <div class="col-xs-8">
-              <button class="btn btn-primary">确定</button>
+              <button class="btn btn-primary">发布</button>
               <!--<input type="reset" class="btn btn-default" value="清空"/>-->
             </div>
           </div>
@@ -281,7 +281,7 @@
               <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
               <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
               <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
-              <td><span class="glyphicon glyphicon-remove"></span></td>
+              <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
             </tr>
             <tr ng-if="selectedList.length <= 0">
               <td colspan="6">
@@ -309,7 +309,7 @@
               <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
               <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
               <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
-              <td><span class="glyphicon glyphicon-remove"></span></td>
+              <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
             </tr>
             <tr ng-if="selectedList.length <= 0">
               <td colspan="6" class="txt-center">
@@ -335,7 +335,7 @@
               <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
               <td>{{item.FansNumber}}</td>
               <td>{{item.ProvinceName}},{{item.CityName}}</td>
-              <td><span class="glyphicon glyphicon-remove"></span></td>
+              <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
             </tr>
             <tr ng-if="selectedList.length <= 0">
               <td colspan="6" class="txt-center">

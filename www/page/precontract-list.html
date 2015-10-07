@@ -46,7 +46,7 @@
           <td>{{calcDate(item.AddTime) | date: 'yyyy-MM-dd hh:mm'}}</td>
           <td>{{getStatus(item.State)}}</td>
           <td>
-            <!--<a ng-click="editItem(item.ID||12)" href="javascript:;">修改</a>&nbsp;-->
+            <a ng-if="item.State < 3" ng-click="editItem(item.ID)" href="javascript:;">修改</a>&nbsp;
             <a ng-click="removeItem(item.ID)" href="javascript:;">删除</a>
           </td>
         </tr>

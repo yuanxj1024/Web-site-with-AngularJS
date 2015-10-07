@@ -71,7 +71,7 @@ module WeMedia {
             $cookies: ng.cookies.ICookieStoreService,
             AuthService: IAuthInfoService
         ) {
-            $rootScope.isDebug = true;
+            $rootScope.isDebug = false;
             if($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
@@ -112,7 +112,7 @@ module WeMedia {
 
             } else {
                 var url = window.location.origin + '/advertiserlogin.html';
-                window.navigator.notification.alert('登陆信息已经过期，请重新登陆！', function(){
+                window.navigator.notification.alert('账号暂未登陆，请登陆！', function(){
                     window.location.href = url;
                 });
             }

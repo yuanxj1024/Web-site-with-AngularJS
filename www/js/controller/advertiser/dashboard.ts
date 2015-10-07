@@ -5,7 +5,7 @@
 /// <reference path="../../app.ts" />
 /// <reference path="../../service/common.ts" />
 /// <reference path="../../service/OrderService.ts" />
-/// <reference path="../../service/WeiboService.ts" />
+/// <reference path="../../service/MediaAccount.ts" />
 module WeMedia {
     'use strict';
 
@@ -24,6 +24,7 @@ module WeMedia {
         openNotice: Function;
         modalInstance: any;
 
+        editItem: Function;
         removeItem: Function;
         getStateName: Function;
         updateState: Function;
@@ -37,7 +38,8 @@ module WeMedia {
             public OrderService: IOrderService,
             public $modal: any,
             public ModalService: any,
-            public WeiboService: any
+            public MediaAccountService: IMediaAccountService,
+            public $state: ng.ui.IStateService
         ) {
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.test = angular.bind(this,this.test);
@@ -45,6 +47,7 @@ module WeMedia {
             $scope.removeItem = angular.bind(this, this.removeItem);
             $scope.getStateName = angular.bind(this, this.getStateName);
             $scope.updateState = angular.bind(this, this.updateState);
+            $scope.editItem = angular.bind(this, this.editItem);
 
             $scope.noticeList = [];
             $scope.orderList = [];
@@ -80,15 +83,23 @@ module WeMedia {
                 this.admediaOrderList();
             }
 
-            self.WeiboService.list({
-                pageSize: 6,
-                page:1 ,
-                isEnable: 1
+            self.MediaAccountService.list({
+                pageSize: 6
             }).then(function(result){
                 if(result && result.Data){
                     self.$scope.newList = result.Data || [];
                 }
             });
+
+            //self.WeiboService.list({
+            //    pageSize: 6,
+            //    page:1 ,
+            //    isEnable: 1
+            //}).then(function(result){
+            //    if(result && result.Data){
+            //        self.$scope.newList = result.Data || [];
+            //    }
+            //});
         }
 
         getOrderList(){
@@ -130,7 +141,7 @@ module WeMedia {
                     animation: true,
                     templateUrl: 'myModalContent.html',
                     controller: 'ModalCtrl',
-                    size: 'sm',
+                    size: 'lg',
                     resolve: {
                         item: function () {
                             return result.Data[0];
@@ -141,6 +152,22 @@ module WeMedia {
 
             }, function(err){
             });
+        }
+
+        trustHtml(val){
+            var self = this;
+            //return function(input){
+                //return self.$sec.trustAsHtml(input);
+            //};
+        }
+
+        editItem(id: number, type: number) {
+            var stats = {
+                2: 'advertiser.wechatprecontract',
+                1: 'advertiser.weiboprecontract',
+                3: 'advertiser.friendsprecontract'
+            };
+            this.$state.go(stats[type],{ editID: id});
         }
 
         removeItem(id:number): void{
@@ -210,7 +237,7 @@ module WeMedia {
         }
     }
 
-    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService', 'WeiboService'];
+    Dashboard.$inject = ['$rootScope', '$scope', 'CommonService', 'OrderService', '$modal', 'ModalService',  'MediaAccountService','$state'];
     ControllerModule.controller('DashboardCtrl', Dashboard);
 
 }

@@ -54,6 +54,14 @@ var WeMedia;
                         'action': 'detail'
                     }
                 },
+                orderMediaList: {
+                    method: 'GET',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'mediaList'
+                    }
+                },
                 myOrder: {
                     method: 'GET',
                     accessToken: true,
@@ -122,7 +130,7 @@ var WeMedia;
         };
         Order.prototype.detail = function (id) {
             var deferred = this.$q.defer();
-            this.orderResource.detail({ id: id }, null, function (result) {
+            this.orderResource.detail({ ID: id }, null, function (result) {
                 if (typeof result == 'string') {
                     result.JSON.parse(result);
                 }
@@ -149,6 +157,20 @@ var WeMedia;
             this.orderResource.orderDetailState(args, null, function (result) {
                 if (typeof result == 'string') {
                     result.JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Order.prototype.orderMediaList = function (id) {
+            var deferred = this.$q.defer();
+            this.orderResource.orderMediaList({
+                ID: id
+            }, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
                 }
                 deferred.resolve(result);
             }, function (err) {

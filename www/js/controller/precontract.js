@@ -13,7 +13,7 @@ var WeMedia;
     var PrecontractCtrl = (function () {
         function PrecontractCtrl($rootScope, $scope, $state, $stateParams, ModalService, 
             //public WechatPublicService: IWechatPublicService,
-            OrderService, $modal, MediaAccountService) {
+            OrderService, $modal, MediaAccountService, $timeout) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.$state = $state;
@@ -22,6 +22,7 @@ var WeMedia;
             this.OrderService = OrderService;
             this.$modal = $modal;
             this.MediaAccountService = MediaAccountService;
+            this.$timeout = $timeout;
             $scope.open = angular.bind(this, this.open);
             $scope.openList = angular.bind(this, this.openList);
             $scope.openAgreement = angular.bind(this, this.openAgreement);
@@ -30,11 +31,14 @@ var WeMedia;
             $scope.saveWechat = angular.bind(this, this.saveWechat);
             $scope.deleteItem = angular.bind(this, this.deleteItem);
             $scope.clearItem = angular.bind(this, this.clearItem);
+            $scope.editID = $stateParams['editID'];
             $scope.currentMediaType = $stateParams.mediaType * 1;
             if (!$scope.currentMediaType) {
+                $scope.goToIndex();
             }
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
             this.initData();
+            this.initForEdit();
             this.calcInfo();
         }
         PrecontractCtrl.prototype.initData = function () {
@@ -79,6 +83,9 @@ var WeMedia;
                 this.$scope.wechatForm.items = ids.join('#');
                 //this.$scope.wechatForm.dataList = JSON.stringify(list);
                 this.$scope.wechatForm.Advertiser_ID = this.$rootScope.user.ID;
+                if (self.$scope.editID > 0) {
+                    self.$scope.wechatForm.editID = self.$scope.editID;
+                }
                 this.OrderService.save(this.$scope.wechatForm).then(function (result) {
                     if (result && result.Status == 1) {
                         window.navigator.notification.alert('您的订单创建完成，请等待审核。', function () {
@@ -161,7 +168,12 @@ var WeMedia;
                 MoreSecondYing: 0,
                 MoreSecondRuan: 0,
                 MoreThreeYing: 0,
-                MoreThreeRuan: 0
+                MoreThreeRuan: 0,
+                YGZhiFaPrice: 0,
+                YGZhuanFaPrice: 0,
+                RGZhiFaPrice: 0,
+                RGZhuanFaPrice: 0,
+                Price: 0
             };
             var self = this;
             var callbackobj = {
@@ -176,16 +188,18 @@ var WeMedia;
                     self.$scope.selectedTotalInfo.MoreThreeRuan += item.PriceJSON.MoreThreeRuan;
                 },
                 1: function (item) {
-                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.PriceJSON.YGZhiFaPrice;
-                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.PriceJSON.YGZhuanFaPrice;
-                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.PriceJSON.RGZhiFaPrice;
-                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.PriceJSON.RGZhiFaPriceRGZhiFaPrice;
+                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.PriceJSON.YGZhiFaPrice * 1;
+                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.PriceJSON.YGZhuanFaPrice * 1;
+                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.PriceJSON.RGZhiFaPrice * 1;
+                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.PriceJSON.RGZhuanFaPrice * 1;
                 },
                 3: function (item) {
                     self.$scope.selectedTotalInfo.Price += item.PriceJSON.Price;
                 }
             };
-            angular.forEach(this.$scope.selectedList, callbackobj[self.$scope.currentMediaType]);
+            if (self.$scope.selectedList && self.$scope.selectedList.length > 0) {
+                angular.forEach(this.$scope.selectedList, callbackobj[self.$scope.currentMediaType]);
+            }
         };
         PrecontractCtrl.prototype.deleteItem = function (id) {
             var self = this, i = 0, temp;
@@ -196,6 +210,7 @@ var WeMedia;
                 i++;
             });
             this.$scope.selectedList.splice(temp, 1);
+            this.calcInfo();
         };
         PrecontractCtrl.prototype.clearItem = function () {
             var self = this;
@@ -205,6 +220,42 @@ var WeMedia;
                     self.calcInfo();
                 }
             }, '全部清空', ['清空', '取消']);
+        };
+        //
+        PrecontractCtrl.prototype.initForEdit = function () {
+            var self = this;
+            if (isNaN(self.$scope.editID) || self.$scope.editID <= 0) {
+                return;
+            }
+            this.OrderService.detail(self.$scope.editID).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.wechatForm = result.Data[0];
+                    self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
+                    self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
+                    self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+                }
+            }, function (err) {
+                self.$timeout(function () {
+                    self.$scope.selectedList = [];
+                    self.calcInfo();
+                }, 2000);
+            });
+            this.OrderService.orderMediaList(self.$scope.editID).then(function (result) {
+                if (result && result.Data) {
+                    self.$scope.selectedList = result.Data;
+                    self.calcInfo();
+                }
+            }, function (err) {
+            });
+        };
+        PrecontractCtrl.prototype.calcTime = function (time) {
+            if (time) {
+                var t = time.match(/\d{10,}/);
+                if (t) {
+                    return new Date(t * 1);
+                }
+            }
+            return new Date();
         };
         return PrecontractCtrl;
     })();
@@ -218,6 +269,7 @@ var WeMedia;
             $scope.cancel = angular.bind(this, this.cancel);
             $scope.ok = angular.bind(this, this.ok);
             $scope.addItem = angular.bind(this, this.addItem);
+            $scope.pageChanged = angular.bind(this, this.pageChanged);
             //数据
             $scope.selectedList = {};
             $scope.selectedDataObj = {};
@@ -286,7 +338,7 @@ var WeMedia;
     })();
     Modal.$inject = ['$scope', '$modalInstance', 'mediaType', 'MediaAccountService'];
     WeMedia.ControllerModule.controller('DataModalCtrl', Modal);
-    PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'OrderService', '$modal', 'MediaAccountService'];
+    PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'OrderService', '$modal', 'MediaAccountService', '$timeout'];
     WeMedia.ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     WeMedia.ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
 })(WeMedia || (WeMedia = {}));

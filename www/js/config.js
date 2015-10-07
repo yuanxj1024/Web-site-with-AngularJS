@@ -93,5 +93,10 @@ var WeMedia;
             return $delegate;
         }]);
     });
+    WeMedia.AppModule.filter('trustHtml', function ($sce) {
+        return function (input) {
+            return $sce.trustAsHtml(input);
+        };
+    });
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=config.js.map

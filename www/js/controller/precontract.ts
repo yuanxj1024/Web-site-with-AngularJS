@@ -34,6 +34,8 @@ module WeMedia {
         modalData: Array<any>;
         deleteItem: Function;
         clearItem: Function;
+
+        editID: number;
     }
 
 
@@ -47,9 +49,9 @@ module WeMedia {
             //public WechatPublicService: IWechatPublicService,
             public OrderService: IOrderService,
             public $modal: any,
-            public MediaAccountService: IMediaAccountService
+            public MediaAccountService: IMediaAccountService,
+            public $timeout: ng.ITimeoutService
         ) {
-
             $scope.open = angular.bind(this, this.open);
             $scope.openList = angular.bind(this, this.openList);
             $scope.openAgreement = angular.bind(this, this.openAgreement);
@@ -59,14 +61,17 @@ module WeMedia {
             $scope.deleteItem = angular.bind(this, this.deleteItem);
             $scope.clearItem = angular.bind(this, this.clearItem);
 
+            $scope.editID = $stateParams['editID'];
             $scope.currentMediaType = $stateParams.mediaType * 1;
             if(!$scope.currentMediaType) {
-                //$scope.goToIndex();
+                $scope.goToIndex();
             }
+
             $scope.currentMediaName = allMedias[$stateParams.mediaType];
             this.initData();
-
+            this.initForEdit();
             this.calcInfo();
+
         }
 
         initData() {
@@ -119,6 +124,9 @@ module WeMedia {
                 this.$scope.wechatForm.items = ids.join('#');
                 //this.$scope.wechatForm.dataList = JSON.stringify(list);
                 this.$scope.wechatForm.Advertiser_ID = this.$rootScope.user.ID;
+                if(self.$scope.editID>0){
+                    self.$scope.wechatForm.editID = self.$scope.editID;
+                }
 
                 this.OrderService.save(this.$scope.wechatForm).then(function(result){
                     if(result && result.Status == 1) {
@@ -205,7 +213,12 @@ module WeMedia {
                 MoreSecondYing: 0,
                 MoreSecondRuan: 0,
                 MoreThreeYing: 0,
-                MoreThreeRuan: 0
+                MoreThreeRuan: 0,
+                YGZhiFaPrice: 0,
+                YGZhuanFaPrice:0,
+                RGZhiFaPrice: 0,
+                RGZhuanFaPrice: 0,
+                Price: 0
             };
             var self = this;
             var callbackobj = {
@@ -220,17 +233,18 @@ module WeMedia {
                     self.$scope.selectedTotalInfo.MoreThreeRuan += item.PriceJSON.MoreThreeRuan;
                 },
                 1: function(item){
-                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.PriceJSON.YGZhiFaPrice;
-                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.PriceJSON.YGZhuanFaPrice;
-                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.PriceJSON.RGZhiFaPrice;
-                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.PriceJSON.RGZhiFaPriceRGZhiFaPrice;
+                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.PriceJSON.YGZhiFaPrice*1;
+                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.PriceJSON.YGZhuanFaPrice*1;
+                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.PriceJSON.RGZhiFaPrice*1;
+                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.PriceJSON.RGZhuanFaPrice*1;
                 },
                 3: function(item){
                     self.$scope.selectedTotalInfo.Price += item.PriceJSON.Price;
-
                 }
             };
-            angular.forEach(this.$scope.selectedList,callbackobj[self.$scope.currentMediaType]);
+            if(self.$scope.selectedList && self.$scope.selectedList.length>0){
+                angular.forEach(this.$scope.selectedList,callbackobj[self.$scope.currentMediaType]);
+            }
         }
 
         deleteItem(id:number){
@@ -242,6 +256,7 @@ module WeMedia {
                 i++;
             });
             this.$scope.selectedList.splice(temp, 1);
+            this.calcInfo();
         }
 
         clearItem() {
@@ -253,7 +268,46 @@ module WeMedia {
                 }
 
             }, '全部清空', ['清空' ,'取消']);
-      }
+        }
+
+        //
+        initForEdit(){
+            var self = this;
+            if(isNaN(self.$scope.editID) || self.$scope.editID <= 0){
+                return;
+            }
+            this.OrderService.detail(self.$scope.editID).then(function(result){
+                if(result && result.Data){
+                    self.$scope.wechatForm = result.Data[0];
+                    self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
+                    self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
+                    self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+                }
+            },function(err){
+                self.$timeout(function(){
+                    self.$scope.selectedList =  [];
+                    self.calcInfo();
+                },2000);
+            });
+
+            this.OrderService.orderMediaList(self.$scope.editID).then(function(result){
+                if(result && result.Data){
+                    self.$scope.selectedList =  result.Data;
+                    self.calcInfo();
+                }
+            }, function(err){
+            });
+        }
+
+        calcTime(time) {
+            if(time){
+                var t = time.match(/\d{10,}/);
+                if(t){
+                    return new Date(t*1);
+                }
+            }
+            return new Date();
+        }
 
     }
 
@@ -271,6 +325,7 @@ module WeMedia {
             $scope.cancel = angular.bind(this, this.cancel);
             $scope.ok = angular.bind(this, this.ok);
             $scope.addItem = angular.bind(this, this.addItem);
+            $scope.pageChanged = angular.bind(this,this.pageChanged);
 
             //数据
             $scope.selectedList = {};
@@ -343,7 +398,7 @@ module WeMedia {
     Modal.$inject = ['$scope', '$modalInstance','mediaType', 'MediaAccountService'];
     ControllerModule.controller('DataModalCtrl', Modal);
 
-    PrecontractCtrl.$inject = ['$rootScope','$scope', '$state', '$stateParams', 'ModalService',  'OrderService', '$modal', 'MediaAccountService'];
+    PrecontractCtrl.$inject = ['$rootScope','$scope', '$state', '$stateParams', 'ModalService',  'OrderService', '$modal', 'MediaAccountService', '$timeout'];
     ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
 }

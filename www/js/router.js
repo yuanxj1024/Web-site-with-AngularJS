@@ -233,19 +233,22 @@ var WeMedia;
             'params': {
                 'orderType': 1
             },
-            'templateUrl': './page/admedia/precontract-list.html'
+            'templateUrl': './page/admedia/precontract-list.html',
+            controller: 'AdMediaPrecontactListCtrl'
         }).state('admedia.preorderlist.unexecute', {
             'url': '/unexecute',
             'params': {
                 'orderType': 2
             },
-            'templateUrl': './page/admedia/precontract-list.html'
+            'templateUrl': './page/admedia/precontract-list.html',
+            controller: 'PendingAdMediaPrecontactListCtrl'
         }).state('admedia.preorderlist.finished', {
             'url': '/finished',
             'params': {
                 'orderType': 3
             },
-            'templateUrl': './page/admedia/precontract-list.html'
+            'templateUrl': './page/admedia/precontract-list.html',
+            controller: 'DoneAdMediaPrecontactListCtrl'
         }).state('admedia.bill', {
             'url': '/bill',
             'views': {

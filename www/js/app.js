@@ -31,7 +31,7 @@ var WeMedia;
     //应用启动入口-构造函数
     var AppInit = (function () {
         function AppInit($rootScope, $injector, $state, $location, $cookies, AuthService) {
-            $rootScope.isDebug = true;
+            $rootScope.isDebug = false;
             if ($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
@@ -69,7 +69,7 @@ var WeMedia;
             }
             else {
                 var url = window.location.origin + '/advertiserlogin.html';
-                window.navigator.notification.alert('登陆信息已经过期，请重新登陆！', function () {
+                window.navigator.notification.alert('账号暂未登陆，请登陆！', function () {
                     window.location.href = url;
                 });
             }

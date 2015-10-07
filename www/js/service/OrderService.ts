@@ -12,6 +12,7 @@ module WeMedia {
         list(arg:any): ng.IPromise<any>;
         cancel(id:number): ng.IPromise<any>;
         detail(id:number): ng.IPromise<any>;
+        orderMediaList(id:number): ng.IPromise<any>;
 
         myOrderList(args:any): ng.IPromise<any>;
         orderDetailState(args:any): ng.IPromise<any>;
@@ -27,6 +28,7 @@ module WeMedia {
         detail(params:Object, data:Object, success?:Function, error?:Function);
         myOrder(params:Object, data:Object, success?:Function, error?:Function);
         orderDetailState(params:Object, data:Object, success?:Function, error?:Function);
+        orderMediaList(params:Object, data:Object, success?:Function, error?:Function);
     }
 
     class Order {
@@ -79,6 +81,14 @@ module WeMedia {
                     isArray: false,
                     params: {
                         'action': 'detail'
+                    }
+                },
+                orderMediaList: {
+                    method: 'GET',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'mediaList'
                     }
                 },
                 myOrder: {
@@ -152,7 +162,7 @@ module WeMedia {
         }
         detail(id:number): ng.IPromise<any> {
             var deferred = this.$q.defer();
-            this.orderResource.detail({id: id} ,null, function(result){
+            this.orderResource.detail({ID: id} ,null, function(result){
                 if(typeof result == 'string'){
                     result.JSON.parse(result);
                 }
@@ -186,7 +196,25 @@ module WeMedia {
             });
             return deferred.promise;
         }
+
+        orderMediaList(id:number): ng.IPromise<any> {
+            var deferred =  this.$q.defer();
+            this.orderResource.orderMediaList({
+                ID: id
+            }, null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            },function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+
     }
+
 
     Order.$inject = ['$rootScope', '$q','$resource'];
 
