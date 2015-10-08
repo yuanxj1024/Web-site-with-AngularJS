@@ -26,6 +26,7 @@ var WeMedia;
             $scope.getStateName = angular.bind(this, this.getStateName);
             $scope.updateState = angular.bind(this, this.updateState);
             $scope.editItem = angular.bind(this, this.editItem);
+            $scope.openDetail = angular.bind(this, this.openDetail);
             $scope.noticeList = [];
             $scope.orderList = [];
             $scope.orderInfo = {
@@ -135,6 +136,14 @@ var WeMedia;
                 3: 'advertiser.friendsprecontract'
             };
             this.$state.go(stats[type], { editID: id });
+        };
+        Dashboard.prototype.openDetail = function (id, type) {
+            var url = {
+                1: 'advertiser.weiboPrecontractDetail',
+                2: 'advertiser.wechatPrecontractDetail',
+                3: 'advertiser.friendsPrecontractDetail'
+            };
+            this.$state.go(url[type], { detailID: id, type: type });
         };
         Dashboard.prototype.removeItem = function (id) {
             var self = this;

@@ -77,6 +77,14 @@ var WeMedia;
                     params: {
                         'action': 'comfirmOrder'
                     }
+                },
+                orderDetailMediaList: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'mediaListForDetail'
+                    }
                 }
             });
         }
@@ -167,6 +175,20 @@ var WeMedia;
         Order.prototype.orderMediaList = function (id) {
             var deferred = this.$q.defer();
             this.orderResource.orderMediaList({
+                ID: id
+            }, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Order.prototype.orderDetailMediaList = function (id) {
+            var deferred = this.$q.defer();
+            this.orderResource.orderDetailMediaList({
                 ID: id
             }, null, function (result) {
                 if (typeof result == 'string') {

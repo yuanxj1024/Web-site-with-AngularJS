@@ -36,6 +36,12 @@ module WeMedia {
         clearItem: Function;
 
         editID: number;
+
+        detailBackUrl: string;
+        closeDetail: Function;
+        detailTotalInfo: any;
+
+        getMediaStatus:Function;
     }
 
 
@@ -60,6 +66,8 @@ module WeMedia {
             $scope.saveWechat = angular.bind(this, this.saveWechat);
             $scope.deleteItem = angular.bind(this, this.deleteItem);
             $scope.clearItem = angular.bind(this, this.clearItem);
+            $scope.getMediaStatus = angular.bind(this, this.getMediaStatus);
+            $scope.closeDetail = angular.bind(this, this.closeDetail);
 
             $scope.editID = $stateParams['editID'];
             $scope.currentMediaType = $stateParams.mediaType * 1;
@@ -70,6 +78,7 @@ module WeMedia {
             $scope.currentMediaName = allMedias[$stateParams.mediaType];
             this.initData();
             this.initForEdit();
+            this.initForDetail();
             this.calcInfo();
 
         }
@@ -158,6 +167,7 @@ module WeMedia {
             }
             if(name){
                 this.$state.go(name);
+                this.OrderService.selectedList = [];
             }
         }
         validate() {
@@ -273,30 +283,104 @@ module WeMedia {
         //
         initForEdit(){
             var self = this;
-            if(isNaN(self.$scope.editID) || self.$scope.editID <= 0){
-                return;
-            }
-            this.OrderService.detail(self.$scope.editID).then(function(result){
-                if(result && result.Data){
-                    self.$scope.wechatForm = result.Data[0];
-                    self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
-                    self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
-                    self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
-                }
-            },function(err){
-                self.$timeout(function(){
-                    self.$scope.selectedList =  [];
-                    self.calcInfo();
-                },2000);
-            });
+            if(self.$scope.editID > 0){
+                this.OrderService.detail(self.$scope.editID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.wechatForm = result.Data[0];
+                        self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
+                        self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
+                        self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+                    }
+                }, function (err) {
+                    self.$timeout(function () {
+                        self.$scope.selectedList = [];
+                        self.calcInfo();
+                    }, 2000);
+                });
 
-            this.OrderService.orderMediaList(self.$scope.editID).then(function(result){
-                if(result && result.Data){
-                    self.$scope.selectedList =  result.Data;
-                    self.calcInfo();
-                }
-            }, function(err){
-            });
+                this.OrderService.orderMediaList(self.$scope.editID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.selectedList = result.Data;
+                        self.calcInfo();
+                    }
+                }, function (err) {
+                });
+            }
+        }
+        initForDetail(){
+            var self = this;
+            var detailID = self.$state.params['detailID'],
+                type = self.$state.params["mediaType"] || 1,
+                urls= {
+                    2: 'advertiser.wechatPreList',
+                    1: 'advertiser.weiboPreList',
+                    3: 'advertiser.friendsPreList'
+                };
+            if(detailID) {
+                self.$scope.detailBackUrl = urls[type];
+
+                this.OrderService.detail(detailID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.wechatForm = result.Data[0];
+                        self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
+                        self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
+                        self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+                        self.$scope.wechatForm.AddTime = self.calcTime(self.$scope.wechatForm.AddTime);
+                    }
+                }, function (err) {
+                    self.$timeout(function () {
+                        self.$scope.selectedList = [];
+                        //self.calcInfo();
+                    }, 2000);
+                });
+
+                this.OrderService.orderDetailMediaList(detailID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.selectedList = result.Data;
+                        //self.calcInfo();
+                        self.calcTotalInfo();
+                    }
+                }, function (err) {
+                });
+            }
+        }
+
+        calcTotalInfo(){
+            var self = this;
+            self.$scope.detailTotalInfo = {
+                all: this.$scope.selectedList.length,
+                pending: 0,
+                doing: 0,
+                finish: 0
+            };
+           angular.forEach(this.$scope.selectedList,function(item){
+               switch (item.BState){
+                   case 1:
+                       self.$scope.detailTotalInfo.pending += 1;
+                       break;
+                   case 3:
+                       self.$scope.detailTotalInfo.doing += 1;
+                       break;
+                   case 4:
+                       self.$scope.detailTotalInfo.finish += 1;
+                       break;
+               }
+
+           }) ;
+        }
+
+        closeDetail(){
+            this.OrderService.selectedList = [];
+            this.$state.go(this.$scope.detailBackUrl);
+        }
+        getMediaStatus(type){
+            var status ={
+                1: '等媒介主确认',
+                2: '媒介主同意',
+                3: '媒介主执行中',
+                4: '完成'
+            };
+            return status[type];
         }
 
         calcTime(time) {
@@ -318,9 +402,6 @@ module WeMedia {
             public $modalInstance: any,
             public mediaType: any,
             public MediaAccountService:IMediaAccountService
-            //public WechatPublicService: IWechatPublicService,
-            //public WeiboService: IWeiboService,
-            //public WechatFriendService: IWechatFriendService
         ) {
             $scope.cancel = angular.bind(this, this.cancel);
             $scope.ok = angular.bind(this, this.ok);
@@ -401,5 +482,6 @@ module WeMedia {
     PrecontractCtrl.$inject = ['$rootScope','$scope', '$state', '$stateParams', 'ModalService',  'OrderService', '$modal', 'MediaAccountService', '$timeout'];
     ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
+    ControllerModule.controller('PrecontractDetailCtrl', PrecontractCtrl);
 }
 

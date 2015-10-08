@@ -203,6 +203,15 @@
       p {
         margin: 0;
       }
+      &.intro {
+        text-align: center;
+        p{
+          max-width: 220px;
+          max-height: 57px;
+          overflow: hidden;
+          margin: 0 auto;
+        }
+      }
     }
     .media-img{
       text-align: left;
@@ -294,4 +303,22 @@
     margin-right: 15px;
   }
 }
-
+.wechat-qr-img{
+  position: relative;
+  &:hover{
+   .wechat-qr{
+     visibility: visible;
+   }
+  }
+  .wechat-qr{
+    position:absolute;
+    visibility: hidden;
+    width: 80px;
+    height: 80px;
+    max-width: 80px!important;
+    max-height: 80px!important;
+    top: 20px;
+    left: 0;
+    border: 1px solid gainsboro;
+  }
+}

@@ -122,6 +122,7 @@
         min-width: 280px;
         .header-img{
           //margin-left: 15px;
+          min-width: 60px;
           img{
             max-height: 60px;
             max-width: 60px;
@@ -143,11 +144,13 @@
             width: 20px;
             height: 20px;
             display: inline-block;
+            background-repeat: no-repeat;
+            background-size: 100%;
             &.weibo{
               background-image: url(/img/weibo.jpg);
             }
             &.weixin{
-
+              background-image: url(/img/icon_weixin.png);
             }
           }
           .detail-wrap{

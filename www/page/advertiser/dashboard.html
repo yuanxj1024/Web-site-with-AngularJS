@@ -53,6 +53,7 @@
             <td>
               <a ng-if="item.State < 3" ng-click="editItem(item.ID, item.Mediatype)" href="javascript:;">修改</a>&nbsp;
               <a ng-if="item.State < 3" href="#" ng-click="removeItem(item.ID)">删除</a>
+              <a ng-if="item.State == 3" href="#" ng-click="openDetail(item.ID, item.Mediatype)">详情</a>
             </td>
           </tr>
           <tr ng-if="orderList.length <=0">

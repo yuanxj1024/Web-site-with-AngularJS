@@ -25,6 +25,7 @@ module WeMedia {
         modalInstance: any;
 
         editItem: Function;
+        openDetail: Function;
         removeItem: Function;
         getStateName: Function;
         updateState: Function;
@@ -48,6 +49,7 @@ module WeMedia {
             $scope.getStateName = angular.bind(this, this.getStateName);
             $scope.updateState = angular.bind(this, this.updateState);
             $scope.editItem = angular.bind(this, this.editItem);
+            $scope.openDetail = angular.bind(this, this.openDetail);
 
             $scope.noticeList = [];
             $scope.orderList = [];
@@ -168,6 +170,15 @@ module WeMedia {
                 3: 'advertiser.friendsprecontract'
             };
             this.$state.go(stats[type],{ editID: id});
+        }
+
+        openDetail(id, type) {
+            var url = {
+                1: 'advertiser.weiboPrecontractDetail',
+                2: 'advertiser.wechatPrecontractDetail',
+                3: 'advertiser.friendsPrecontractDetail'
+            };
+            this.$state.go(url[type],{detailID: id, type: type});
         }
 
         removeItem(id:number): void{

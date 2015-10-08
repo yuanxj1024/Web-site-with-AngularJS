@@ -25,7 +25,7 @@
   <div class="precontract-wrap page-minHeight ">
     <div class="precontract-body container">
       <div class="header">
-        <h4 class="page-title"><i class="glyphicon glyphicon-file"></i> 发布{{currentMediaName}}任务</h4>
+        <h4 class="page-title font-color"><i class="glyphicon glyphicon-file"></i> 发布{{currentMediaName}}任务</h4>
       </div>
 
       <div class="create-order-step-wrap">
@@ -270,7 +270,7 @@
               <th>多图文第一条</th>
               <th>多图文第二条</th>
               <th>多图文3~N条</th>
-              <th>操作</th>
+              <!--<th>操作</th>-->
             </tr>
             <tr ng-repeat="item in items track by $index">
               <td><input type="checkbox" ng-model="selectedList[item.ID]" ng-click="addItem(item)" /></td>
@@ -281,7 +281,7 @@
               <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
               <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
               <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
-              <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
+              <!--<td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>-->
             </tr>
             <tr ng-if="selectedList.length <= 0">
               <td colspan="6">
@@ -298,18 +298,18 @@
               <th>硬广转发价</th>
               <th>软广直发价</th>
               <th>软广转发价</th>
-              <th>操作</th>
+              <!--<th>操作</th>-->
             </tr>
             <tr ng-repeat="item in items track by $index">
               <td><input type="checkbox" ng-model="selectedList[item.ID]" ng-click="addItem(item)" /></td>
               <td>
                 {{item.NickName}}
               </td>
-              <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
-              <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
-              <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
+              <td><p>{{item.PriceJSON.YGZhiFaPrice | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.YGZhuanFaPrice | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.RGZhiFaPrice | currency: '￥'}}</p></td>
+              <td><p>{{item.PriceJSON.RGZhuanFaPrice | currency: '￥'}}</p></td>
+              <!--<td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>-->
             </tr>
             <tr ng-if="selectedList.length <= 0">
               <td colspan="6" class="txt-center">
@@ -325,7 +325,7 @@
               <th>报价</th>
               <th>好友数</th>
               <th>所在地</th>
-              <th>操作</th>
+              <!--<th>操作</th>-->
             </tr>
             <tr ng-repeat="item in items track by $index">
               <td><input type="checkbox" ng-model="selectedList[item.ID]" ng-click="addItem(item)" /></td>
@@ -335,7 +335,7 @@
               <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
               <td>{{item.FansNumber}}</td>
               <td>{{item.ProvinceName}},{{item.CityName}}</td>
-              <td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>
+              <!--<td><span class="glyphicon glyphicon-remove" ng-click="deleteItem(item.ID)"></span></td>-->
             </tr>
             <tr ng-if="selectedList.length <= 0">
               <td colspan="6" class="txt-center">

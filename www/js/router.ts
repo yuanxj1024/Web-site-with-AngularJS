@@ -108,6 +108,42 @@ module WeMedia {
                     }
                 }
             })
+            .state('advertiser.wechatPrecontractDetail', {
+                'url': '/wechatPrecontractDetail',
+                'params': {
+                    'mediaType': '2',
+                    'detailID': 0
+                },
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/precontract-detail.html'
+                    }
+                }
+            })
+            .state('advertiser.weiboPrecontractDetail', {
+                'url': '/weiboPrecontractDetail',
+                'params': {
+                    'mediaType': '1',
+                    'detailID': 0
+                },
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/precontract-detail.html'
+                    }
+                }
+            })
+            .state('advertiser.friendsPrecontractDetail', {
+                'url': '/friendsPrecontractDetail',
+                'params': {
+                    'mediaType': '3',
+                    'detailID': 0
+                },
+                'views': {
+                    'advertiser': {
+                        'templateUrl': './page/precontract-detail.html'
+                    }
+                }
+            })
             .state('advertiser.precontractList', {
                 'url': '/precontractList',
                 'params': {
@@ -320,5 +356,6 @@ module WeMedia {
             $urlRouterProvider.otherwise('/advertiser/dashboard');
         }
     });
+
 }
 

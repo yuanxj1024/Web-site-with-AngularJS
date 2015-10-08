@@ -31,6 +31,8 @@ var WeMedia;
             $scope.saveWechat = angular.bind(this, this.saveWechat);
             $scope.deleteItem = angular.bind(this, this.deleteItem);
             $scope.clearItem = angular.bind(this, this.clearItem);
+            $scope.getMediaStatus = angular.bind(this, this.getMediaStatus);
+            $scope.closeDetail = angular.bind(this, this.closeDetail);
             $scope.editID = $stateParams['editID'];
             $scope.currentMediaType = $stateParams.mediaType * 1;
             if (!$scope.currentMediaType) {
@@ -39,6 +41,7 @@ var WeMedia;
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
             this.initData();
             this.initForEdit();
+            this.initForDetail();
             this.calcInfo();
         }
         PrecontractCtrl.prototype.initData = function () {
@@ -115,6 +118,7 @@ var WeMedia;
             }
             if (name) {
                 this.$state.go(name);
+                this.OrderService.selectedList = [];
             }
         };
         PrecontractCtrl.prototype.validate = function () {
@@ -224,29 +228,96 @@ var WeMedia;
         //
         PrecontractCtrl.prototype.initForEdit = function () {
             var self = this;
-            if (isNaN(self.$scope.editID) || self.$scope.editID <= 0) {
-                return;
+            if (self.$scope.editID > 0) {
+                this.OrderService.detail(self.$scope.editID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.wechatForm = result.Data[0];
+                        self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
+                        self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
+                        self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+                    }
+                }, function (err) {
+                    self.$timeout(function () {
+                        self.$scope.selectedList = [];
+                        self.calcInfo();
+                    }, 2000);
+                });
+                this.OrderService.orderMediaList(self.$scope.editID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.selectedList = result.Data;
+                        self.calcInfo();
+                    }
+                }, function (err) {
+                });
             }
-            this.OrderService.detail(self.$scope.editID).then(function (result) {
-                if (result && result.Data) {
-                    self.$scope.wechatForm = result.Data[0];
-                    self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
-                    self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
-                    self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+        };
+        PrecontractCtrl.prototype.initForDetail = function () {
+            var self = this;
+            var detailID = self.$state.params['detailID'], type = self.$state.params["mediaType"] || 1, urls = {
+                2: 'advertiser.wechatPreList',
+                1: 'advertiser.weiboPreList',
+                3: 'advertiser.friendsPreList'
+            };
+            if (detailID) {
+                self.$scope.detailBackUrl = urls[type];
+                this.OrderService.detail(detailID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.wechatForm = result.Data[0];
+                        self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
+                        self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
+                        self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
+                        self.$scope.wechatForm.AddTime = self.calcTime(self.$scope.wechatForm.AddTime);
+                    }
+                }, function (err) {
+                    self.$timeout(function () {
+                        self.$scope.selectedList = [];
+                        //self.calcInfo();
+                    }, 2000);
+                });
+                this.OrderService.orderDetailMediaList(detailID).then(function (result) {
+                    if (result && result.Data) {
+                        self.$scope.selectedList = result.Data;
+                        //self.calcInfo();
+                        self.calcTotalInfo();
+                    }
+                }, function (err) {
+                });
+            }
+        };
+        PrecontractCtrl.prototype.calcTotalInfo = function () {
+            var self = this;
+            self.$scope.detailTotalInfo = {
+                all: this.$scope.selectedList.length,
+                pending: 0,
+                doing: 0,
+                finish: 0
+            };
+            angular.forEach(this.$scope.selectedList, function (item) {
+                switch (item.BState) {
+                    case 1:
+                        self.$scope.detailTotalInfo.pending += 1;
+                        break;
+                    case 3:
+                        self.$scope.detailTotalInfo.doing += 1;
+                        break;
+                    case 4:
+                        self.$scope.detailTotalInfo.finish += 1;
+                        break;
                 }
-            }, function (err) {
-                self.$timeout(function () {
-                    self.$scope.selectedList = [];
-                    self.calcInfo();
-                }, 2000);
             });
-            this.OrderService.orderMediaList(self.$scope.editID).then(function (result) {
-                if (result && result.Data) {
-                    self.$scope.selectedList = result.Data;
-                    self.calcInfo();
-                }
-            }, function (err) {
-            });
+        };
+        PrecontractCtrl.prototype.closeDetail = function () {
+            this.OrderService.selectedList = [];
+            this.$state.go(this.$scope.detailBackUrl);
+        };
+        PrecontractCtrl.prototype.getMediaStatus = function (type) {
+            var status = {
+                1: '等媒介主确认',
+                2: '媒介主同意',
+                3: '媒介主执行中',
+                4: '完成'
+            };
+            return status[type];
         };
         PrecontractCtrl.prototype.calcTime = function (time) {
             if (time) {
@@ -341,5 +412,6 @@ var WeMedia;
     PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'OrderService', '$modal', 'MediaAccountService', '$timeout'];
     WeMedia.ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     WeMedia.ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
+    WeMedia.ControllerModule.controller('PrecontractDetailCtrl', PrecontractCtrl);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=precontract.js.map

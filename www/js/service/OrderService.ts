@@ -16,6 +16,7 @@ module WeMedia {
 
         myOrderList(args:any): ng.IPromise<any>;
         orderDetailState(args:any): ng.IPromise<any>;
+        orderDetailMediaList(id: number): ng.IPromise<any>;
 
         selectedList: Array<any>;
     }
@@ -29,6 +30,7 @@ module WeMedia {
         myOrder(params:Object, data:Object, success?:Function, error?:Function);
         orderDetailState(params:Object, data:Object, success?:Function, error?:Function);
         orderMediaList(params:Object, data:Object, success?:Function, error?:Function);
+        orderDetailMediaList(params:Object, data:Object, success?:Function, error?:Function);
     }
 
     class Order {
@@ -105,6 +107,14 @@ module WeMedia {
                     isArray: false,
                     params: {
                         'action': 'comfirmOrder'
+                    }
+                },
+                orderDetailMediaList: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'mediaListForDetail'
                     }
                 }
             });
@@ -210,6 +220,21 @@ module WeMedia {
                 deferred.reject(err);
             });
             return deferred.promise;
+        }
+        orderDetailMediaList(id: number): ng.IPromise<any> {
+            var deferred =  this.$q.defer();
+            this.orderResource.orderDetailMediaList({
+                ID: id
+            }, null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            },function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+
         }
 
 

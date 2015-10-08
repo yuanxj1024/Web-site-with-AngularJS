@@ -14,7 +14,6 @@ module WeMedia {
 
     export interface IPrecontractListScope extends IWMBaseScope {
         dataList: Array<any>;
-        showDetail: Function;
         removeItem: Function;
         editItem: Function;
 
@@ -24,6 +23,7 @@ module WeMedia {
         totalItems: number;
         pageSize: number;
         pageChanged: Function;
+        openDetail: Function;
 
     }
 
@@ -35,11 +35,11 @@ module WeMedia {
             public $stateParams: IWMStateParamsService,
             public OrderService: IOrderService
         ){
-            $scope.showDetail = angular.bind(this, this.showDetail);
             $scope.removeItem = angular.bind(this, this.removeItem);
             $scope.editItem = angular.bind(this, this.editItem);
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.getStatus = angular.bind(this, this.getStatus);
+            $scope.openDetail = angular.bind(this, this.openDetail);
 
             $scope.currentMediaType = $stateParams.mediaType * 1;
 
@@ -54,10 +54,6 @@ module WeMedia {
             this.$scope.pageSize = 15;
         }
 
-        showDetail(id:number) {
-
-
-        }
         removeItem(id:number) {
             var self = this;
             window.navigator.notification.confirm('确定取消预约吗?',function(index){
@@ -131,6 +127,16 @@ module WeMedia {
                     return '审核通过';
             }
         }
+
+        openDetail(id, type) {
+            var url = {
+                1: 'advertiser.weiboPrecontractDetail',
+                2: 'advertiser.wechatPrecontractDetail',
+                3: 'advertiser.friendsPrecontractDetail'
+            };
+            this.$state.go(url[type],{detailID: id,type:type});
+        }
+
     }
 
     PrecontractList.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'OrderService'];

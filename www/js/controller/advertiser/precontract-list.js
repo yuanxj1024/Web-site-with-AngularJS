@@ -15,11 +15,11 @@ var WeMedia;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.OrderService = OrderService;
-            $scope.showDetail = angular.bind(this, this.showDetail);
             $scope.removeItem = angular.bind(this, this.removeItem);
             $scope.editItem = angular.bind(this, this.editItem);
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.getStatus = angular.bind(this, this.getStatus);
+            $scope.openDetail = angular.bind(this, this.openDetail);
             $scope.currentMediaType = $stateParams.mediaType * 1;
             this.init();
             this.refresh();
@@ -28,8 +28,6 @@ var WeMedia;
             this.$scope.currentPageIndex = 1;
             this.$scope.totalItems = 0;
             this.$scope.pageSize = 15;
-        };
-        PrecontractList.prototype.showDetail = function (id) {
         };
         PrecontractList.prototype.removeItem = function (id) {
             var self = this;
@@ -101,6 +99,14 @@ var WeMedia;
                 case 9:
                     return '审核通过';
             }
+        };
+        PrecontractList.prototype.openDetail = function (id, type) {
+            var url = {
+                1: 'advertiser.weiboPrecontractDetail',
+                2: 'advertiser.wechatPrecontractDetail',
+                3: 'advertiser.friendsPrecontractDetail'
+            };
+            this.$state.go(url[type], { detailID: id, type: type });
         };
         return PrecontractList;
     })();
