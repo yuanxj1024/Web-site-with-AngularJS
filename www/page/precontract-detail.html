@@ -7,25 +7,25 @@
     <div class="container">
       <ul class="nav nav-pills" ng-if="currentMediaType == 2">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechat">公众号资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">发布公众号资源任务</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">发布任务列表</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatprecontract">创建公众号预约订单</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.wechatPreList">预约订单列表</a></li>
       </ul>
       <ul class="nav nav-pills" ng-if="currentMediaType == 1">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weibo">微博资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">发布微博资源任务</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">发布任务列表</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboprecontract">创建微博预约订单</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.weiboPreList">预约订单列表</a></li>
       </ul>
       <ul class="nav nav-pills" ng-if="currentMediaType == 3">
         <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friends">朋友圈资源</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">发布朋友圈资源任务</a></li>
-        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">发布任务列表</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsprecontract">创建朋友圈预约订单</a></li>
+        <li ui-sref-active="active"><a href="#" ui-sref="advertiser.friendsPreList">预约订单列表</a></li>
       </ul>
     </div>
   </div>
   <div class="precontract-wrap page-minHeight pre-detail-wrap">
     <div class="precontract-body container">
       <div class="header">
-        <h4 class="page-title font-color"><i class="glyphicon glyphicon-file"></i> {{wechatForm.Title}}活动详情</h4>
+        <h4 class="page-title font-color"><i class="glyphicon glyphicon-file"></i> {{wechatForm.Title}}订单详情</h4>
       </div>
 
       <div class="main-body marginTop">
@@ -47,10 +47,19 @@
            <td>{{wechatForm.EndTime|date: 'yyyy-MM-dd hh:mm'}}</td>
          </tr>
          <tr>
-           <td class="td-title">需求描述</td>
-           <td colspan="3">{{wechatForm.Intro}}</td>
+           <td class="td-title">投放形式</td>
+           <td>{{ReleaseTypeObject[wechatForm.PriceType]}}</td>
+           <td class="td-title">附件</td>
+           <td ng-if="wechatForm.AttachmentFile.length >0"><a href="{{window.location.host + wechatForm.AttachmentFile}}" target="_blank">查看附件</a></td>
+           <td ng-if="wechatForm.AttachmentFile.length == 0">无附件</td>
            <td class="td-title">创建时间</td>
            <td>{{wechatForm.AddTime|date: 'yyyy-MM-dd hh:mm'}}</td>
+         </tr>
+         <tr>
+           <td class="td-title">需求描述</td>
+           <td colspan="5">{{wechatForm.Intro}}</td>
+           <!--<td class="td-title">创建时间</td>-->
+           <!--<td>{{wechatForm.AddTime|date: 'yyyy-MM-dd hh:mm'}}</td>-->
          </tr>
        </table>
         <div class="total-info-wrap">
@@ -60,21 +69,33 @@
         <table ng-if="currentMediaType == 2" class="table table-striped table-hover into-table">
           <tr class="blue-line">
             <th>微信账号</th>
-            <th>单图文报价</th>
-            <th>多图文第一条</th>
-            <th>多图文第二条</th>
-            <th>多图文3~N条</th>
+            <th>{{ReleaseTypeObject[wechatForm.PriceType]}}</th>
+            <!--<th>单图文报价</th>-->
+            <!--<th>多图文第一条</th>-->
+            <!--<th>多图文第二条</th>-->
+            <!--<th>多图文3~N条</th>-->
+            <th>成交价</th>
+            <th>完成截图</th>
             <th>状态</th>
+            <th>操作</th>
           </tr>
           <tr ng-repeat="item in selectedList track by $index">
             <td>
               {{item.BMediaNickName}}
             </td>
-            <td><p>{{item.PriceJSON.SingleYing | currency: '￥'}}</p><p>{{item.PriceJSON.SingleRuan | currency: '￥'}}</p></td>
-            <td><p>{{item.PriceJSON.MoreFirstYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreFirstRuan | currency: '￥'}}</p></td>
-            <td><p>{{item.PriceJSON.MoreSecondYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreSecondRuan | currency: '￥'}}</p></td>
-            <td><p>{{item.PriceJSON.MoreThreeYing | currency: '￥'}}</p><p>{{item.PriceJSON.MoreThreeRuan | currency: '￥'}}</p></td>
+            <td>{{priceText(item.PriceJSON[PriceTypeNames[wechatForm.PriceType]])}}</td>
+            <!--<td><p>{{priceText(item.PriceJSON.SingleYing)}}</p><p>{{priceText(item.PriceJSON.SingleRuan)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.MoreFirstYing)}}</p><p>{{priceText(item.PriceJSON.MoreFirstRuan)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.MoreSecondYing)}}</p><p>{{priceText(item.PriceJSON.MoreSecondRuan)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.MoreThreeYing)}}</p><p>{{priceText(item.PriceJSON.MoreThreeRuan)}}</p></td>-->
+            <td>{{CommissionedPrice(item.CommissionedPrice)}}</td>
+            <td><a ng-if="item.BState >= 5" href="{{window.location.origin + item.BPerformImage}}" target="_blank">查看截图</a></td>
             <td>{{getMediaStatus(item.BState)}}</td>
+            <td>
+              <a class="btn btn-primary" ng-if="item.BState == 5" href="javascript:;" ng-click="acceptExecute(item)">确认验收</a>
+              <a ng-if="item.BState == 5" href="javascript:;" class="refond-wrap">申请退款<i class="glyphicon glyphicon-question-sign"></i></a>
+              <a ng-if="item.BState == 2" class="btn-pre-pay" href="javascript:;" ng-click="frozenCapital(item)">金额预付<i class="glyphicon glyphicon-question-sign"></i></a>
+            </td>
           </tr>
         </table>
 
@@ -82,21 +103,33 @@
         <table ng-if="currentMediaType == 1" class="table table-striped table-hover into-table">
           <tr class="blue-line">
             <th>账号</th>
-            <th>硬广直发价</th>
-            <th>硬广转发价</th>
-            <th>软广直发价</th>
-            <th>软广转发价</th>
+            <th>{{ReleaseTypeObject[wechatForm.PriceType]}}</th>
+            <!--<th>硬广直发价</th>-->
+            <!--<th>硬广转发价</th>-->
+            <!--<th>软广直发价</th>-->
+            <!--<th>软广转发价</th>-->
+            <th>成交价</th>
+            <th>完成截图</th>
             <th>状态</th>
+            <th>操作</th>
           </tr>
           <tr ng-repeat="item in selectedList track by $index">
             <td>
               {{item.BMediaNickName}}
             </td>
-            <td><p>{{item.PriceJSON.YGZhiFaPrice | currency: '￥'}}</p></td>
-            <td><p>{{item.PriceJSON.YGZhuanFaPrice | currency: '￥'}}</p></td>
-            <td><p>{{item.PriceJSON.RGZhiFaPrice | currency: '￥'}}</p></td>
-            <td><p>{{item.PriceJSON.RGZhuanFaPrice | currency: '￥'}}</p></td>
+            <td>{{priceText(item.PriceJSON[PriceTypeNames[wechatForm.PriceType]])}}</td>
+            <!--<td><p>{{priceText(item.PriceJSON.YGZhiFaPrice)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.YGZhuanFaPrice)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.RGZhiFaPrice)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.RGZhuanFaPrice)}}</p></td>-->
+            <td>{{CommissionedPrice(item.CommissionedPrice)}}</td>
+            <td><a ng-if="item.BState >= 5" href="{{window.location.origin + item.BPerformImage}}" target="_blank">查看截图</a></td>
             <td>{{getMediaStatus(item.BState)}}</td>
+            <td>
+              <a class="btn btn-primary" ng-if="item.BState == 5" href="javascript:;" ng-click="acceptExecute(item)">确认验收</a>
+              <a ng-if="item.BState == 5" href="javascript:;" class="refond-wrap">申请退款<i class="glyphicon glyphicon-question-sign"></i></a>
+              <a ng-if="item.BState == 2" class="btn-pre-pay" href="javascript:;" ng-click="frozenCapital(item)">金额预付<i class="glyphicon glyphicon-question-sign"></i></a>
+            </td>
           </tr>
         </table>
 
@@ -106,22 +139,33 @@
             <th>微信昵称</th>
             <th>报价</th>
             <th>好友数</th>
-            <th>所在地</th>
+            <!--<th>所在地</th>-->
+            <th>成交价</th>
+            <th>完成截图</th>
             <th>状态</th>
+            <th>操作</th>
           </tr>
           <tr ng-repeat="item in selectedList track by $index">
             <td>
               {{item.BMediaNickName}}
             </td>
-            <td>{{item.PriceJSON.Price | currency: '￥'}}</td>
-            <td>{{item.FansNumber}}</td>
-            <td>{{item.ProvinceName}},{{item.CityName}}</td>
+            <td>{{priceText(item.PriceJSON.Price)}}</td>
+            <td>{{item.BFansNumber}}</td>
+            <!--<td>{{item.ProvinceName}},{{item.CityName}}</td>-->
+            <td>{{CommissionedPrice(item.CommissionedPrice)}}</td>
+            <td><a ng-if="item.BState >= 5" href="{{window.location.origin + item.BPerformImage}}" target="_blank">查看截图</a></td>
             <td>{{getMediaStatus(item.BState)}}</td>
+            <td>
+
+              <a class="btn btn-primary" ng-if="item.BState == 5" href="javascript:;" ng-click="acceptExecute(item)">确认验收</a>
+              <a ng-if="item.BState == 5" href="javascript:;" class="refond-wrap">申请退款<i class="glyphicon glyphicon-question-sign"></i></a>
+              <a ng-if="item.BState == 2" class="btn-pre-pay" href="javascript:;" ng-click="frozenCapital(item)">金额预付<i class="glyphicon glyphicon-question-sign"></i></a>
+            </td>
           </tr>
         </table>
         <!-- -->
         <div class="txt-center">
-          <button ng-click="closeDetail()" class="btn btn-primary">关闭</button>
+          <!--<button ng-click="closeDetail()" class="btn btn-primary">关闭</button>-->
         </div>
       </div>
     </div>

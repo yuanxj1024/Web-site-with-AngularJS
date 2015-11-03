@@ -13,6 +13,9 @@ module WeMedia {
         selectedList: Array<any>;
         oneItem(id:number): ng.IPromise<any>;
         updateItem(model:any): ng.IPromise<any>;
+        exists(args:any): ng.IPromise<any>;
+        //推荐列表
+        recommend(args:any): ng.IPromise<any>;
     }
 
     interface IMediaAccountResource extends ng.resource.IResourceClass<ng.resource.IResource<any>> {
@@ -23,6 +26,8 @@ module WeMedia {
         updateStatus(params:Object, data:Object, success?:Function, error?:Function);
         oneItem(params:Object, data:Object, success?:Function, error?:Function);
         updateItem(params:Object, data:Object, success?:Function, error?:Function);
+        exists(params:Object, data:Object, success?:Function, error?:Function);
+        recommend(params:Object, data:Object, success?:Function, error?:Function);
     }
 
     class MediaAccount implements IMediaAccountService {
@@ -77,6 +82,22 @@ module WeMedia {
                         needAccessToken: true,
                         params: {
                             'action': 'update'
+                        }
+                    },
+                    exists: {
+                        method: 'GET',
+                        isArray: false,
+                        needAccessToken: true,
+                        params: {
+                            'action': 'exists'
+                        }
+                    },
+                    recommend: {
+                        method: 'GET',
+                        isArray: false,
+                        needAccessToken: true,
+                        params: {
+                            'action': 'recommend'
                         }
                     }
                 }
@@ -147,6 +168,34 @@ module WeMedia {
                 deferred.reject(err);
             });
             return deferred.promise;
+        }
+
+        //检查是否存在
+        exists(args: any): ng.IPromise<any> {
+            var deferred = this.$q.defer();
+            this.accountResource.exists(args,null, function(result){
+                if(typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+        recommend(args:any): ng.IPromise<any> {
+            var deferred = this.$q.defer();
+            this.accountResource.recommend(args,null, function(result){
+                if(typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+
         }
 
     }

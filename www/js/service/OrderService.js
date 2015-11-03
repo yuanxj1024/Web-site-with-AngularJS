@@ -85,6 +85,22 @@ var WeMedia;
                     params: {
                         'action': 'mediaListForDetail'
                     }
+                },
+                frozenAdvertiser: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'frozenAdvertiser'
+                    }
+                },
+                acceptExecute: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'acceptExecute'
+                    }
                 }
             });
         }
@@ -186,11 +202,37 @@ var WeMedia;
             });
             return deferred.promise;
         };
-        Order.prototype.orderDetailMediaList = function (id) {
+        Order.prototype.orderDetailMediaList = function (id, userID) {
+            if (userID === void 0) { userID = 0; }
             var deferred = this.$q.defer();
             this.orderResource.orderDetailMediaList({
-                ID: id
+                ID: id,
+                userID: userID > 0 ? userID : ''
             }, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Order.prototype.frozenAdvertiser = function (arg) {
+            var deferred = this.$q.defer();
+            this.orderResource.frozenAdvertiser(arg, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Order.prototype.acceptExecute = function (arg) {
+            var deferred = this.$q.defer();
+            this.orderResource.acceptExecute(arg, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }

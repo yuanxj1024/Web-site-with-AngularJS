@@ -17,14 +17,13 @@ module WeMedia {
             $scope.payStatus = angular.bind(this, this.payStatus);
             $scope.searchHandler = angular.bind(this,this.searchHandler);
 
-            console.log($rootScope.user);
             this.init();
             this.refresh();
         }
 
         init() {
             this.$scope.payRecords = [];
-            this.$scope.currentPageIndex = 0;
+            this.$scope.currentPageIndex = 1;
             this.$scope.totalItems = 0;
             this.$scope.pageSize = 20;
 
@@ -33,12 +32,12 @@ module WeMedia {
                 endTime:''
             };
 
-
-
-
         }
         refresh(args=null) {
             var self = this;
+            args = angular.extend({
+                userID: this.$rootScope.user.ID
+            }, args|| {});
             self.BillService.list(args).then(function(result){
                 if(result && result.Data){
                     self.$scope.payRecords = result.Data;

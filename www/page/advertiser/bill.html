@@ -1,8 +1,8 @@
-<div class="main-nav">
+﻿<div class="main-nav">
   <div ng-include="'./page/header.html'" ></div>
 </div>
 <div class="container marginTop user-center" ng-controller="advertiserBllCtrl">
-  <div class="line-wrap">
+  <div class="line-wrap margin-lr">
     <div class="header-tab marginLeft">
     <h4 class="page-inner-title">当前帐户信息</h4>&nbsp; <button ui-sref="advertiser.recharge" class="btn btn-info btn-sm">立即充值</button>
     </div>
@@ -18,16 +18,16 @@
         <tr>
           <td>{{user.Company}}</td>
           <td>{{user.LinkName}}</td>
-          <td>{{user.TotalAmount | currency: '￥'}}</td>
-          <td>{{user.AmountFrozen | currency: '￥'}}</td>
-          <td>{{user.AvailableBanance | currency: '￥'}}</td>
+          <td>{{user.TotalAmount||0 | currency: '￥'}}</td>
+          <td>{{user.AmountFrozen||0 | currency: '￥'}}</td>
+          <td>{{user.AvailableBalance||0 | currency: '￥'}}</td>
         </tr>
       </table>
     </div>
     <div class="header-tab marginLeft">
       <h4>充值明细</h4>
     </div>
-    <div class="search-wrap form-inline padding">
+    <div class="search-wrap form-inline padding ">
       <label>起止时间</label>
       <div class="input-group input-append input-prepend">
         <input type="text" class="form-control" date-time placeholder="开始时间" ng-model="search.startTime" auto-close="true" required="true" min-view="date" max-view="date" format="yyyy-MM-dd" partial="true">
@@ -48,13 +48,13 @@
           <th>状态</th>
         </tr>
         <tr ng-repeat="item in payRecords track by $index">
-          <td>{{item.PayNo}}</td>
-          <td>{{calcDate(item.PayTime) | date: 'yyyy-MM-hh mm:ss'}}</td>
+          <td>{{item.OrderNo}}</td>
+          <td>{{calcDate(item.PayTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
           <td>{{item.PayMoney | currency: '￥'}}</td>
-          <td>{{item.Type == 1? '支付宝': '银行'}}</td>
+          <td>{{item.Type == 1? '支付宝': '银行转账'}}</td>
           <td>{{payStatus(item.State)}}</td>
         </tr>
-        <tr>
+        <tr ng-if="payRecords.length <= 0">
           <td colspan="5" class="txt-center">暂无数据</td>
         </tr>
       </table>

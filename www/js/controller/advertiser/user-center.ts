@@ -33,7 +33,7 @@ module  WeMedia {
 
         save($valid):void {
             if(!$valid) {
-                ZENG.msgbox.show('您输入的数据格式不正确，无法保存!',1);
+                ZENG.msgbox.show('请将数据填写完整!',1);
                 return;
             }
             var self = this;
@@ -61,8 +61,12 @@ module  WeMedia {
             });
         }
 
-        savePwd(){
+        savePwd($valid){
             var self = this;
+            if(!$valid){
+                ZENG.msgbox.show('请填写密码!',1);
+                return;
+            }
             if(self.$scope.pwdForm.newPwd != self.$scope.pwdForm.confirmPwd){
                 ZENG.msgbox.show('两次输入的密码不一致!',1);
                 return;

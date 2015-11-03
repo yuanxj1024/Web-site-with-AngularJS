@@ -27,8 +27,15 @@ module WeMedia {
         getRegionList: Function;
         provinceList: Array<any>;
         cityList: Array<any>;
-        editID: number
+        editID: number;
+        resetFormInput: Function;
+        //二级分类标记
+        secondLevel: number;
+
+        validPrice: Function;
+        isAllPriceOK: boolean;
     }
+
 
     var stateNames = {
         1: 'admedia.account.weibo',
@@ -61,11 +68,14 @@ module WeMedia {
             $scope.save = angular.bind(this,this.save);
             $scope.uploadFile = angular.bind(this, this.uploadFile);
             $scope.getRegionList = angular.bind(this, this.getRegionList);
+            $scope.resetFormInput = angular.bind(this,this.resetFormInput);
+            $scope.validPrice = angular.bind(this, this.validPrice);
 
             $scope.searchTypeData = {
                 common: [],
                 industry: [],
-                employment: []
+                employment: [],
+                secondLevel: []
             };
 
             var name = 'a:contains("' + $scope.currentMediaName+ '")';
@@ -80,11 +90,17 @@ module WeMedia {
             var self = this;
             self.$scope.cityList = [];
             self.$scope.provinceList = [];
-            this.SearchTypeService.common(self.$scope.currentMediaType).then(function(result){
-                self.$scope.searchTypeData.common = result;
-            }, function(err){
-                console.log(err);
+
+            this.SearchTypeService.getClassList(0).then(function(data){
+                self.$scope.searchTypeData.common = data;
+            },function(data){
+                self.$scope.searchTypeData.common = data;
             });
+            //this.SearchTypeService.common(self.$scope.currentMediaType).then(function(result){
+            //    self.$scope.searchTypeData.common = result;
+            //}, function(err){
+            //    console.log(err);
+            //});
 
             //this.SearchTypeService.industry().then(function(result){
             //    self.$scope.searchTypeData.industry = result;
@@ -97,6 +113,13 @@ module WeMedia {
             //}, function(err){
             //    console.log(err);
             //});
+            this.$scope.$watch('accountForm.ClassID', function(newValue,oldValue){
+                self.$scope.searchTypeData.secondLevel = [];
+                self.$scope.secondLevel = 0;
+                if(newValue){
+                    self.getSecondLevel(newValue);
+                }
+            });
 
             this.$scope.$watch('accountForm.ProvinceID', function(newValue,oldValue){
                 if(newValue && newValue.ID){
@@ -109,6 +132,19 @@ module WeMedia {
             if(this.$scope.currentMediaType == 3){
                 self.$scope.provinceList = this.getRegionList(0,null);
             }
+        }
+        //获取二级分类
+        getSecondLevel(item){
+            var self = this;
+            this.SearchTypeService.getClassList(item.ID).then(function(data){
+                self.$scope.searchTypeData.secondLevel = data;
+                if(!data || data.length<1){
+                    self.$scope.secondLevel = 0;
+                }
+            },function(data){
+                self.$scope.searchTypeData.secondLevel = [];
+                self.$scope.secondLevel = 0;
+            });
         }
 
         initForms() {
@@ -127,6 +163,7 @@ module WeMedia {
                 CityID:'',
                 CityName:'',
                 ClassID:'',
+                secondClass: '',
                 ClassName:'',
                 Price:'',
                 MinPrice:'',
@@ -175,11 +212,12 @@ module WeMedia {
                     self.$scope.accountForm = result.Data[0];
                     var priceJson = self.$scope.accountForm.PriceJSON;
                     self.$timeout(function () {
-                        angular.forEach(self.$scope.searchTypeData.common,function(item){
-                            if(item.ID == self.$scope.accountForm.ClassID){
-                                self.$scope.accountForm.ClassID = item;
-                            }
-                        });
+                        //angular.forEach(self.$scope.searchTypeData.common,function(item){
+                        //    if(item.ID == self.$scope.accountForm.ClassID){
+                        //        self.$scope.accountForm.ClassID = item;
+                        //    }
+                        //});
+                        self.setClassSelected(self.$scope.accountForm.ClassID);
                     },400);
 
                     self.$scope.accountForm.Price = priceJson.Price;
@@ -195,6 +233,8 @@ module WeMedia {
                     self.$scope.accountForm.YGZhiFaPrice= priceJson.YGZhiFaPrice;
                     self.$scope.accountForm.RGZhuanFaPrice= priceJson.RGZhuanFaPrice;
                     self.$scope.accountForm.RGZhiFaPrice= priceJson.RGZhiFaPrice;
+                    //self.$scope.accountForm.Image= priceJson.RGZhiFaPrice;
+                    //self.$scope.accountForm.RGZhiFaPrice= priceJson.RGZhiFaPrice;
 
                     self.$scope.accountForm.AddTime = self.dateFormt(result.Data[0].AddTime);
                     self.$scope.accountForm.Birthday = self.dateFormt(result.Data[0].Birthday);
@@ -209,6 +249,27 @@ module WeMedia {
                 window.navigator.notification.alert('获取数据异常，暂时无法编辑。',function(){
                     self.$state.go(stateNames[self.$scope.currentMediaType]);
                 });
+            });
+        }
+
+        setClassSelected(classID){
+            var self = this;
+            this.SearchTypeService.common(0).then(function(result){
+                angular.forEach(result, function(item){
+                    if(classID == item.ID){
+                        if(item.ParID == 0){
+                            self.$scope.accountForm.ClassID = item;
+                        }else{
+                            angular.forEach(self.$scope.searchTypeData.common, function(innerItem){
+                                if(item.ParID == innerItem.ID){
+                                    self.$scope.accountForm.ClassID = innerItem;
+                                    self.$scope.accountForm.secondClass = item;
+                                }
+                            });
+                        }
+                    }
+                });
+
             });
         }
 
@@ -235,13 +296,56 @@ module WeMedia {
             }
         }
 
+        validate(){
+            var msg = '';
+            if(!this.$scope.accountForm.Intro){
+                msg = '请输入账号介绍';
+            }else if(!this.$scope.accountForm.Image){
+                msg = '请上传头像';
+            } else if(!this.$scope.accountForm.FansNumberImage && this.$scope.currentMediaType != 1){
+                msg = '请上传粉丝量截图';
+            } else if(this.$scope.searchTypeData.secondLevel.length >0 && !this.$scope.accountForm.secondClass){
+                msg = '请选择账号类型';
+            } else if(!this.$scope.accountForm.ClassID){
+                msg = '请选择账号类型';
+            } else if(!this.$scope.isAllPriceOK){
+                msg = '请输入正确的价格';
+            }
+            if(msg){
+                ZENG.msgbox.show(msg,1);
+            }
+            return !msg;
+        }
+
         save($valid) {
+
+            if(!this.validate()){
+                return ;
+            }
             if(!$valid) {
                 ZENG.msgbox.show('请完成所有项的数据，数据不完整，无法保存!',1);
                 return;
             }
+            var self = this;
 
-            this.saveAccount();
+            if(self.$scope.editID){
+                self.saveAccount();
+            }else{
+                this.MediaAccountService.exists({
+                    AccountName: this.$scope.accountForm.AccountName,
+                    ChannelID: this.$scope.currentMediaType,
+                    NickName: this.$scope.accountForm.NickName
+                }).then(function(result){
+                    if(result && result.Status == 0){
+                        self.saveAccount();
+                    }else{
+                        ZENG.msgbox.show('账号已存在，请勿重复添加!',5);
+                    }
+                }, function(err){
+                    ZENG.msgbox.show('检测账户是否存在时异常，稍后操作!',5);
+                });
+
+            }
         }
 
         saveAccount() {
@@ -249,6 +353,9 @@ module WeMedia {
             if(!self.$scope.accountForm.ClassID){
                 ZENG.msgbox.show('请选择类型!',1);
                 return ;
+            }
+            if(this.$scope.searchTypeData.secondLevel.length >0) {
+                self.$scope.accountForm.ClassID = self.$scope.accountForm.secondClass;
             }
             self.$scope.accountForm.ClassName = self.$scope.accountForm.ClassID.ClassName;
             self.$scope.accountForm.ClassID = self.$scope.accountForm.ClassID.ID;
@@ -268,6 +375,9 @@ module WeMedia {
             self.$scope.accountForm.MaxPrice = self.findValue('max');
             self.$scope.accountForm.MinPrice = self.findValue('min');
             self.$scope.accountForm.PriceJSON = self.priceJson();
+            if(self.$scope.accountForm.FansNumberImage){
+                self.$scope.accountForm.FansNumberImage = self.$scope.accountForm.FansNumberImage.replace(window.location.origin, '');
+            }
 
             if(self.$scope.editID){
                 self.MediaAccountService.updateItem(this.$scope.accountForm).then(function(result){
@@ -285,14 +395,15 @@ module WeMedia {
             }else {
                 this.MediaAccountService.save(this.$scope.accountForm).then(function(result){
                     if(result && result.Status >= 1) {
-                        window.navigator.notification.confirm('保存成功，继续添加？',function(index){
+                        window.navigator.notification.confirm('保存成功，请等待审核。继续添加账号资源？',function(index){
                             if(index ==1){
                                 self.$state.go(stateNames[self.$scope.currentMediaType]);
                             }else if(index ==2) {
                                 self.$scope.accountForm = angular.copy( self.$scope.resetForm, {});
+                                self.$scope.accountForm.Image = '';
                                 $('form')[0].reset();
                             }
-                        },'提示',['取消','继续添加'],'');
+                        },'提示',['关闭','继续添加'],'');
                     } else if(result && result.Status <=0){
                         window.navigator.notification.alert(result.Message||'保存失败', null);
                     }
@@ -334,17 +445,11 @@ module WeMedia {
         setFileValue(type,path) {
             path = window.location.origin + path;
             switch (type) {
-                case 'wx_head':
+                case 'head':
                     this.$scope.accountForm.Image = path;
                     break;
-                case 'fri_fans':
-                    this.$scope.accountForm.FriendNumberImage = path;
-                    break;
-                case 'wb_head':
-                    this.$scope.accountForm.Image = path;
-                    break;
-                case 'fri_head':
-                    this.$scope.accountForm.Image = path;
+                case 'fans':
+                    this.$scope.accountForm.FansNumberImage = path;
                     break;
             }
         }
@@ -371,7 +476,7 @@ module WeMedia {
                     }
                 }
             },function(err){
-                console.log(err);
+                //console.log(err);
             });
             return list;
         }
@@ -421,6 +526,17 @@ module WeMedia {
                 return Math.max.apply(Math, arr);
             }
             return 0;
+        }
+        resetFormInput(){
+
+            this.$scope.accountForm = angular.copy(this.$scope.resetForm, {});
+            this.$scope.accountForm.Image = '';
+            $('form')[0].reset();
+        }
+
+        validPrice(price) {
+            this.$scope.isAllPriceOK = /^\d{0,9}(\.\d{1,9})?$/.test(price);
+            return !this.$scope.isAllPriceOK;
         }
 
 

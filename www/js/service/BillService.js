@@ -28,6 +28,42 @@ var WeMedia;
                     params: {
                         'action': 'info'
                     }
+                },
+                paymentInfo: {
+                    method: 'GET',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'admediaGetPayInfo'
+                    }
+                },
+                savePaymentInfo: {
+                    method: 'POST',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'admediaSavePaymentInfo'
+                    }
+                },
+                getAdmediaList: {
+                    method: 'GET',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'getAdmediaList'
+                    }
+                }
+            });
+            this.rechargeResource = $resource('/API/Advertiser/:action', {
+                action: '@action'
+            }, {
+                bankPay: {
+                    method: 'POST',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'recharge'
+                    }
                 }
             });
         }
@@ -46,6 +82,55 @@ var WeMedia;
         Bill.prototype.info = function () {
             var deferred = this.$q.defer();
             this.billResource.info(null, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        //银行转账
+        Bill.prototype.rechargeBank = function (args) {
+            var deferred = this.$q.defer();
+            this.rechargeResource.bankPay(args, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Bill.prototype.getPaymentInfo = function (args) {
+            var deferred = this.$q.defer();
+            this.billResource.paymentInfo(args, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Bill.prototype.savePaymentInfo = function (args) {
+            var deferred = this.$q.defer();
+            this.billResource.savePaymentInfo(args, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Bill.prototype.getAdmediaList = function (args) {
+            var deferred = this.$q.defer();
+            this.billResource.getAdmediaList(args, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }

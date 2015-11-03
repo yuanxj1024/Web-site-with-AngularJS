@@ -11,6 +11,8 @@ module WeMedia {
 
         noticeDetail(id: number): ng.IPromise<any>;
 
+        getFee(): ng.IPromise<any>;
+
     }
 
     export interface ICommonResource extends ng.resource.IResourceClass<ng.resource.IResource<any>> {
@@ -19,6 +21,7 @@ module WeMedia {
 
     class Common implements ICommonService {
         private noticeResource: any;
+        private configResource: any;
         constructor (
             public $rootScope: IWMRootScope,
             public $q: ng.IQService,
@@ -42,9 +45,20 @@ module WeMedia {
                         action: 'list'
                     }
                 }
-
             });
 
+            this.configResource = $resource('/API/User/:action', {
+                action: '@action'
+            },{
+                getFee: {
+                    method: 'GET',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        action: 'fee'
+                    }
+                }
+            });
 
         }
 
@@ -67,6 +81,18 @@ module WeMedia {
             this.noticeResource.detail({
                 id: id
             } ,null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+        getFee(){
+            var deferred = this.$q.defer();
+            this.configResource.getFee(null ,null, function(result){
                 if(typeof result == 'string'){
                     result = JSON.parse(result);
                 }

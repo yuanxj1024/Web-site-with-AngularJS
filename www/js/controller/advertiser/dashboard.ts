@@ -29,6 +29,7 @@ module WeMedia {
         removeItem: Function;
         getStateName: Function;
         updateState: Function;
+        rejectOrder: Function;
     }
 
     class Dashboard {
@@ -50,6 +51,7 @@ module WeMedia {
             $scope.updateState = angular.bind(this, this.updateState);
             $scope.editItem = angular.bind(this, this.editItem);
             $scope.openDetail = angular.bind(this, this.openDetail);
+            $scope.rejectOrder = angular.bind(this, this.rejectOrder);
 
             $scope.noticeList = [];
             $scope.orderList = [];
@@ -65,6 +67,8 @@ module WeMedia {
                     $scope.orderInfo.process = data.process;
                 }
             });
+
+            $rootScope.$emit('event:refresh-user-info');
         }
         init() {
             var self = this;
@@ -85,8 +89,9 @@ module WeMedia {
                 this.admediaOrderList();
             }
 
-            self.MediaAccountService.list({
-                pageSize: 6
+            self.MediaAccountService.recommend({
+                //pageSize: 6,
+                //isEnable: 1
             }).then(function(result){
                 if(result && result.Data){
                     self.$scope.newList = result.Data || [];
@@ -107,7 +112,9 @@ module WeMedia {
         getOrderList(){
             var self =this;
             this.OrderService.list({
-                userID:  this.$rootScope.user.ID
+                userID:  this.$rootScope.user.ID,
+                pageSize: 10,
+                page: 1
             }).then(function(result){
                 if(result && result.Data){
                     self.$scope.orderList = result.Data;
@@ -221,17 +228,49 @@ module WeMedia {
         }
         getStateName(code){
             return {
-                1: '待确认',
-                2: '已同意',
-                3: '待执行',
-                4: '执行完成'
+                //1: '等自媒体确认',
+                //2: '自媒体同意',
+                //3: '自媒体拒单',
+                //4: '已支付',
+                //5: '执行完成',
+                //6: '未执行',
+                //7: '已验收',
+                //8: '付款'
+                1: '等自媒体确认',
+                2: '等待客户支付',//'媒介主同意',
+                3: '自媒体拒单',
+                4: '已支付，请执行',
+                5: '执行完成',
+                6: '未执行',
+                7: '已验收',
+                8: '付款'
             }[code];
         }
 
-        updateState(id: number, state:number = 1){
+        //updateState(id: number, state:number = 1){
+        //    var args = {
+        //            id: id,
+        //            state: state
+        //        },
+        //        self = this;
+        //    self.OrderService.orderDetailState(args).then(function(result){
+        //        if(result && result.Status*1 > 0){
+        //            self.admediaOrderList();
+        //            ZENG.msgbox.show('操作成功!',4);
+        //        }else{
+        //            ZENG.msgbox.show('操作失败，请稍候重试!',1);
+        //        }
+        //    }, function(){
+        //        ZENG.msgbox.show('操作失败，请稍候重试!',5);
+        //    });
+        //}
+        updateState(id: number, state:number = 1,msg:string ='',money:any='',attachment:any=''){
             var args = {
                     id: id,
-                    state: state
+                    state: state,
+                    message: msg,
+                    money: money,
+                    attachment: attachment
                 },
                 self = this;
             self.OrderService.orderDetailState(args).then(function(result){
@@ -245,6 +284,15 @@ module WeMedia {
                 ZENG.msgbox.show('操作失败，请稍候重试!',5);
             });
 
+        }
+
+        rejectOrder(id:number) {
+            var reject = prompt('请输入拒单理由：');
+            if(reject){
+                this.updateState(id, 3, reject);
+            }else{
+                ZENG.msgbox.show('请输入拒单理由!',1);
+            }
         }
     }
 

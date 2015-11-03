@@ -76,11 +76,11 @@ module WeMedia {
                 switch(rejection.status) {
                     case 401:
                         //TODO
-                        alert(401);
+                        //alert(401);
                         break;
                     default:
-                        console.log('TODO');
-                        console.log(rejection);
+                        //console.log('TODO');
+                        //console.log(rejection);
                         break;
                 }
 

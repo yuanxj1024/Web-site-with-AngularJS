@@ -51,10 +51,8 @@ var WeMedia;
         };
         PrecontractCtrl.prototype.pageChanged = function (index) {
             this.$scope.currentPageIndex = index;
-            console.log(this.$scope.currentPageIndex);
         };
         PrecontractCtrl.prototype.saveWechat = function ($valid) {
-            console.log(this.$scope.wechatForm);
             if (!$valid) {
                 window.navigator.notification.alert('请将信息填写完整', null);
             }
@@ -105,8 +103,6 @@ var WeMedia;
                 }
             });
             modalInstance.result.then(function (items) {
-                console.log('result');
-                console.log(items);
             }, function () {
             });
         };
@@ -129,7 +125,6 @@ var WeMedia;
             $scope.selectedTotal = 0;
             $scope.$watch('selectedList', function () {
                 angular.forEach($scope.selectedList, function (item) {
-                    console.log(item);
                 });
             });
         }

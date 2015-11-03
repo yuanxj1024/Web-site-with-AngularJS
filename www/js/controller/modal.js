@@ -22,5 +22,6 @@ var WeMedia;
     })();
     Modal.$inject = ['$scope', 'ModalService', 'item'];
     WeMedia.ControllerModule.controller('ModalCtrl', Modal);
+    WeMedia.ControllerModule.controller('InfoModalCtrl', Modal);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=modal.js.map

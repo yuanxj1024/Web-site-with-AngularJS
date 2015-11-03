@@ -1,0 +1,162 @@
+<div class="main-nav">
+  <div ng-include="'./page/header.html'" ></div>
+</div>
+<div ng-controller="AdmediaPrecontactDetalCtrl">
+  <div class="precontract-wrap page-minHeight pre-detail-wrap">
+    <div class="precontract-body container">
+      <div class="header">
+        <h4 class="page-title font-color"><i class="glyphicon glyphicon-file"></i>{{wechatForm.Title}}活动详情</h4>
+      </div>
+
+      <div class="main-body marginTop">
+       <table class="table info-table">
+         <tr>
+           <td class="td-title">预约名称</td>
+           <td>{{wechatForm.Title}}</td>
+           <td class="td-title">预约编号</td>
+           <td>{{wechatForm.ReservationNo}}</td>
+           <td class="td-title">反馈时间</td>
+           <td>{{wechatForm.FeedbackTime | date: 'yyyy-MM-dd hh:mm'}}</td>
+         </tr>
+         <tr>
+           <td class="td-title">活动状态</td>
+           <td>处理中</td>
+           <td class="td-title">执行时间</td>
+           <td>{{wechatForm.StartTime | date: 'yyyy-MM-dd hh:mm'}}</td>
+           <td class="td-title">结束时间</td>
+           <td>{{wechatForm.EndTime|date: 'yyyy-MM-dd hh:mm'}}</td>
+         </tr>
+         <tr>
+           <td class="td-title">投放形式</td>
+           <td>{{ReleaseType[wechatForm.PriceType]}}</td>
+           <td class="td-title">附件</td>
+           <td><a ng-if="wechatForm.AttachmentFile.length > 0" href="{{window.location.host + wechatForm.AttachmentFile}}" target="_blank">查看附件</a> <span ng-if="wechatForm.AttachmentFile.length == 0">无附件</span></td>
+           <td class="td-title">创建时间</td>
+           <td>{{wechatForm.AddTime|date: 'yyyy-MM-dd hh:mm'}}</td>
+         </tr>
+         <tr>
+           <td class="td-title">需求描述</td>
+           <td colspan="5">{{wechatForm.Intro}}</td>
+         </tr>
+       </table>
+        <!--<div class="total-info-wrap">-->
+          <!--资源总数：<span>{{detailTotalInfo.all}}</span>， 待确认：<span>{{detailTotalInfo.pending}}</span>，执行中：<span>{{detailTotalInfo.doing}}</span>，已完成：<span>{{detailTotalInfo.finish}}</span>-->
+        <!--</div>-->
+        <!-- 微信-->
+        <table ng-if="currentMediaType == 2" class="table table-striped table-hover into-table">
+          <tr class="blue-line">
+            <th>微信账号</th>
+            <th>{{ReleaseTypeObject[wechatForm.PriceType]}}</th>
+            <!--<th>单图文报价</th>-->
+            <!--<th>多图文第一条</th>-->
+            <!--<th>多图文第二条</th>-->
+            <!--<th>多图文3~N条</th>-->
+            <th>完成截图</th>
+            <th>状态</th>
+          </tr>
+          <tr ng-repeat="item in selectedList track by $index">
+            <td>
+              {{item.BMediaNickName}}
+            </td>
+            <td>
+              {{priceText(item.PriceJSON[PriceTypeNames[wechatForm.PriceType]])}}
+            </td>
+            <!--<td><p>{{priceText(item.PriceJSON.SingleYing)}}</p><p>{{priceText(item.PriceJSON.SingleRuan)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.MoreFirstYing)}}</p><p>{{priceText(item.PriceJSON.MoreFirstRuan)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.MoreSecondYing)}}</p><p>{{priceText(item.PriceJSON.MoreSecondRuan)}}</p></td>-->
+            <!--<td><p>{{priceText(item.PriceJSON.MoreThreeYing)}}</p><p>{{priceText(item.PriceJSON.MoreThreeRuan)}}</p></td>-->
+            <td ng-if="item.BState >= 4">
+              <a ng-if="item.BPerformImage.length > 0" href="{{window.location.origion +  item.BPerformImage}}">
+                <img ng-src="{{window.location.origion +  item.BPerformImage}}" style="max-height: 40px; max-width: 80px;" alt=""/>
+              </a>
+              <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file, item)" name="file" ngf-pattern="'image/*"
+                 ngf-max-size="50MB">{{item.BPerformImage.length>1 || item.BPerformImage.length > 1 ? '重新上传': '上传截图'}}</a>&nbsp;<span class="upload-img"><i class="glyphicon glyphicon-question-sign"></i></span>
+            </td>
+            <td ng-if="item.BState < 4"></td>
+            <td>
+              {{getMediaStatus(item.BState)}}
+              <span ng-if="item.BState == 6" class="overtime"><i class="glyphicon glyphicon-question-sign"></i></span>
+            </td>
+          </tr>
+        </table>
+
+        <!--微博 -->
+        <table ng-if="currentMediaType == 1" class="table table-striped table-hover into-table">
+          <tr class="blue-line">
+            <th>账号</th>
+            <th>{{ReleaseTypeObject[wechatForm.PriceType]}}</th>
+            <!--<th>硬广直发价</th>-->
+            <!--<th>硬广转发价</th>-->
+            <!--<th>软广直发价</th>-->
+            <!--<th>软广转发价</th>-->
+            <th>完成截图</th>
+            <th>状态</th>
+          </tr>
+          <tr ng-repeat="item in selectedList track by $index">
+            <td>
+              {{item.BMediaNickName}}
+            </td>
+            <td>
+              {{priceText(item.PriceJSON[PriceTypeNames[wechatForm.PriceType]])}}
+            </td>
+            <!--<td><p>{{item.PriceJSON.YGZhiFaPrice | currency: '￥'}}</p></td>-->
+            <!--<td><p>{{item.PriceJSON.YGZhuanFaPrice | currency: '￥'}}</p></td>-->
+            <!--<td><p>{{item.PriceJSON.RGZhiFaPrice | currency: '￥'}}</p></td>-->
+            <!--<td><p>{{item.PriceJSON.RGZhuanFaPrice | currency: '￥'}}</p></td>-->
+            <td ng-if="item.BState >= 5">
+              <a ng-if="item.BPerformImage.length > 0" href="{{window.location.origion +  item.BPerformImage}}">
+                <img ng-src="{{window.location.origion +  item.BPerformImage}}" style="max-height: 40px; max-width: 80px;" alt=""/>
+              </a>
+              <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file, item)" name="file" ngf-pattern="'image/*"
+                 ngf-max-size="50MB">{{item.BPerformImage.length>1 || item.BPerformImage.length > 1 ? '重新上传': '上传截图'}}</a>&nbsp;
+              <span class="upload-img"><i class="glyphicon glyphicon-question-sign"></i></span>
+            </td>
+            <td ng-if="item.BState < 4"></td>
+            <td>
+              {{getMediaStatus(item.BState)}}
+              <span ng-if="item.BState == 6" class="overtime"><i class="glyphicon glyphicon-question-sign"></i></span>
+            </td>
+          </tr>
+        </table>
+
+        <!--朋友圈 -->
+        <table ng-if="currentMediaType == 3" class="table table-striped table-hover into-table">
+          <tr class="blue-line">
+            <th>微信昵称</th>
+            <th>报价</th>
+            <th>好友数</th>
+            <th>所在地</th>
+            <th>成交价</th>
+            <th>完成截图</th>
+            <th>状态</th>
+          </tr>
+          <tr ng-repeat="item in selectedList track by $index">
+            <td>
+              {{item.BMediaNickName}}
+            </td>
+            <td>{{priceText(item.PriceJSON.Price)}}</td>
+            <td>{{item.FansNumber}}</td>
+            <td>{{item.ProvinceName}},{{item.CityName}}</td>
+            <td>{{item.CommissionedPrice | currency: '￥'}}</td>
+            <td ng-if="item.BState >= 4">
+              <a ng-if="item.BPerformImage.length > 0" href="{{window.location.origion +  item.BPerformImage}}">
+                <img ng-src="{{window.location.origion +  item.BPerformImage}}" style="max-height: 40px; max-width: 80px;" alt=""/>
+              </a>
+              <a class="btn btn-default btn-sm" type="file" ngf-select="uploadFile($file, item)" name="file" ngf-pattern="'image/*"
+                 ngf-max-size="50MB">{{item.BPerformImage.length>1 || item.BPerformImage.length > 1 ? '重新上传': '上传截图'}}</a>&nbsp;<span class="upload-img"><i class="glyphicon glyphicon-question-sign"></i></span>
+            </td>
+            <td ng-if="item.BState < 4"></td>
+            <td>
+              {{getMediaStatus(item.BState)}}
+              <span ng-if="item.BState == 6" class="overtime"><i class="glyphicon glyphicon-question-sign"></i></span>
+            </td>
+          </tr>
+        </table>
+        <!-- -->
+        <div class="txt-center">
+          <button ng-click="closeDetail()" class="btn btn-primary">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

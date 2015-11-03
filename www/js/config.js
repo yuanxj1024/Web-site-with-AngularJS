@@ -54,12 +54,8 @@ var WeMedia;
             responseError: function (rejection) {
                 switch (rejection.status) {
                     case 401:
-                        //TODO
-                        alert(401);
                         break;
                     default:
-                        console.log('TODO');
-                        console.log(rejection);
                         break;
                 }
                 return $q.reject(rejection);

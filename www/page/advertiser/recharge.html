@@ -1,15 +1,234 @@
 <div class="main-nav">
   <div ng-include="'./page/header.html'" ></div>
 </div>
-<div class="container marginTop user-center" ng-controller="UserCenterCtrl">
-  <div class="line-wrap">
-    <div class="header-tab marginLeft">
-      <h4 class="page-inner-title">充值</h4>
+<div class="container marginTop user-center recharge-wrap" ng-controller="RechargeCtrl">
+  <div class="line-wrap margin-lr">
+    <div class="header-tab">
+      <a ng-class="{true:'active'}[tabIndex ==0]" href="javascript:;" ng-click="tabIndex = 0">支付宝充值</a>
+      <a ng-class="{true:'active'}[tabIndex ==1]" href="javascript:;" ng-click="tabIndex = 1">银行转账</a>
     </div>
+    <!--<div class="header-tab marginLeft">-->
+      <!--<h4 class="page-inner-title">充值</h4>-->
+    <!--</div>-->
     <!--<div class="header-tab">-->
       <!--<a ng-class="{true:'active'}[tabIndex ==0]" href="#" ng-click="tabIndex = 0">资料编辑</a>-->
       <!--<a ng-class="{true:'active'}[tabIndex ==1]" href="#" ng-click="tabIndex = 1">修改密码</a>-->
     <!--</div>-->
+    <div class="form-wrap">
+      <div ng-if="tabIndex == 1" class="margin-lr">
+        <!--<h3>银行汇款转帐充值信息： </h3>-->
+        <!--<p>开户行：中国光大银行杭州分行</p>-->
+        <!--<p>账号：7679 0188 0007 1032 9</p>-->
+        <!--<p>收款人：杭州推特文化传播有限公司</p>-->
+        <!--<p>注意：银行汇款后请联系客服人员，进行核实  QQ：3236639504   电话：0571-87835565</p>-->
+        <table class="table table-bordered bank-info">
+          <tr>
+            <td class="center" rowspan="3">账号</td>
+            <td>收款人</td>
+            <td>杭州推特文化传播有限公司</td>
+          </tr>
+          <tr>
+            <td>账号</td>
+            <td><b>7679 0188 0007 1032 9</b></td>
+          </tr>
+          <tr>
+            <td>开户行</td>
+            <td>中国光大银行杭州分行</td>
+          </tr>
+        </table>
+        <p>注意：银行汇款后请联系客服人员，进行核实  QQ：3236639504   电话：0571-87835565</p>
+        <table class="table table-bordered bank-money">
+          <tr ng-if="1==0">
+            <td>转账银行</td>
+            <td>
+              <div class="col-sm-3">
+                <select class="form-control" ng-model="BankInfo.bank">
+                  <option value="中国工商银行">中国工商银行</option>
+                  <option value="招商银行">招商银行</option>
+                  <option value="中国农业银行">中国农业银行</option>
+                  <option value="中国建设银行">中国建设银行</option>
+                  <option value="中国银行">中国银行</option>
+                  <option value="中国民生银行">中国民生银行</option>
+                  <option value="中国光大银行">中国光大银行</option>
+                  <option value="中信银行">中信银行</option>
+                  <option value="交通银行">交通银行</option>
+                  <option value="兴业银行">兴业银行</option>
+                  <option value="中国人民银行">中国人民银行</option>
+                  <option value="华夏银行">华夏银行</option>
+                  <option value="中国邮政储蓄银行">中国邮政储蓄银行</option>
+                  <option value="广东发展银行">广东发展银行</option>
+                  <option value="中国平安银行">中国平安银行</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>转账金额</td>
+            <td>
+              <div class="col-sm-3">
+                <div class="input-group">
+                  <input type="number" class="form-control" ng-model="BankInfo.PayMoney" placeholder="请输入金额"/>
+                  <span class="input-group-addon">元</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>备注</td>
+            <td>
+              <div class="col-sm-5">
+                <textarea class="form-control" name="" placeholder="请输入备注" ng-model="BankInfo.ReMark" cols="30" rows="5"></textarea>
+              </div>
+              </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <div class="col-sm-3">
+                <button class="btn btn-info" ng-click="saveBankPay()">确认转账</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div ng-if="tabIndex == 0" class="alipay-wrap margin-lr">
+        <form action="/alipay.aspx" method="post" novalidate target="_blank">
+          <input type="hidden" name="AdvertiserID" value="{{AliInfo.AdvertiserID}}"/>
+        <table class="table table-bordered alipay-wrap">
+          <tr>
+            <td>支付宝充值</td>
+            <td>
+             <div class="col-sm-3">
+               <select class="form-control" name="PayType" ng-model="AliInfo.payType">
+                 <option value="1">支付宝</option>
+                 <option value="2">网银转账(支付宝)</option>
+               </select>
+             </div>
+            </td>
+          </tr>
+          <tr ng-if="AliInfo.payType == '2'">
+            <td>请选择银行</td>
+            <td>
+              <!--<div class="col-sm-3">-->
+                <!--<select class="form-control" name="Bank" ng-model="AliInfo.payType">-->
+                  <!--<option value="ICBCBTB">中国工商银行</option>-->
+                  <!--<option value="ABCBTB">中国农业银行</option>-->
+                  <!--<option value="CCBBTB">中国建设银行</option>-->
+                  <!--<option value="SPDBB2B">上海浦东发展银行</option>-->
+                  <!--<option value="BOCBTB">中国银行</option>-->
+                  <!--<option value="CMBBTB">招商银行</option>-->
+                  <!--&lt;!&ndash;<option value="BOCB2C">中国银行</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="CMB">招商银行</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="CCB">中国建设银行</option>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<option value="ABC">中国农业银行</option>&ndash;&gt;-->
+                  <!--<option value="SPDB">上海浦东发展银行</option>-->
+                  <!--<option value="CIB">兴业银行</option>-->
+                  <!--<option value="GDB">广发银行</option>-->
+                  <!--<option value="FDB">富滇银行</option>-->
+                  <!--<option value="HZCBB2C">杭州银行</option>-->
+                  <!--<option value="SHBANK">上海银行</option>-->
+                  <!--<option value="NBBANK">宁波银行</option>-->
+                  <!--<option value="SPABANK">平安银行</option>-->
+                  <!--<option value="POSTGC">中国邮政储蓄银行</option>-->
+                <!--</select>-->
+              <!--</div>-->
+              <div class="bank-list">
+                <h5>企业网银支付</h5>
+                <div>
+                  <label>
+                    <input value="BOCBTB" type="radio" name="Bank"/><img src="/img/bank/boc.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="CCBBTB" type="radio" name="Bank"/><img src="/img/bank/ccb.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="ABCBTB" type="radio" name="Bank"/><img src="/img/bank/aboc.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="ICBCBTB" type="radio" name="Bank"/><img src="/img/bank/icbc.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="SPDBB2B" type="radio" name="Bank"/><img src="/img/bank/spdb.png" alt=""/>
+                  </label>
+                </div>
+                <h5>个人网银支付</h5>
+                <div>
+                  <label>
+                    <input checked value="BOCB2C" type="radio" name="Bank"/><img src="/img/bank/boc.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="CCB" type="radio" name="Bank"/><img src="/img/bank/ccb.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="ABC" type="radio" name="Bank"/><img src="/img/bank/aboc.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="ICBCB2C" type="radio" name="Bank"/><img src="/img/bank/icbc.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="SPDB" type="radio" name="Bank"/><img src="/img/bank/spdb.png" alt=""/>
+                  </label>
+
+
+                  <label>
+                    <input value="SHBANK"  type="radio" name="Bank"/><img src="/img/bank/bosh.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="CIB" type="radio" name="Bank"/><img src="/img/bank/cib.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="CMB" type="radio" name="Bank"/><img src="/img/bank/cmb.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="POSTGC" type="radio" name="Bank"/><img src="/img/bank/cp.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="GDB" type="radio" name="Bank"/><img src="/img/bank/gdob.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="HZCBB2C" type="radio" name="Bank"/><img src="/img/bank/hzbank.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="NBBANK" type="radio" name="Bank"/><img src="/img/bank/nbcb.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="SPABANK" type="radio" name="Bank"/><img src="/img/bank/pingan.png" alt=""/>
+                  </label>
+                  <label>
+                    <input value="FDB" type="radio" name="Bank"/><img src="/img/bank/fudian-bank.png" alt=""/>
+                  </label>
+                  <!--<label>-->
+                    <!--<input value="" type="radio" name="Bank"/><img src="/img/bank/spdb.png" alt=""/>-->
+                  <!--</label>-->
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>转账金额</td>
+            <td>
+              <div class="col-sm-3">
+                <div class="input-group">
+                  <input ng-model="AliInfo.PayMoney" name="PayMoney" type="number" class="form-control" placeholder="请输入金额"/>
+                  <span class="input-group-addon">元</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <div class="col-sm-3">
+                <button ng-click="showAlipayTip()" class="btn btn-info">立即支付</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+          <p>若您没有支付宝或者网银，可以使用银行汇款的方式进行充值.</p>
+        </form>
+      </div>
+
+    </div>
    <div>
 
    </div>

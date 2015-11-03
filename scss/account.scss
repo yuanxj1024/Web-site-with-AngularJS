@@ -56,3 +56,18 @@
     max-height: 100px;
   }
 }
+.add-account-wrap{
+  input[type='number']{
+    font-size: 12px;
+    padding-left: 3px;
+  }
+  .input-group{
+    input[type='number']{
+      padding-right: 0;
+    }
+  }
+  .input-addon-padding{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}

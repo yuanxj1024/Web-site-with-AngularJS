@@ -4,48 +4,61 @@
 <div class="container marginTop user-center" ng-controller="BindCardCtrl">
   <div class="line-wrap">
   <div class="header-tab">
-      <a ng-class="{true:'active'}[tabIndex ==0]" href="#" ng-click="tabIndex = 0">银行卡</a>
-      <a ng-class="{true:'active'}[tabIndex ==1]" href="#" ng-click="tabIndex = 1">支付宝</a>
+      <a ng-class="{true:'active'}[tabIndex ==0]" href="#">提现绑定</a>
+      <!--<a ng-class="{true:'active'}[tabIndex ==1]" href="#" ng-click="tabIndex = 1">支付宝</a>-->
   </div>
   <div class="form-wrap">
-    <div ng-show="tabIndex ==0"  class="user-info row">
+    <div class="user-info row">
       <div class="col-xs-8">
-        <form name="userForm" ng-submit="save(userForm.$valid)">
-          <div class="form-group">
-            <label class="col-xs-4 control-label">银行卡绑定</label>
+        <div class="form-group">
+          <label class="col-xs-4 control-label"><span class="icon-star">*</span>绑定方式</label>
+          <div class="col-xs-4">
+            <select class="form-control" ng-model="form.PayType">
+              <option value="1">支付宝</option>
+              <option value="2">银行卡</option>
+            </select>
           </div>
+        </div>
+      </div>
+    </div>
+    <div ng-if="form.PayType ==2"  class="user-info row">
+      <div class="col-xs-8">
+        <form name="userBankForm" ng-submit="save(userBankForm.$valid)" novalidate>
+          <!--<div class="form-group">-->
+            <!--<label class="col-xs-4 control-label">银行卡绑定</label>-->
+          <!--</div>-->
           <div class="form-group">
             <label class="col-xs-4 control-label"><span class="icon-star">*</span>持卡人姓名</label>
             <div class="col-xs-4">
-              <input type="text" required placeholder="请输入持卡人姓名" name="payName" class="form-control" ng-model="form.payName" ng-model-options="{ updateOn: 'blur' }"/>
-              <span class="error-tip" ng-show="userForm.payName.$dirty &&userForm.payName.$invalid">请输入持卡人姓名.</span>
+              <input type="text" required placeholder="请输入持卡人姓名" minlength="2" name="payName" class="form-control" ng-model="form.payName" ng-model-options="{ updateOn: 'blur' }"/>
+              <span class="error-tip" ng-show="userBankForm.payName.$dirty &&userBankForm.payName.$invalid">请输入持卡人姓名.</span>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-4 control-label"><span class="icon-star">*</span>银行卡开户行</label>
             <div class="col-xs-4">
-              <input type="text" required placeholder="例如：中国银行" name="payBank" class="form-control" ng-model="form.payBank" ng-model-options="{ updateOn: 'blur' }"/>
-              <span class="error-tip" ng-show="userForm.payBank.$dirty && userForm.payBank.$invalid">请输入公司名称</span>
+              <input type="text" required placeholder="例如：中国银行" minlength="2" name="payBank" class="form-control" ng-model="form.payBank"/>
+              <span class="error-tip" ng-show="userBankForm.payBank.$dirty && userBankForm.payBank.$invalid">请输入公司名称</span>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-4 control-label"><span class="icon-star">*</span>卡号</label>
             <div class="col-xs-4">
-              <input type="text" required name="payCard" class="form-control" ng-model="form.payCard" ng-model-options="{ updateOn: 'blur' }"/>
-              <span class="error-tip" ng-show="userForm.payCard.$dirty && userForm.payCard.$invalid">请输银行卡号</span>
+              <input type="text" required name="payCard" class="form-control" minlength="10" placeholder="请输银行卡号" ng-model="form.payCard"/>
+              <span class="error-tip" ng-show="userBankForm.payCard.$dirty && userBankForm.payCard.$invalid">请输银行卡号</span>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-4 control-label"><span class="icon-star">*</span>支行名称</label>
             <div class="col-xs-4">
-              <input type="text" required name="paySubBranch" class="form-control" ng-model="form.paySubBranch" ng-model-options="{ updateOn: 'blur' }"/>
-              <span class="error-tip" ng-show="userForm.paySubBranch.$dirty && userForm.paySubBranch.$invalid">请输入支行名称.</span>
+              <input type="text" required name="paySubBranch" class="form-control" placeholder="请输入支行名称" ng-model="form.paySubBranch"/>
+              <span class="error-tip" ng-show="userBankForm.paySubBranch.$dirty && userBankForm.paySubBranch.$invalid">请输入支行名称.</span>
             </div>
           </div>
           <div class="form-group">
             <label class="col-xs-4 control-label">&nbsp;</label>
             <div class="col-xs-4">
-              <input class="btn btn-success" value="保存" type="submit" />
+              <input class="btn btn-success ng-hide" ng-show="userBankForm.$valid" value="保存" type="submit" />
             </div>
           </div>
         </form>
@@ -56,34 +69,39 @@
         </p>
       </div>
     </div>
-    <div ng-show="tabIndex ==1" class="settings user-info  ng-hide">
+    <div ng-if="form.PayType ==1" class="settings user-info ">
       <div class="pwd-wrap row">
         <div class="col-xs-8">
-          <form name="passwordForm" ng-submit="savePwd()">
-            <div class="form-group">
-              <label class="col-xs-4 control-label">支付宝绑定</label>
-            </div>
+          <form name="alipayForm" ng-submit="save(userBankForm.$valid)" novalidate>
+            <!--<div class="form-group">-->
+              <!--<label class="col-xs-4 control-label">支付宝绑定</label>-->
+            <!--</div>-->
             <div class="form-group">
               <label class="col-xs-4 control-label"><span class="icon-star">*</span>支付宝账户</label>
               <div class="col-xs-4">
-                <input type="text" required placeholder="例如：中国银行" name="payBank" class="form-control" ng-model="form.payBank" ng-model-options="{ updateOn: 'blur' }"/>
-                <span class="error-tip" ng-show="userForm.payBank.$dirty && userForm.payBank.$invalid">请输入支付宝账户</span>
+                <input type="text" required placeholder="支付宝帐号" minlength="3" name="payBank" class="form-control" ng-model="form.payBank"/>
+                <span class="error-tip" ng-show="alipayForm.payBank.$dirty && alipayForm.payBank.$invalid">请输入支付宝账户</span>
               </div>
             </div>
             <div class="form-group">
               <label class="col-xs-4 control-label"><span class="icon-star">*</span>拥有者姓名</label>
               <div class="col-xs-4">
-                <input type="text" required placeholder="请输入持卡人姓名" name="payName" class="form-control" ng-model="form.payName" ng-model-options="{ updateOn: 'blur' }"/>
-                <span class="error-tip" ng-show="userForm.payName.$dirty &&userForm.payName.$invalid">请输入拥有者姓名.</span>
+                <input type="text" required placeholder="姓名" name="payName" minlength="2" class="form-control" ng-model="form.payName"/>
+                <span class="error-tip" ng-show="alipayForm.payName.$dirty &&alipayForm.payName.$invalid">请输入拥有者姓名.</span>
               </div>
             </div>
             <div class="form-group">
               <label class="col-xs-4 control-label">&nbsp;</label>
               <div class="col-xs-4">
-                <input class="btn btn-success" value="保存" type="submit" />
+                <input class="btn btn-success ng-hide" ng-show="alipayForm.$valid" value="保存" type="submit" />
               </div>
             </div>
           </form>
+        </div>
+        <div class="col-xs-2">
+          <h3>完善资料</h3>
+          <p>资料更完整，账号更安全。完善资料将帮助我们更好的提供服务。
+          </p>
         </div>
 
       </div>

@@ -33,4 +33,5 @@ module  WeMedia {
 
     Modal.$inject = ['$scope','ModalService', 'item'];
     ControllerModule.controller('ModalCtrl', Modal);
+    ControllerModule.controller('InfoModalCtrl', Modal);
 }

@@ -3,6 +3,7 @@
  * Created by AaronYuan on 8/8/15.
  */
 /// <reference path="../app.ts" />
+/// <reference path="../auth.ts" />
 /// <reference path="../config.ts" />
 /// <reference path="../service/modal.ts" />
 /// <reference path="../service/OrderService.ts" />
@@ -10,10 +11,40 @@
 var WeMedia;
 (function (WeMedia) {
     'use strict';
+    var ReleaseTypeObject = {
+        10: '硬广转发',
+        11: '硬广直发',
+        12: '软广转发',
+        13: '软广直发',
+        2: '硬广单图文',
+        3: '软广单图文',
+        4: '硬广多图文第一条',
+        5: '软广多图文第一条',
+        6: '硬广多图文第二条',
+        7: '软广多图文第二条',
+        8: '硬广多图文3~N条',
+        9: '软广多图文3~N条',
+        1: '直发'
+    };
+    var PriceTypeNames = {
+        1: "Price",
+        2: "SingleYing",
+        3: "SingleRuan",
+        4: "MoreFirstYing",
+        5: "MoreFirstRuan",
+        6: "MoreSecondYing",
+        7: "MoreSecondRuan",
+        8: "MoreThreeYing",
+        9: "MoreThreeRuan",
+        10: "YGZhuanFaPrice",
+        11: "YGZhiFaPrice",
+        12: "RGZhuanFaPrice",
+        13: "RGZhiFaPrice"
+    };
     var PrecontractCtrl = (function () {
         function PrecontractCtrl($rootScope, $scope, $state, $stateParams, ModalService, 
             //public WechatPublicService: IWechatPublicService,
-            OrderService, $modal, MediaAccountService, $timeout) {
+            OrderService, $modal, MediaAccountService, $timeout, Upload, AuthService) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.$state = $state;
@@ -23,6 +54,8 @@ var WeMedia;
             this.$modal = $modal;
             this.MediaAccountService = MediaAccountService;
             this.$timeout = $timeout;
+            this.Upload = Upload;
+            this.AuthService = AuthService;
             $scope.open = angular.bind(this, this.open);
             $scope.openList = angular.bind(this, this.openList);
             $scope.openAgreement = angular.bind(this, this.openAgreement);
@@ -33,18 +66,29 @@ var WeMedia;
             $scope.clearItem = angular.bind(this, this.clearItem);
             $scope.getMediaStatus = angular.bind(this, this.getMediaStatus);
             $scope.closeDetail = angular.bind(this, this.closeDetail);
+            $scope.priceText = angular.bind(this, this.priceText);
+            $scope.priceText2 = angular.bind(this, this.priceText2);
+            $scope.uploadFile = angular.bind(this, this.uploadFile);
+            $scope.frozenCapital = angular.bind(this, this.frozenCapital);
+            $scope.CommissionedPrice = angular.bind(this, this.CommissionedPrice);
+            $scope.acceptExecute = angular.bind(this, this.acceptExecute);
             $scope.editID = $stateParams['editID'];
             $scope.currentMediaType = $stateParams.mediaType * 1;
             if (!$scope.currentMediaType) {
                 $scope.goToIndex();
             }
+            $scope.canSaveTag = true;
+            //$scope.releaseTypeList = ReleaseTypeObject[$scope.currentMediaType];
             $scope.currentMediaName = WeMedia.allMedias[$stateParams.mediaType];
+            $scope.ReleaseTypeObject = ReleaseTypeObject;
+            $scope.PriceTypeNames = PriceTypeNames;
             this.initData();
             this.initForEdit();
             this.initForDetail();
             this.calcInfo();
         }
         PrecontractCtrl.prototype.initData = function () {
+            var self = this;
             this.$scope.modalData = [];
             this.$scope.currentPageIndex = 1;
             this.$scope.selectedTotalInfo = {};
@@ -56,10 +100,24 @@ var WeMedia;
                 EndTime: '',
                 FeedbackTime: '',
                 IsNoticeResult: '',
-                Advertiser_ID: ''
+                Advertiser_ID: '',
+                PriceType: '',
+                agree: false
             };
+            if (this.$scope.currentMediaType == 1) {
+                this.$scope.wechatForm.PriceType = '11';
+            }
+            if (this.$scope.currentMediaType == 2) {
+                this.$scope.wechatForm.PriceType = '2';
+            }
+            if (this.$scope.currentMediaType == 3) {
+                this.$scope.wechatForm.PriceType = '1';
+            }
             this.$scope.selectedList = this.OrderService.selectedList; //WechatPublicService.selectedList;
             //this.OrderService.selectedList = [];
+            this.$scope.$watch('wechatForm.PriceType', function (newValue, oldValue) {
+                self.calcInfo();
+            });
         };
         PrecontractCtrl.prototype.open = function () {
             this.$scope.opened = !this.$scope.opened;
@@ -74,11 +132,16 @@ var WeMedia;
         };
         PrecontractCtrl.prototype.saveWechat = function ($valid) {
             var self = this;
-            if (!$valid) {
-                window.navigator.notification.alert('请将信息填写完整', null);
+            if (!self.$scope.canSaveTag) {
+                window.navigator.notification.alert('已选资源中有部分账号不接受当前投放形式，请选择其它投放形式，或选择其它资源！', null);
+                return;
             }
             this.$scope.wechatForm.mediaType = this.$scope.currentMediaType;
             if (this.validate()) {
+                if (!$valid) {
+                    window.navigator.notification.alert('请检查所有输入项是否符合规则', null);
+                    return;
+                }
                 var ids = [];
                 angular.forEach(this.$scope.selectedList, function (item) {
                     ids.push(item.ID);
@@ -91,7 +154,12 @@ var WeMedia;
                 }
                 this.OrderService.save(this.$scope.wechatForm).then(function (result) {
                     if (result && result.Status == 1) {
-                        window.navigator.notification.alert('您的订单创建完成，请等待审核。', function () {
+                        var msg = '您的订单创建完成，请等待审核。';
+                        if (self.$scope.editID) {
+                            msg = '订单修改成功，请等待审核。';
+                        }
+                        var message = msg + "</br><p style='font-size:10px; margin-top: 10px;'>温馨提示：订单审核通过后将不能修改/删除，请仔细核对您填写的订单信息，确认无误后点击发布。</br>如果您需要在订单审核通过后进行修改/删除，请联系客服。</p>";
+                        window.navigator.notification.alert(message, function () {
                             self.goList();
                         });
                     }
@@ -107,13 +175,13 @@ var WeMedia;
             var name = '';
             switch (this.$scope.currentMediaType * 1) {
                 case 1:
-                    name = 'advertiser.weibo';
+                    name = 'advertiser.weiboPreList';
                     break;
                 case 2:
-                    name = 'advertiser.wechat';
+                    name = 'advertiser.wechatPreList';
                     break;
                 case 3:
-                    name = 'advertiser.friends';
+                    name = 'advertiser.friendsPreList';
                     break;
             }
             if (name) {
@@ -124,7 +192,13 @@ var WeMedia;
         PrecontractCtrl.prototype.validate = function () {
             var result = true;
             var msg = '';
-            if ((new Date(this.$scope.wechatForm.FeedbackTime)) - (new Date()) < 86400000) {
+            if (!this.$scope.wechatForm.Title) {
+                msg = '请输入活动名称!';
+            }
+            else if (!this.$scope.wechatForm.Intro || this.$scope.wechatForm.Intro.length < 10) {
+                msg = '活动描述不能少于十个字，请修改您所填写的信息!';
+            }
+            else if ((new Date(this.$scope.wechatForm.FeedbackTime)) - (new Date()) < 86400000) {
                 msg = '反馈时间必须晚于当前时间24小时.';
             }
             else if ((new Date(this.$scope.wechatForm.StartTime)) <= (new Date())) {
@@ -136,8 +210,18 @@ var WeMedia;
             else if (this.$scope.selectedList.length <= 0) {
                 msg = '请添加预约资源!';
             }
+            else if (!this.$scope.wechatForm.PriceType) {
+                msg = "请选择投放形式！";
+            }
+            else if (!this.$scope.wechatForm.agree) {
+                msg = '请同意相关服务协议！';
+            }
+            //else if(!this.$scope.wechatForm.Attachment || this.$scope.wechatForm.Attachment.length<=0){
+            //    msg = "请上传附件！";
+            //}
             if (msg) {
-                window.navigator.notification.alert(msg, null);
+                //window.navigator.notification.alert(msg,null);
+                ZENG.msgbox.show(msg, 1);
                 result = false;
             }
             return result;
@@ -180,29 +264,17 @@ var WeMedia;
                 Price: 0
             };
             var self = this;
-            var callbackobj = {
-                2: function (item) {
-                    self.$scope.selectedTotalInfo.SingleYing += item.PriceJSON.SingleYing;
-                    self.$scope.selectedTotalInfo.SingleRuan += item.PriceJSON.SingleRuan;
-                    self.$scope.selectedTotalInfo.MoreFirstYing += item.PriceJSON.MoreFirstYing;
-                    self.$scope.selectedTotalInfo.MoreFirstRuan += item.PriceJSON.MoreFirstRuan;
-                    self.$scope.selectedTotalInfo.MoreSecondYing += item.PriceJSON.MoreSecondYing;
-                    self.$scope.selectedTotalInfo.MoreSecondRuan += item.PriceJSON.MoreSecondRuan;
-                    self.$scope.selectedTotalInfo.MoreThreeYing += item.PriceJSON.MoreThreeYing;
-                    self.$scope.selectedTotalInfo.MoreThreeRuan += item.PriceJSON.MoreThreeRuan;
-                },
-                1: function (item) {
-                    self.$scope.selectedTotalInfo.YGZhiFaPrice += item.PriceJSON.YGZhiFaPrice * 1;
-                    self.$scope.selectedTotalInfo.YGZhuanFaPrice += item.PriceJSON.YGZhuanFaPrice * 1;
-                    self.$scope.selectedTotalInfo.RGZhiFaPrice += item.PriceJSON.RGZhiFaPrice * 1;
-                    self.$scope.selectedTotalInfo.RGZhuanFaPrice += item.PriceJSON.RGZhuanFaPrice * 1;
-                },
-                3: function (item) {
-                    self.$scope.selectedTotalInfo.Price += item.PriceJSON.Price;
+            self.$scope.canSaveTag = true;
+            var calcPrice = function (item) {
+                var price = item.PriceJSON[PriceTypeNames[self.$scope.wechatForm.PriceType]];
+                if (isNaN(price) || price == 0) {
+                    self.$scope.canSaveTag = false;
+                    price = 0;
                 }
+                self.$scope.selectedTotalInfo[PriceTypeNames[self.$scope.wechatForm.PriceType]] += price;
             };
             if (self.$scope.selectedList && self.$scope.selectedList.length > 0) {
-                angular.forEach(this.$scope.selectedList, callbackobj[self.$scope.currentMediaType]);
+                angular.forEach(this.$scope.selectedList, calcPrice); //callbackobj[self.$scope.currentMediaType]);
             }
         };
         PrecontractCtrl.prototype.deleteItem = function (id) {
@@ -232,6 +304,7 @@ var WeMedia;
                 this.OrderService.detail(self.$scope.editID).then(function (result) {
                     if (result && result.Data) {
                         self.$scope.wechatForm = result.Data[0];
+                        self.$scope.wechatForm.PriceType += '';
                         self.$scope.wechatForm.FeedbackTime = self.calcTime(self.$scope.wechatForm.FeedbackTime);
                         self.$scope.wechatForm.StartTime = self.calcTime(self.$scope.wechatForm.StartTime);
                         self.$scope.wechatForm.EndTime = self.calcTime(self.$scope.wechatForm.EndTime);
@@ -274,7 +347,7 @@ var WeMedia;
                         //self.calcInfo();
                     }, 2000);
                 });
-                this.OrderService.orderDetailMediaList(detailID).then(function (result) {
+                this.OrderService.orderDetailMediaList(detailID, null).then(function (result) {
                     if (result && result.Data) {
                         self.$scope.selectedList = result.Data;
                         //self.calcInfo();
@@ -297,10 +370,10 @@ var WeMedia;
                     case 1:
                         self.$scope.detailTotalInfo.pending += 1;
                         break;
-                    case 3:
+                    case 4:
                         self.$scope.detailTotalInfo.doing += 1;
                         break;
-                    case 4:
+                    case 5:
                         self.$scope.detailTotalInfo.finish += 1;
                         break;
                 }
@@ -311,13 +384,17 @@ var WeMedia;
             this.$state.go(this.$scope.detailBackUrl);
         };
         PrecontractCtrl.prototype.getMediaStatus = function (type) {
-            var status = {
-                1: '等媒介主确认',
-                2: '媒介主同意',
-                3: '媒介主执行中',
-                4: '完成'
+            var statusName = {
+                1: '等自媒体确认',
+                2: '自媒体同意',
+                3: '自媒体拒单',
+                4: '待执行',
+                5: '待验收',
+                6: '未执行',
+                7: '已完成',
+                8: '付款'
             };
-            return status[type];
+            return statusName[type];
         };
         PrecontractCtrl.prototype.calcTime = function (time) {
             if (time) {
@@ -327,6 +404,139 @@ var WeMedia;
                 }
             }
             return new Date();
+        };
+        PrecontractCtrl.prototype.priceText = function (price) {
+            if (isNaN(price) || (price * 1) < 0) {
+                return '面议';
+            }
+            if (price == 0) {
+                return '不接';
+            }
+            return '￥' + this.$rootScope.DisplayPrice(price).toFixed(2);
+        };
+        PrecontractCtrl.prototype.priceText2 = function (price) {
+            if (isNaN(price)) {
+                price = 0;
+            }
+            if (price < 0) {
+                return '价格请联系客服确定。';
+            }
+            return this.$rootScope.DisplayPrice(price || 0).toFixed(2) + '元';
+        };
+        PrecontractCtrl.prototype.CommissionedPrice = function (price) {
+            if (isNaN(price)) {
+                price = 0;
+            }
+            return '￥' + this.$rootScope.DisplayPrice(price).toFixed(2);
+        };
+        PrecontractCtrl.prototype.uploadFile = function (file) {
+            var self = this;
+            if (file) {
+                file.upload = self.Upload.upload({
+                    url: '/API/Upload?ID=' + self.$rootScope.user.ID,
+                    file: file
+                });
+                file.upload.then(function (response) {
+                    self.$timeout(function () {
+                        file.result = response.data;
+                        if (typeof file.result == 'string') {
+                            file.result = JSON.parse(file.result);
+                        }
+                        if (file.result) {
+                            self.$scope.wechatForm.Attachment = file.result.Message;
+                            self.$scope.wechatForm.AttachmentName = file.name;
+                        }
+                    });
+                }, function (response) {
+                    if (response.status > 0) {
+                        ZENG.msgbox.show('文件上传失败，请重试!', 5);
+                    }
+                });
+                file.upload.progress(function (evt) {
+                    file.progress = Math.min(100, parseInt((100 * evt.loaded / evt.total) + ''));
+                });
+            }
+        };
+        //金额预付
+        PrecontractCtrl.prototype.frozenCapital = function (item) {
+            var self = this;
+            window.navigator.notification.confirm('预付后的金额将被暂时冻结，点击“确定”继续操作，点击“取消”返回。', function (index) {
+                if (index == 1) {
+                    self.frozenMoney(item);
+                }
+                else if (index == 2) {
+                }
+            }, '提示', ['确定', '取消'], '');
+        };
+        PrecontractCtrl.prototype.frozenMoney = function (item) {
+            var self = this, state = item.BState;
+            self.$rootScope.$emit("event:refresh-user-info", function () {
+                if (self.$rootScope.user.AvailableBalance < item.CommissionedPrice) {
+                    ZENG.msgbox.show('您的账户余额不足，请先充值!', 1);
+                    self.$state.go('advertiser.recharge');
+                }
+                else {
+                    self.OrderService.frozenAdvertiser({
+                        ID: item.BID,
+                        Cost: self.$rootScope.PlantformCost
+                    }).then(function (result) {
+                        if (result && result.Status == 1) {
+                            item.BState = 4;
+                            self.updateState(item, state, '支付成功，你的资金暂时由平台代管!', null);
+                        }
+                        else {
+                            ZENG.msgbox.show(result.Message || '操作失败，请确认您的账户中有可用余额。若您的账户余额为0，请先充值!', 1);
+                        }
+                    }, function (err) {
+                        ZENG.msgbox.show('操作失败，请确认您的账户中有可用余额。若您的账户余额为0，请先充值!', 1);
+                    });
+                }
+            }, function (err) {
+            });
+        };
+        //确认验收
+        PrecontractCtrl.prototype.acceptExecute = function (item) {
+            var self = this, state = item.BState;
+            window.navigator.notification.confirm('确认完成后您的预付金额将转入对方（自媒体）账户，点击“确定”继续操作，点击“取消”返回。', function (index) {
+                if (index == 1) {
+                    item.BState = 7;
+                    self.OrderService.acceptExecute({
+                        ID: item.BID,
+                        Cost: self.$rootScope.PlantformCost
+                    }).then(function (result) {
+                        if (result && result.Status == 1) {
+                            ZENG.msgbox.show('验收成功.', 4);
+                            self.updateState(item, state, '验收成功，将会付款给自媒体。', null);
+                        }
+                        else {
+                            item.BState = state;
+                            ZENG.msgbox.show('操作失败，请稍后重试', 1);
+                        }
+                    }, function (e) {
+                        item.BState = state;
+                        ZENG.msgbox.show('操作失败，请稍后重试', 1);
+                    });
+                }
+            }, '提示', ['确定', '取消'], '');
+        };
+        PrecontractCtrl.prototype.updateState = function (item, state, msg, callback) {
+            var args = {
+                id: item.BID,
+                state: item.BState
+            }, self = this;
+            self.OrderService.orderDetailState(args).then(function (result) {
+                if (result && result.Status * 1 > 0) {
+                    msg && ZENG.msgbox.show(msg, 4);
+                    callback && callback();
+                }
+                else {
+                    item.BState = state;
+                    ZENG.msgbox.show('操作失败，请稍候重试!', 1);
+                }
+            }, function () {
+                item.BState = state;
+                ZENG.msgbox.show('操作失败，请稍候重试!', 5);
+            });
         };
         return PrecontractCtrl;
     })();
@@ -341,6 +551,8 @@ var WeMedia;
             $scope.ok = angular.bind(this, this.ok);
             $scope.addItem = angular.bind(this, this.addItem);
             $scope.pageChanged = angular.bind(this, this.pageChanged);
+            $scope.priceText = angular.bind(this, this.priceText);
+            $scope.refresh = angular.bind(this, this.refresh);
             //数据
             $scope.selectedList = {};
             $scope.selectedDataObj = {};
@@ -349,6 +561,7 @@ var WeMedia;
             $scope.currentPageIndex = 1;
             $scope.totalItems = 0;
             $scope.mediaType = mediaType;
+            $scope.keyword = '';
             this.refresh();
         }
         Modal.prototype.addItem = function (item) {
@@ -372,7 +585,8 @@ var WeMedia;
                 pageSize: 10,
                 page: self.$scope.currentPageIndex,
                 isEnable: 1,
-                ChannelID: this.mediaType
+                ChannelID: this.mediaType,
+                keyword: self.$scope.keyword
             };
             self.MediaAccountService.list(arg).then(function (result) {
                 if (result && result.Data) {
@@ -405,11 +619,20 @@ var WeMedia;
             this.$scope.currentPageIndex = page;
             this.refresh();
         };
+        Modal.prototype.priceText = function (price) {
+            if (isNaN(price) || (price * 1) < 0) {
+                return '电议';
+            }
+            if (price == 0) {
+                return '不接';
+            }
+            return '￥' + this.$scope.$root.DisplayPrice(price).toFixed(2);
+        };
         return Modal;
     })();
     Modal.$inject = ['$scope', '$modalInstance', 'mediaType', 'MediaAccountService'];
     WeMedia.ControllerModule.controller('DataModalCtrl', Modal);
-    PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'OrderService', '$modal', 'MediaAccountService', '$timeout'];
+    PrecontractCtrl.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'ModalService', 'OrderService', '$modal', 'MediaAccountService', '$timeout', 'Upload', 'AuthService'];
     WeMedia.ControllerModule.controller('WechatPrecontractCtrl', PrecontractCtrl);
     WeMedia.ControllerModule.controller('PrecontractCtrl', PrecontractCtrl);
     WeMedia.ControllerModule.controller('PrecontractDetailCtrl', PrecontractCtrl);

@@ -5,19 +5,20 @@
   <div class="container dashboard">
     <div class="top">
       <div class="account">
-        <div>余额:</div>
-        <div><span class="money">{{user.AvailableBalance || 0 | currency:''}}</span>元</div>
-        <div>
-          <a ui-sref="advertiser.bill" href="#" class="btn btn-primary center">充值</a>
+        <div style="clear: both">余额:<div style="float: right;"><span class="money">{{user.TotalAmount || 0 | currency:''}}</span>元</div></div>
+        <div style="clear: both">冻结金额:<div style="float: right;"><span class="money">{{user.AmountFrozen || 0 | currency:''}}</span>元</div></div>
+        <div style="clear: both">可用金额:<div style="float: right;"><span class="money">{{user.AvailableBalance || 0 | currency:''}}</span>元</div></div>
+        <div class="marginTop">
+          <a ui-sref="advertiser.recharge" href="#" class="btn btn-primary center">充值</a>
         </div>
       </div>
       <div class="order-info">
         <div class="item">
           <span>总订单数:</span>
-          <span class="right"><span class="money">{{orderInfo.totalItems}}</span>单</span></div>
+          <span class="right"><span class="money-cnt">{{orderInfo.totalItems}}</span>单</span></div>
         <div class="item">
           <span>进行中的订单数:</span>
-          <span class="right"><span class="money">{{orderInfo.totalItems}}</span>单</span>
+          <span class="right"><span class="money-cnt">{{orderInfo.totalItems}}</span>单</span>
         </div>
       </div>
       <div class="message">
@@ -53,7 +54,7 @@
             <td>
               <a ng-if="item.State < 3" ng-click="editItem(item.ID, item.Mediatype)" href="javascript:;">修改</a>&nbsp;
               <a ng-if="item.State < 3" href="#" ng-click="removeItem(item.ID)">删除</a>
-              <a ng-if="item.State == 3" href="#" ng-click="openDetail(item.ID, item.Mediatype)">详情</a>
+              <a ng-if="item.State == 3" href="#" ng-click="openDetail(item.ID, item.MediaType)">详情</a>
             </td>
           </tr>
           <tr ng-if="orderList.length <=0">
@@ -62,7 +63,7 @@
         </table>
     </div>
     <div class="new-media-list-wrap">
-      <div class="page-title">最新资源</div>
+      <div class="page-title">推荐资源</div>
       <div class="new-media-list">
 
         <div class="item" ng-repeat="item in newList track by $index">
@@ -73,18 +74,24 @@
           </div>
           <div class="media-info">
             <div class="title info-item"><a href="javascript:;">{{item.NickName}}</a>
-              <span class="media-icon" ng-class="{1:'weibo', 2: 'weixin',3: 'weixin'}[item.ChannelID]"></span>
+              <a href="{{item.URL}}" ng-if="item.ChannelID == 1" target="_blank">
+                <span class="media-icon" ng-class="{1:'weibo', 2: 'weixin',3: 'weixin'}[item.ChannelID]"></span>
+              </a>
+              <span  ng-if="item.ChannelID != 1 " class="media-icon" ng-class="{1:'weibo', 2: 'weixin',3: 'weixin'}[item.ChannelID]"></span>
             </div>
             <!--<div class="info-item">地区：广东,广州</div>-->
             <div class="info-item">粉丝：{{item.FansNumber}}</div>
-            <div ng-if="item.ChannelID == 1" class="info-item detail-wrap">软广转发价:{{item.PriceJSON.RGZhuanFaPrice | currency:'￥'}}
-              <span class="see-detail"><a target="_blank" href="{{item.URL}}">查看</a></span>
+            <div ng-if="item.ChannelID == 1" class="info-item detail-wrap">
+              <!--软广转发价:{{item.PriceJSON.RGZhuanFaPrice | currency:'￥'}}-->
+              <span class="see-detail"><a target="_blank" ui-sref="advertiser.weibo">查看价格</a></span>
             </div>
-            <div ng-if="item.ChannelID == 2" class="info-item detail-wrap">单图文报价:{{item.PriceJSON.SingleYing | currency:'￥'}}
-              <!--<span class="see-detail"><a target="_blank" href="{{item.URL}}">查看</a></span>-->
+            <div ng-if="item.ChannelID == 2" class="info-item detail-wrap">
+              <!--单图文报价:{{item.PriceJSON.SingleYing | currency:'￥'}}-->
+              <span class="see-detail"><a target="_blank" ui-sref="advertiser.wechat">查看价格</a></span>
             </div>
-            <div ng-if="item.ChannelID == 3" class="info-item detail-wrap">报价:{{item.PriceJSON.Price | currency:'￥'}}
-              <!--<span class="see-detail"><a target="_blank" href="{{item.URL}}">查看</a></span>-->
+            <div ng-if="item.ChannelID == 3" class="info-item detail-wrap">
+              <!--报价:{{item.PriceJSON.Price | currency:'￥'}}-->
+              <span class="see-detail"><a target="_blank" ui-sref="advertiser.friends">查看</a></span>
             </div>
           </div>
         </div>

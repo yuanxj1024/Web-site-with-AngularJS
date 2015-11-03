@@ -13,12 +13,13 @@
   .selected-list {
     .table{
       font-size: 12px;
+      margin-bottom: 5px;
       p{
         margin: 0;
       }
     }
     margin-top: 15px;
-    max-height: 500px;
+    max-height: 380px;
     overflow-y: auto;
     .item{
       @include flexbox;
@@ -75,10 +76,10 @@
     padding:0;
   }
   .data-list-wrap{
-    margin: 10px 0;
+    margin: 5px 0;
     .selected-list{
       //min-height: 450px;
-      max-height: 450px;
+      max-height: 300px;
       overflow: auto;
       //overflow-y: scroll;
     }
@@ -110,4 +111,86 @@
        border-bottom: 1px solid #088fc8;
      }
    }
+}
+
+.contact-list-img{
+  img{
+    width: 40px;
+    height: 40px;
+  }
+}
+.btn-pre-pay,.question-wrap,.refond-wrap,.upload-img{
+  i{
+    position: relative;
+    &:after{
+      position: absolute;
+      content: '预付后的金额将被暂时冻结。订单确认执行完成后，预付金额才会转给自媒体。如果订单执行出现问题，您可以申请退款。';
+      padding: 5px;
+      display: none;
+      width: 100px;
+      font-size: 12px;
+      color: grey;
+      background: #fff;
+      border-radius: 5px;
+      border: 1px solid grey;
+    }
+  }
+  &:hover{
+    i{
+      &:after{
+        display: inline-block;
+      }
+    }
+  }
+}
+.question-wrap{
+  i{
+    &:after{
+      content: '订单已执行，请查看截图以确认订单完成情况'!important;
+    }
+  }
+}
+.refond-wrap{
+  i{
+    &:after{
+      content: '当订单执行出现问题时，您可以申请退款。'!important;
+    }
+  }
+}
+.upload-img{
+  i{
+    &:after{
+      content: '请在结束时间之后的24小时内上传截图，否则该笔订单将被视为过期未执行。订单过期未执行，您将无法获得报酬。'!important;
+    }
+  }
+}
+.over-time{
+  i{
+    &:after{
+      content: '自媒体未在规定时间内执行订单，预付金额已退回您的账户.'!important;
+    }
+  }
+}
+.data-page{
+  .pagination{
+    margin: 5px 0;
+  }
+}
+.icon-star,.error-tip{
+  color: red;
+}
+
+//.media-data-list{
+//  input[type=checkbox]{
+//    margin-top: 5px;
+//  }
+//}
+.border-tr{
+  th{
+    border-right: 1px #eaeaea solid;
+    border-top: none;
+    &:last-child{
+      border-right: none;
+    }
+  }
 }

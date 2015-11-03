@@ -296,6 +296,45 @@ var WeMedia;
                     'templateUrl': './page/admedia/bind-card.html'
                 }
             }
+        }).state('admedia.wechatPrecontractDetail', {
+            'url': '/wechatPrecontractDetail',
+            'params': {
+                'mediaType': '2',
+                'detailID': 0,
+                type: '',
+                tag: ''
+            },
+            'views': {
+                'admedia': {
+                    'templateUrl': './page/admedia/precontract-detail.html'
+                }
+            }
+        }).state('admedia.weiboPrecontractDetail', {
+            'url': '/weiboPrecontractDetail',
+            'params': {
+                'mediaType': '1',
+                'detailID': 0,
+                type: '',
+                tag: ''
+            },
+            'views': {
+                'admedia': {
+                    'templateUrl': './page/admedia/precontract-detail.html'
+                }
+            }
+        }).state('admedia.friendsPrecontractDetail', {
+            'url': '/friendsPrecontractDetail',
+            'params': {
+                'mediaType': '3',
+                'detailID': 0,
+                type: '',
+                tag: ''
+            },
+            'views': {
+                'admedia': {
+                    'templateUrl': './page/admedia/precontract-detail.html'
+                }
+            }
         }).state('precontract', {
             'url': '/precontract',
             'params': {

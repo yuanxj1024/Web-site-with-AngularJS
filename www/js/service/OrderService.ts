@@ -16,9 +16,13 @@ module WeMedia {
 
         myOrderList(args:any): ng.IPromise<any>;
         orderDetailState(args:any): ng.IPromise<any>;
-        orderDetailMediaList(id: number): ng.IPromise<any>;
+        orderDetailMediaList(id: number, userID: number): ng.IPromise<any>;
 
         selectedList: Array<any>;
+
+        //冻结广告主资金
+        frozenAdvertiser(args:any): ng.IPromise<any>;
+        acceptExecute(args:any): ng.IPromise<any>;
     }
 
     export interface IOrderResource extends ng.resource.IResourceClass<ng.resource.IResource<any>> {
@@ -31,6 +35,8 @@ module WeMedia {
         orderDetailState(params:Object, data:Object, success?:Function, error?:Function);
         orderMediaList(params:Object, data:Object, success?:Function, error?:Function);
         orderDetailMediaList(params:Object, data:Object, success?:Function, error?:Function);
+        frozenAdvertiser(params:Object, data:Object, success?:Function, error?:Function);
+        acceptExecute(params:Object, data:Object, success?:Function, error?:Function);
     }
 
     class Order {
@@ -115,6 +121,23 @@ module WeMedia {
                     isArray: false,
                     params: {
                         'action': 'mediaListForDetail'
+                    }
+                },
+                frozenAdvertiser: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'frozenAdvertiser'
+                    }
+
+                },
+                acceptExecute: {
+                    method: 'POST',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        'action': 'acceptExecute'
                     }
                 }
             });
@@ -221,11 +244,37 @@ module WeMedia {
             });
             return deferred.promise;
         }
-        orderDetailMediaList(id: number): ng.IPromise<any> {
+        orderDetailMediaList(id: number, userID:number = 0): ng.IPromise<any> {
             var deferred =  this.$q.defer();
             this.orderResource.orderDetailMediaList({
-                ID: id
+                ID: id,
+                userID: userID > 0? userID: ''
             }, null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            },function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+        frozenAdvertiser(arg: any): ng.IPromise<any> {
+            var deferred =  this.$q.defer();
+            this.orderResource.frozenAdvertiser(arg, null, function(result){
+                if(typeof result == 'string'){
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            },function(err){
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+        acceptExecute(arg: any) : ng.IPromise<any> {
+            var deferred =  this.$q.defer();
+            this.orderResource.acceptExecute(arg, null, function(result){
                 if(typeof result == 'string'){
                     result = JSON.parse(result);
                 }

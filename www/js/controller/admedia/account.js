@@ -73,11 +73,13 @@ var WeMedia;
             });
         };
         Account.prototype.getStatus = function (status) {
-            switch (status) {
+            switch (status * 1) {
                 default:
-                case 'WX1':
-                    return '审核中';
-                case 'WX2':
+                case 1:
+                    return '待审核';
+                case 2:
+                    return '不通过';
+                case 3:
                     return '通过';
             }
         };

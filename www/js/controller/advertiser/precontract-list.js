@@ -9,17 +9,21 @@ var WeMedia;
 (function (WeMedia) {
     'use strict';
     var PrecontractList = (function () {
-        function PrecontractList($rootScope, $scope, $state, $stateParams, OrderService) {
+        function PrecontractList($rootScope, $scope, $state, $stateParams, OrderService, $modal, ModalService) {
             this.$rootScope = $rootScope;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.OrderService = OrderService;
+            this.$modal = $modal;
+            this.ModalService = ModalService;
             $scope.removeItem = angular.bind(this, this.removeItem);
             $scope.editItem = angular.bind(this, this.editItem);
             $scope.pageChanged = angular.bind(this, this.pageChanged);
             $scope.getStatus = angular.bind(this, this.getStatus);
             $scope.openDetail = angular.bind(this, this.openDetail);
+            $scope.openRejectReason = angular.bind(this, this.openRejectReason);
+            $scope.orderStatus = angular.bind(this, this.orderStatus);
             $scope.currentMediaType = $stateParams.mediaType * 1;
             this.init();
             this.refresh();
@@ -108,9 +112,37 @@ var WeMedia;
             };
             this.$state.go(url[type], { detailID: id, type: type });
         };
+        PrecontractList.prototype.openRejectReason = function (info) {
+            var self = this;
+            self.$scope.modalInstance = self.$modal.open({
+                animation: true,
+                templateUrl: 'reject-info.html',
+                controller: 'ModalCtrl',
+                size: 'lg',
+                resolve: {
+                    item: function () {
+                        return info;
+                    }
+                }
+            });
+            self.ModalService.currentModal = self.$scope.modalInstance;
+        };
+        PrecontractList.prototype.orderStatus = function (status) {
+            var statusName = {
+                1: '等自媒体确认',
+                2: '自媒体同意',
+                3: '自媒体拒单',
+                4: '已支付',
+                5: '执行完成',
+                6: '未执行',
+                7: '验收',
+                8: '付款'
+            };
+            return statusName[status];
+        };
         return PrecontractList;
     })();
-    PrecontractList.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'OrderService'];
+    PrecontractList.$inject = ['$rootScope', '$scope', '$state', '$stateParams', 'OrderService', '$modal', 'ModalService'];
     WeMedia.ControllerModule.controller('PrecontractListCtrl', PrecontractList);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=precontract-list.js.map

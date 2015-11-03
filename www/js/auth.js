@@ -47,24 +47,27 @@ var WeMedia;
                     params: {
                         'action': 'password'
                     }
+                },
+                detail: {
+                    method: 'POST',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'detail'
+                    }
                 }
             });
         }
         AuthInfo.prototype.checkLogin = function () {
         };
-        AuthInfo.prototype.getUser = function () {
+        AuthInfo.prototype.getUser = function (args) {
             var defrred = this.$q.defer();
-            this.authResource.info(null, null, function (result) {
+            this.authResource.detail(args, null, function (result) {
                 if (typeof result == 'string') {
-                    console.log(result);
-                    defrred.resolve(result);
+                    result = JSON.parse(result);
                 }
-                else {
-                    alert('失败');
-                    defrred.reject(result);
-                }
+                defrred.resolve(result);
             }, function (reject) {
-                alert('erro');
                 defrred.reject(reject);
             });
             return defrred.promise;
@@ -77,7 +80,7 @@ var WeMedia;
             }
             else {
                 var userInfo = this.$cookies.get('authUser');
-                if (userInfo) {
+                if (typeof userInfo == 'string') {
                     return JSON.parse(userInfo);
                 }
                 return null;

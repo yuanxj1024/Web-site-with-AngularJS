@@ -1,0 +1,44 @@
+.recharge-wrap{
+  .bank-info{
+    .center{
+      padding-left: 0px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    td{
+      padding-left: 30px;
+    }
+  }
+  .bank-money{
+    tr{
+      td{
+        &:first-child{
+          width: 119px;
+          text-align: right;
+        }
+        &:last-child{
+
+        }
+      }
+    }
+    //input,textarea{
+    //  border-radius: 3px;
+    //  border: 1px solid #c3c3c3;
+    //}
+  }
+  .alipay-wrap{
+    tr{
+      td{
+        &:first-child{
+          width: 119px;
+          text-align: right;
+
+        }
+      }
+    }
+  }
+  input[type="radio"]{
+    margin-right: 5px;
+  }
+
+}

@@ -82,11 +82,9 @@ module WeMedia {
         }
         pageChanged(index) {
             this.$scope.currentPageIndex = index;
-            console.log(this.$scope.currentPageIndex);
         }
 
         saveWechat($valid):void {
-            console.log(this.$scope.wechatForm);
             if(!$valid) {
                 window.navigator.notification.alert('请将信息填写完整',null);
             }
@@ -138,8 +136,6 @@ module WeMedia {
             });
 
             modalInstance.result.then(function(items){
-                console.log('result');
-                console.log(items);
             },function(){
 
             });
@@ -166,7 +162,6 @@ module WeMedia {
             $scope.selectedTotal = 0;
             $scope.$watch('selectedList' ,function(){
                 angular.forEach($scope.selectedList, function(item){
-                    console.log(item);
                 });
 
             });

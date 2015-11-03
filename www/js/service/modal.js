@@ -16,8 +16,13 @@ var WeMedia;
             this.currentModal = this.$modal.open({
                 animation: true,
                 templateUrl: './page/modal.html',
-                controller: 'ModalCtrl',
-                size: size
+                controller: 'InfoModalCtrl',
+                size: size,
+                resolve: {
+                    item: function () {
+                        return {};
+                    }
+                }
             });
         };
         return ModalService;

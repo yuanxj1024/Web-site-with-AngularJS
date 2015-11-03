@@ -219,12 +219,17 @@
         max-height: 50px;
         max-width: 50px;
         vertical-align: baseline;
+        float: left;
       }
     }
     .item-info{
       display: inline-block;
       margin-left: 15px;
       .media-name{
+        margin-bottom: 10px;
+      }
+      .media-weibo-name{
+        margin-top: 10px;
         margin-bottom: 10px;
       }
     }
@@ -280,6 +285,9 @@
   }
   .button-wrap{
     margin-right: 30px;
+    .btn-success{
+     margin-top: 4px;
+    }
   }
 }
 

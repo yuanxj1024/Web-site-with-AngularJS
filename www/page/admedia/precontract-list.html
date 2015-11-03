@@ -2,7 +2,7 @@
   <div class="precontract-body container">
     <div class="border padding">
       <div class="header">
-        <h4 class="page-title"><i class="glyphicon glyphicon-file"></i> {{orderTitle}}预约活动列表</h4>
+        <h4 class="page-title font-color"><i class="glyphicon glyphicon-file"></i> {{orderTitle}}预约活动列表</h4>
       </div>
       <form class="form-inline marginTop">
         <div class="form-group">
@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
           <label class="" for="exampleInputEmail3">资源名称：</label>
-          <input type="email" class="form-control input-sm" ng-model="search.name" id="exampleInputEmail3" placeholder="资源名称">
+          <input type="text" class="form-control input-sm" ng-model="search.name" id="exampleInputEmail3" placeholder="资源名称">
         </div>
         <!--<div class="form-group">-->
           <!--<label class="" for="exampleInputEmail3">预约名称：</label>-->
@@ -34,6 +34,7 @@
         <table ng-if="orderType == 1" class="table table-striped table-hover">
           <tr>
             <th>预约订单号</th>
+            <th>活动名称</th>
             <th>资源名称</th>
             <th>平台</th>
             <th><b>预约过期时间</b></th>
@@ -45,25 +46,29 @@
           </tr>
           <tr ng-repeat="item in dataList track by $index">
             <td>{{item.BDetailNo}}</td>
+            <td>{{item.ATitle}}</td>
             <td>{{item.BMediaNickName}}</td>
             <td>{{getChannelName(item.ChannelID)}}</td>
             <td>{{ calcDate(item.AEndTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{calcDate(item.AStartTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{item.BMaxPrice | currency:'￥'}}</td>
-            <td>{{getStateName(item.BState)}}</td>
+            <td>{{getMediaStatus(item.BState)}}</td>
             <!--<td ></td>-->
             <td>
-              <button ng-if="item.BState == 1" ng-click="updateState(item.BID,3)" class="btn btn-info btn-sm">同意</button>
+              <button ng-if="item.BState == 1" ng-click="agreeOrder(item)" class="btn btn-info btn-sm">同意</button>&nbsp;
+              <button ng-if="item.BState == 1" ng-click="rejectOrder(item.BID)" class="btn btn-info btn-sm">拒单</button>
+              <a href="#" ng-click="openDetail(item.AID,item.DetailMediaType)">查看详情</a>
             </td>
           </tr>
           <tr ng-if="dataList.length<=0">
-            <td colspan="9" class="no-data">暂无数据</td>
+            <td colspan="11" class="no-data">暂无数据</td>
           </tr>
         </table>
         <!-- 待执行-->
         <table ng-if="orderType == 2" class="table table-striped table-hover">
           <tr>
             <th>预约订单号</th>
+            <th width="120px">活动名称</th>
             <th>资源名称</th>
             <th>平台</th>
             <th><b>预约过期时间</b></th>
@@ -75,25 +80,29 @@
           </tr>
           <tr ng-repeat="item in dataList track by $index">
             <td>{{item.BDetailNo}}</td>
+            <td>{{item.ATitle}}</td>
             <td>{{item.BMediaNickName}}</td>
             <td>{{getChannelName(item.ChannelID)}}</td>
             <td>{{ calcDate(item.AEndTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{calcDate(item.AStartTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{item.BMaxPrice | currency:'￥'}}</td>
-            <td>{{getStateName(item.BState)}}</td>
-            <td><a href="#">立即上传</a></td>
+            <td>{{getMediaStatus(item.BState)}}</td>
+            <td><span>未上传</span></td>
             <td>
-              <button class="btn btn-info btn-sm">确认完成</button>
+              <!--<button class="btn btn-info btn-sm">完成</button>-->
+              <!--<button class="btn btn-info btn-sm">取消</button>-->
+              <a href="#" ng-click="openDetail(item.AID,item.DetailMediaType)">查看详情</a>
             </td>
           </tr>
           <tr ng-if="dataList.length<=0">
-            <td colspan="9" class="no-data">暂无数据</td>
+            <td colspan="11" class="no-data">暂无数据</td>
           </tr>
         </table>
         <!-- 已完成-->
         <table ng-if="orderType == 3" class="table table-striped table-hover">
           <tr>
             <th>预约订单号</th>
+            <th>活动名称</th>
             <th>资源名称</th>
             <th>平台</th>
             <th><b>预约过期时间</b></th>
@@ -105,19 +114,21 @@
           </tr>
           <tr ng-repeat="item in dataList track by $index">
             <td>{{item.BDetailNo}}</td>
+            <td>{{item.ATitle}}</td>
             <td>{{item.BMediaNickName}}</td>
             <td>{{getChannelName(item.ChannelID)}}</td>
             <td>{{ calcDate(item.AEndTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{calcDate(item.AStartTime) | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
             <td>{{item.BMaxPrice | currency:'￥'}}</td>
-            <td>{{getStateName(item.BState)}}</td>
-            <td ></td>
+            <td>{{getMediaStatus(item.BState)}}</td>
+            <td></td>
             <td>
-              <button class="btn">同意</button>
+              <a href="#" ng-click="openDetail(item.AID,item.DetailMediaType)">查看详情</a>
+              <!--<button class="btn">同意</button>-->
             </td>
           </tr>
           <tr ng-if="dataList.length<=0">
-            <td colspan="9" class="no-data">暂无数据</td>
+            <td colspan="11" class="no-data">暂无数据</td>
           </tr>
         </table>
         <div class="ng-hide">

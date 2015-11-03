@@ -30,10 +30,6 @@
         border: solid 1px #D4651B;
       }
       div {
-        &:nth-child(2) {
-          margin: 16px 0;
-          text-align: right;
-        }
         a {
           display: block;
           width: 120px;
@@ -90,11 +86,14 @@
         font-size: 12px;
       }
     }
-    .money {
+    .money, .money-cnt{
       color: $main-there-color;
       margin-right: 5px;
       font-size: 24px;
       font-weight: 800;
+    }
+    .money{
+      font-size: 16px!important;
     }
   }
   .body {
@@ -159,9 +158,9 @@
             .see-detail{
               position: absolute;
               display: inline-block;
-              top: 0;
+              top: -20px;
               right: 0;
-              width: 30px;
+              //width: 30px;
             }
           }
         }

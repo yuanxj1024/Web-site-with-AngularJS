@@ -10,9 +10,13 @@ $main-border-color: #E4E4E4;
 body {
   background-color: $main-bg-color;
   color: $main-font-color;
+  font-size: 14px;
 }
 a {
   text-decoration: none!important;
+}
+table{
+  font-size: 14px;
 }
 .main-width {
   width: $main-width;
@@ -52,6 +56,11 @@ a {
   margin-bottom: 15px!important;
 }
 
+.margin-lr{
+  margin-left:15px!important;;
+  margin-right:15px!important;;
+}
+
 .page-title {
   font-weight: 800;
   margin: 0;
@@ -77,4 +86,7 @@ a {
 }
 .font-color{
   color: $main-there-color;
+}
+.text-right{
+  text-align: right;
 }

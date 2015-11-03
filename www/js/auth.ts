@@ -17,7 +17,7 @@ module WeMedia {
     export interface IAuthInfoService {
         checkLogin(): void;
         userInfo(user:IUser): IUser;
-        getUser():ng.IPromise<any>;
+        getUser(args:any):ng.IPromise<any>;
         logout(): void;
 
         saveAdvertiser(user:Object): ng.IPromise<any>;
@@ -31,6 +31,7 @@ module WeMedia {
         //保存广告主type=1，自媒体信息type=2
         saveAdvertiser(params:Object, data:Object, success?:Function, error?:Function);
         updatePwd(params:Object, data:Object, success?:Function, error?:Function);
+        detail(params:Object, data:Object, success?:Function, error?:Function);
     }
 
     class AuthInfo implements IAuthInfoService {
@@ -79,6 +80,14 @@ module WeMedia {
                     params: {
                         'action': 'password'
                     }
+                },
+                detail: {
+                    method: 'POST',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'detail'
+                    }
                 }
             });
         }
@@ -87,20 +96,15 @@ module WeMedia {
 
         }
 
-        getUser():ng.IPromise<any> {
+        getUser(args):ng.IPromise<any> {
             var defrred = this.$q.defer();
 
-            this.authResource.info(null,null,function(result){
+            this.authResource.detail(args,null,function(result){
                 if(typeof result == 'string') {
-                    console.log(result);
-                    defrred.resolve(result);
-
-                } else {
-                    alert('失败');
-                    defrred.reject(result);
+                    result = JSON.parse(result);
                 }
+                defrred.resolve(result);
             },function(reject){
-                alert('erro');
                 defrred.reject(reject);
             });
             return defrred.promise;
@@ -112,7 +116,7 @@ module WeMedia {
                return user;
            } else {
                var userInfo = this.$cookies.get('authUser');
-               if(userInfo) {
+               if(typeof userInfo == 'string') {
                    return JSON.parse(userInfo);
                }
                return null;

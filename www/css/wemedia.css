@@ -1,9 +1,14 @@
+@charset "UTF-8";
 body {
   background-color: #fff;
-  color: #666666; }
+  color: #666666;
+  font-size: 14px; }
 
 a {
   text-decoration: none !important; }
+
+table {
+  font-size: 14px; }
 
 .main-width {
   width: 1200px; }
@@ -37,6 +42,10 @@ a {
 .marginBottom {
   margin-bottom: 15px !important; }
 
+.margin-lr {
+  margin-left: 15px !important;
+  margin-right: 15px !important; }
+
 .page-title {
   font-weight: 800;
   margin: 0;
@@ -61,6 +70,9 @@ a {
 
 .font-color {
   color: #088FC8; }
+
+.text-right {
+  text-align: right; }
 
 .main-nav {
   padding-top: 10px;
@@ -171,11 +183,11 @@ a {
   min-height: 500px; }
 
 .main-footer {
-  background-color: #C3C3C3;
+  background-color: #333;
   text-align: center;
   color: #fff;
-  height: 120px;
-  padding-top: 45px; }
+  height: 80px;
+  padding-top: 20px; }
   .main-footer div {
     text-align: center; }
     .main-footer div a {
@@ -219,9 +231,6 @@ a {
       .dashboard .top .account .btn {
         background-color: #F37421;
         border: solid 1px #D4651B; }
-      .dashboard .top .account div:nth-child(2) {
-        margin: 16px 0;
-        text-align: right; }
       .dashboard .top .account div a {
         display: block;
         width: 120px;
@@ -289,11 +298,13 @@ a {
         bottom: 0px;
         right: 16px;
         font-size: 12px; }
-    .dashboard .top .money {
+    .dashboard .top .money, .dashboard .top .money-cnt {
       color: #088FC8;
       margin-right: 5px;
       font-size: 24px;
       font-weight: 800; }
+    .dashboard .top .money {
+      font-size: 16px !important; }
   .dashboard .body {
     margin: 32px 0;
     background-color: #fff;
@@ -362,9 +373,8 @@ a {
             .dashboard .new-media-list-wrap .new-media-list .item .media-info .detail-wrap .see-detail {
               position: absolute;
               display: inline-block;
-              top: 0;
-              right: 0;
-              width: 30px; }
+              top: -20px;
+              right: 0; }
 
 .star-wrap {
   padding: 0 15px; }
@@ -544,11 +554,15 @@ a {
     .star-wrap .data-table .media-img img {
       max-height: 50px;
       max-width: 50px;
-      vertical-align: baseline; }
+      vertical-align: baseline;
+      float: left; }
   .star-wrap .data-table .item-info {
     display: inline-block;
     margin-left: 15px; }
     .star-wrap .data-table .item-info .media-name {
+      margin-bottom: 10px; }
+    .star-wrap .data-table .item-info .media-weibo-name {
+      margin-top: 10px;
       margin-bottom: 10px; }
 
 .create-order-step-wrap {
@@ -601,6 +615,8 @@ a {
           color: #55ACDB; }
   .create-order-step-wrap .button-wrap {
     margin-right: 30px; }
+    .create-order-step-wrap .button-wrap .btn-success {
+      margin-top: 4px; }
 
 .create-order-fixed-wrap {
   position: fixed;
@@ -640,10 +656,11 @@ a {
   padding: 0; }
 .precontract-wrap .selected-list, .choose-resource-layer .selected-list {
   margin-top: 15px;
-  max-height: 500px;
+  max-height: 380px;
   overflow-y: auto; }
   .precontract-wrap .selected-list .table, .choose-resource-layer .selected-list .table {
-    font-size: 12px; }
+    font-size: 12px;
+    margin-bottom: 5px; }
     .precontract-wrap .selected-list .table p, .choose-resource-layer .selected-list .table p {
       margin: 0; }
   .precontract-wrap .selected-list .item, .choose-resource-layer .selected-list .item {
@@ -706,9 +723,9 @@ a {
   margin: 0;
   padding: 0; }
 .choose-resource-layer .data-list-wrap {
-  margin: 10px 0; }
+  margin: 5px 0; }
   .choose-resource-layer .data-list-wrap .selected-list {
-    max-height: 450px;
+    max-height: 300px;
     overflow: auto; }
 
 .pre-detail-wrap .info-table {
@@ -727,6 +744,50 @@ a {
     color: #088FC8; }
 .pre-detail-wrap .blue-line th {
   border-bottom: 1px solid #088fc8; }
+
+.contact-list-img img {
+  width: 40px;
+  height: 40px; }
+
+.btn-pre-pay i, .question-wrap i, .refond-wrap i, .upload-img i {
+  position: relative; }
+  .btn-pre-pay i:after, .question-wrap i:after, .refond-wrap i:after, .upload-img i:after {
+    position: absolute;
+    content: '预付后的金额将被暂时冻结。订单确认执行完成后，预付金额才会转给自媒体。如果订单执行出现问题，您可以申请退款。';
+    padding: 5px;
+    display: none;
+    width: 100px;
+    font-size: 12px;
+    color: grey;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid grey; }
+.btn-pre-pay:hover i:after, .question-wrap:hover i:after, .refond-wrap:hover i:after, .upload-img:hover i:after {
+  display: inline-block; }
+
+.question-wrap i:after {
+  content: "订单已执行，请查看截图以确认订单完成情况" !important; }
+
+.refond-wrap i:after {
+  content: "当订单执行出现问题时，您可以申请退款。" !important; }
+
+.upload-img i:after {
+  content: "请在结束时间之后的24小时内上传截图，否则该笔订单将被视为过期未执行。订单过期未执行，您将无法获得报酬。" !important; }
+
+.over-time i:after {
+  content: "自媒体未在规定时间内执行订单，预付金额已退回您的账户." !important; }
+
+.data-page .pagination {
+  margin: 5px 0; }
+
+.icon-star, .error-tip {
+  color: red; }
+
+.border-tr th {
+  border-right: 1px #eaeaea solid;
+  border-top: none; }
+  .border-tr th:last-child {
+    border-right: none; }
 
 .user-center .line-wrap {
   border: solid 1px #E4E4E4; }
@@ -849,5 +910,29 @@ a {
 .form-wrap .upload-img {
   max-width: 100px;
   max-height: 100px; }
+
+.add-account-wrap input[type='number'] {
+  font-size: 12px;
+  padding-left: 3px; }
+.add-account-wrap .input-group input[type='number'] {
+  padding-right: 0; }
+.add-account-wrap .input-addon-padding {
+  padding-left: 5px;
+  padding-right: 5px; }
+
+.recharge-wrap .bank-info .center {
+  padding-left: 0px;
+  text-align: center;
+  vertical-align: middle; }
+.recharge-wrap .bank-info td {
+  padding-left: 30px; }
+.recharge-wrap .bank-money tr td:first-child {
+  width: 119px;
+  text-align: right; }
+.recharge-wrap .alipay-wrap tr td:first-child {
+  width: 119px;
+  text-align: right; }
+.recharge-wrap input[type="radio"] {
+  margin-right: 5px; }
 
 /*# sourceMappingURL=wemedia.css.map */

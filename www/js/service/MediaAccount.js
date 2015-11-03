@@ -53,6 +53,22 @@ var WeMedia;
                     params: {
                         'action': 'update'
                     }
+                },
+                exists: {
+                    method: 'GET',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'exists'
+                    }
+                },
+                recommend: {
+                    method: 'GET',
+                    isArray: false,
+                    needAccessToken: true,
+                    params: {
+                        'action': 'recommend'
+                    }
                 }
             });
         }
@@ -107,6 +123,31 @@ var WeMedia;
         MediaAccount.prototype.updateItem = function (model) {
             var deferred = this.$q.defer();
             this.accountResource.updateItem(model, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        //检查是否存在
+        MediaAccount.prototype.exists = function (args) {
+            var deferred = this.$q.defer();
+            this.accountResource.exists(args, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        MediaAccount.prototype.recommend = function (args) {
+            var deferred = this.$q.defer();
+            this.accountResource.recommend(args, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }

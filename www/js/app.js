@@ -7,6 +7,7 @@
 /// <reference path="../typescript/angularjs/angular-resource.d.ts" />
 /// <reference path="../typescript/angularjs/angular-cookies.d.ts" />
 /// <reference path="auth.ts" />
+/// <reference path="./service/common.ts" />
 var WeMedia;
 (function (WeMedia) {
     'use strict';
@@ -27,11 +28,27 @@ var WeMedia;
         MediaType[MediaType["friend"] = 3] = "friend";
     })(WeMedia.MediaType || (WeMedia.MediaType = {}));
     var MediaType = WeMedia.MediaType;
-    WeMedia.allMedias = ['', '新浪微博', '微信公众号', '微信朋友圈'];
+    WeMedia.allMedias = { 1: '新浪微博', 2: '微信公众号', 3: '微信朋友圈' };
+    //投放形式
+    WeMedia.ReleaseType = {
+        10: '硬广转发',
+        11: '硬广直发',
+        12: '软广转发',
+        13: '软广直发',
+        2: '硬广单图文',
+        3: '软广单图文',
+        4: '硬广多图文第一条',
+        5: '软广多图文第一条',
+        6: '硬广多图文第二条',
+        7: '软广多图文第二条',
+        8: '硬广多图文3~N条',
+        9: '软广多图文3~N条',
+        1: '直发'
+    };
     //应用启动入口-构造函数
     var AppInit = (function () {
-        function AppInit($rootScope, $injector, $state, $location, $cookies, AuthService) {
-            $rootScope.isDebug = false;
+        function AppInit($rootScope, $injector, $state, $location, $cookies, AuthService, CommonService) {
+            $rootScope.isDebug = window.location.host.indexOf('127') >= 0 ? true : false;
             if ($rootScope.isDebug) {
                 //测试数据
                 $cookies.put('accessToken', '23dfasfas23afsdf');
@@ -91,6 +108,19 @@ var WeMedia;
             $rootScope.redirect = function (url) {
                 window.location.href = url;
             };
+            //刷新用户信息
+            $rootScope.$on('event:refresh-user-info', function (e, callback) {
+                AuthService.getUser({
+                    userID: $rootScope.user.ID,
+                    isAdOwner: $rootScope.isAdOwner ? 1 : 0
+                }).then(function (result) {
+                    if (result && result.Data && result.Data.length > 0) {
+                        $rootScope.user = AuthService.userInfo(result.Data[0]);
+                        callback && callback();
+                    }
+                }, function (err) {
+                });
+            });
             $rootScope.calcDate = function (text) {
                 if (text) {
                     var r = text.match(/\d+(?=[+])/);
@@ -99,6 +129,17 @@ var WeMedia;
                     }
                 }
                 return new Date();
+            };
+            //读取，系统价格费率
+            $rootScope.PlantformCost = 0;
+            CommonService.getFee().then(function (result) {
+                if (result && !isNaN(result.Message)) {
+                    $rootScope.PlantformCost += result.Message * 1;
+                }
+            }, function () {
+            });
+            $rootScope.DisplayPrice = function (price) {
+                return price * (100 + $rootScope.PlantformCost) / 100;
             };
             //利用路由，选中顶级菜单
             $rootScope.$on('$stateChangeSuccess', function (e, state) {
@@ -128,7 +169,7 @@ var WeMedia;
         return AppInit;
     })();
     //注入
-    AppInit.$inject = ['$rootScope', '$injector', '$state', '$location', '$cookies', 'AuthService'];
+    AppInit.$inject = ['$rootScope', '$injector', '$state', '$location', '$cookies', 'AuthService', 'CommonService'];
     WeMedia.AppModule.run(AppInit);
 })(WeMedia || (WeMedia = {}));
 //# sourceMappingURL=app.js.map

@@ -1,7 +1,7 @@
 <div class="main-nav">
   <div ng-include="'./page/header.html'" ></div>
 </div>
-<div class="container marginTop user-center" ng-controller="UserCenterCtrl">
+<div class="container marginTop user-center" ng-controller="AdmediaBillCtril">
   <div class="line-wrap">
     <div class="header-tab marginLeft">
       <h4>帐户信息</h4>
@@ -11,20 +11,21 @@
         <tr>
           <th>账户名</th>
           <!--<th>账号类型</th>-->
-          <th>卡号</th>
-          <th>冻结资金</th>
-          <th>可用资金</th>
+          <!--<th>卡号</th>-->
+          <th>总金额</th>
+          <th>已提现</th>
         </tr>
         <tr>
           <td>{{user.Mobile}}</td>
           <!--<td>{{user.LinkName}}</td>-->
-          <td>{{user.TotalAmount ||'' }}</td>
-          <td>{{user.AmountFrozen||0 | currency: '￥'}}</td>
-          <td>{{user.AvailableBanance||0 | currency: '￥'}}</td>
+          <!--<td>{{user.TotalAmount ||'' }}</td>-->
+          <td>{{user.Money||0 | currency: '￥'}}</td>
+          <td>{{user.AcquiredMoney||0 | currency: '￥'}}</td>
         </tr>
       </table>
       <div>
-        <button ui-sref="admedia.bindcard" class="btn btn-info">提现绑卡</button>
+        <button ng-if="!admediaPayment" ui-sref="admedia.bindcard" class="btn btn-info">提现绑卡</button>
+        <button ng-if="!!admediaPayment" class="btn btn-info" ng-click="openWithdraw()">提现</button>
       </div>
     </div>
     <div class="header-tab marginLeft">
@@ -51,7 +52,68 @@
           <td colspan="8" class="txt-center">暂无数据</td>
         </tr>
       </table>
+      <div class="data-page">
+        <pagination rotate="false" max-size="10" ng-change="pageChanged(currentPageIndex)" items-per-page="15" boundary-links="true" total-items="totalItems" ng-model="currentPageIndex" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+      </div>
     </div>
 
   </div>
 </div>
+<!--提现申请-->
+<script type="text/ng-template" id="withdraw.html">
+  <div class="choose-resource-layer padding">
+    <h3>提现申请</h3>
+    <div class="data-list-wrap">
+      <!--<div class="selected-list contact-list-img">-->
+        <form novalidate name="withdrawForm">
+          <div class="row">
+            <div class="form-group marginTop">
+              <label class="col-xs-4 control-label text-right">已绑定账号</label>
+              <div class="col-xs-4">
+                <span>{{admediaPayment.PayBank}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group marginTop">
+              <label class="col-xs-4 control-label text-right">可提现金额</label>
+              <div class="col-xs-4">
+                <span>{{user.Money||0 | currency: '￥'}}元</span>
+              </div>
+            </div>
+          </div>
+          <div class="row marginTop">
+            <div class="form-group">
+              <label class="col-xs-4 control-label text-right"><span class="icon-star">*</span>提现金额</label>
+              <div class="col-xs-4">
+                <div class="input-group">
+                  <input type="number" required placeholder="提现最小金额为50元" name="money" class="form-control" ng-model="money"/>
+                  <div class="input-group-addon">元</div>
+                </div>
+                <span class="error-tip" ng-show="withdrawForm.money.$dirty && withdrawForm.money.$invalid">金额格式输入错误.</span>
+                <span class="error-tip" ng-show="withdrawForm.money.$dirty && money > user.Money">超出可提现金额</span>
+              </div>
+            </div>
+          </div>
+        <!--<div class="form-group">-->
+          <!--<label class="col-xs-4 control-label" style="text-align: right; top: 5px;">可提现金额</label>-->
+          <!--<div class="col-xs-4">-->
+            <!--{{user.Money||0 | currency: '￥'}}-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<label class="col-xs-4 control-label" style="text-align: right; top: 5px;"><span class="icon-star">*</span>持卡人姓名</label>-->
+          <!--<div class="col-xs-4">-->
+              <!--<input type="number" required placeholder="提现最小金额为50元" name="money" class="form-control" ng-model="money"/>-->
+              <!--<span class="error-tip" ng-show="withdrawForm.money.$dirty && withdrawForm.money.$invalid">请输入正整数.</span>-->
+          <!--</div>-->
+        <!--</div>-->
+        </form>
+      <!--</div>-->
+    </div>
+    <div class="modal-footer txt-center">
+      <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+      <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+  </div>
+</script>

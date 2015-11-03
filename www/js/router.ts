@@ -339,6 +339,49 @@ module WeMedia {
                     }
                 }
             })
+            .state('admedia.wechatPrecontractDetail', {
+                'url': '/wechatPrecontractDetail',
+                'params': {
+                    'mediaType': '2',
+                    'detailID': 0,
+                    type: '',
+                    tag: ''
+
+                },
+                'views': {
+                    'admedia': {
+                        'templateUrl': './page/admedia/precontract-detail.html'
+                    }
+                }
+            })
+            .state('admedia.weiboPrecontractDetail', {
+                'url': '/weiboPrecontractDetail',
+                'params': {
+                    'mediaType': '1',
+                    'detailID': 0,
+                    type: '',
+                    tag: ''
+                },
+                'views': {
+                    'admedia': {
+                        'templateUrl': './page/admedia/precontract-detail.html'
+                    }
+                }
+            })
+            .state('admedia.friendsPrecontractDetail', {
+                'url': '/friendsPrecontractDetail',
+                'params': {
+                    'mediaType': '3',
+                    'detailID': 0,
+                    type: '',
+                    tag: ''
+                },
+                'views': {
+                    'admedia': {
+                        'templateUrl': './page/admedia/precontract-detail.html'
+                    }
+                }
+            })
 
             //公用路由
             .state('precontract', {

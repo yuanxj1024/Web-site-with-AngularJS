@@ -28,6 +28,18 @@ var WeMedia;
                     }
                 }
             });
+            this.configResource = $resource('/API/User/:action', {
+                action: '@action'
+            }, {
+                getFee: {
+                    method: 'GET',
+                    accessToken: true,
+                    isArray: false,
+                    params: {
+                        action: 'fee'
+                    }
+                }
+            });
         }
         Common.prototype.noticeList = function (arg) {
             var deferred = this.$q.defer();
@@ -46,6 +58,18 @@ var WeMedia;
             this.noticeResource.detail({
                 id: id
             }, null, function (result) {
+                if (typeof result == 'string') {
+                    result = JSON.parse(result);
+                }
+                deferred.resolve(result);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        };
+        Common.prototype.getFee = function () {
+            var deferred = this.$q.defer();
+            this.configResource.getFee(null, null, function (result) {
                 if (typeof result == 'string') {
                     result = JSON.parse(result);
                 }
